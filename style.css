@@ -338,7 +338,16 @@ nav {
 }
 
 .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
     margin-top: 2rem;
+}
+
+.info-item i {
+    margin-top: 5px;
+    font-size: 1.2rem;
+    color: white;
 }
 
 .contact-form {
