@@ -153,6 +153,7 @@ nav {
     display: inline-block;
     border: none;
     transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
 }
 
 .btn-primary {
@@ -199,7 +200,7 @@ nav {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 15rem;
+    font-size: 15vw;
     font-weight: 900;
     text-transform: uppercase;
     color: transparent;
@@ -217,7 +218,7 @@ nav {
 }
 
 .hero h1 {
-    font-size: 5rem;
+    font-size: 4.5rem;
     line-height: 1.1;
     margin-bottom: 2rem;
     text-transform: uppercase;
@@ -322,6 +323,7 @@ nav {
     position: relative;
     z-index: 2;
     background: var(--bg-dark);
+    margin-top: 0; /* Resetting overlap */
 }
 
 .stat-item {
@@ -330,7 +332,7 @@ nav {
 
 .stat-item h3 {
     font-size: 3.5rem;
-    color: var(--accent-red); /* Kafein Style numbers */
+    color: var(--accent-red);
     margin-bottom: 0.5rem;
     font-weight: 800;
 }
@@ -348,10 +350,21 @@ nav {
     background: var(--bg-light);
 }
 
+.section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
 .section-header h2 {
     font-size: 3.5rem;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
+}
+
+.section-header p {
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .services-grid {
@@ -362,9 +375,10 @@ nav {
 
 .service-card {
     background: var(--bg-dark);
-    border-radius: 0; /* Sharp corporate edges */
+    border-radius: 0;
     border-bottom: 4px solid transparent;
     transition: 0.4s;
+    overflow: hidden;
 }
 
 .service-card:hover {
@@ -372,7 +386,204 @@ nav {
     border-bottom-color: var(--accent-red);
 }
 
-/* --- Animations & Responsive stays similar but with tweaks --- */
+.service-img {
+    height: 250px;
+    overflow: hidden;
+}
+
+.service-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.service-card:hover .service-img img {
+    scale: 1.1;
+}
+
+.service-info {
+    padding: 3rem;
+}
+
+.service-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.service-info p {
+    color: var(--text-dim);
+}
+
+/* --- About Section --- */
+.about {
+    padding: 10rem 0;
+    background: var(--bg-dark);
+}
+
+.about-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+}
+
+.about-content h2 {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.about-content p {
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.features-list li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+}
+
+.features-list i {
+    color: var(--accent-red);
+}
+
+.about-visual {
+    height: 450px;
+    background: url('assets/ai_automation.png') center/cover;
+    border-radius: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--glass-border);
+}
+
+.glass-box {
+    background: rgba(10, 14, 27, 0.8);
+    backdrop-filter: blur(15px);
+    padding: 3rem;
+    border-left: 5px solid var(--accent-red);
+    max-width: 80%;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+/* --- Contact Section --- */
+.contact {
+    padding: 10rem 0;
+    background: var(--bg-light);
+}
+
+.contact-box {
+    background: var(--bg-dark);
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.contact-info {
+    padding: 5rem;
+    background: var(--bg-light);
+    border-right: 1px solid var(--glass-border);
+}
+
+.contact-info h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.contact-info p {
+    color: var(--text-dim);
+    margin-bottom: 3rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.info-item i {
+    font-size: 1.5rem;
+    color: var(--accent-red);
+}
+
+.contact-form {
+    padding: 5rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 0;
+    color: white;
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+    font-size: 1rem;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: var(--accent-red);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* --- Footer --- */
+footer {
+    background: var(--bg-dark);
+    padding: 6rem 0;
+    border-top: 1px solid var(--glass-border);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-brand .logo {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.footer-brand p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.footer-links {
+    display: flex;
+    gap: 3rem;
+}
+
+.footer-links a {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--accent-red);
+}
+
+/* --- Animations --- */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -384,13 +595,26 @@ nav {
     transform: translateY(0);
 }
 
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+    .hero h1 { font-size: 4rem; }
+    .ghost-text { font-size: 20vw; }
+}
+
 @media (max-width: 991px) {
     .top-bar { display: none; }
-    header { top: 0; }
-    .hero h1 { font-size: 3.5rem; }
+    header { top: 0; padding: 1rem 0; }
     .nav-links { display: none; }
+    .hero h1 { font-size: 3rem; }
+    .about-wrapper, .contact-box { grid-template-columns: 1fr; }
+    .contact-info { border-right: none; border-bottom: 1px solid var(--glass-border); padding: 3rem; }
+    .contact-form { padding: 3rem; }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
 }
 
 @media (max-width: 768px) {
-    .stats { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+    .hero h1 { font-size: 2.5rem; }
+    .hero p { font-size: 1.1rem; }
+    .stats { grid-template-columns: 1fr; }
+    .section-header h2, .about-content h2, .contact-info h2 { font-size: 2.5rem; }
 }
