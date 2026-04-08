@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Multi-Language Support ---
-    const translations = {
+    // --- Multi-Language Support & Dynamic Content ---
+    const defaultTranslations = {
         tr: {
             title: "BizSolutions | Profesyonel Yazılım Outsourcing Hizmetleri",
             meta_description: "BizSolutions ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız.",
@@ -140,29 +140,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Load dynamic content from localStorage if available
+    const getTranslations = () => {
+        const customContent = localStorage.getItem('bizsolutions_content');
+        if (customContent) {
+            try {
+                const parsed = JSON.parse(customContent);
+                // Deep merge default with custom
+                return {
+                    tr: { ...defaultTranslations.tr, ...parsed.tr },
+                    en: { ...defaultTranslations.en, ...parsed.en }
+                };
+            } catch (e) {
+                console.error("Error parsing custom content", e);
+                return defaultTranslations;
+            }
+        }
+        return defaultTranslations;
+    };
+
+    let translations = getTranslations();
+
     function setLanguage(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (translations[lang][key]) {
+            if (translations[lang] && translations[lang][key]) {
                 el.innerHTML = translations[lang][key];
             }
         });
 
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const key = el.getAttribute('data-i18n-placeholder');
-            if (translations[lang][key]) {
+            if (translations[lang] && translations[lang][key]) {
                 el.placeholder = translations[lang][key];
             }
         });
 
         document.querySelectorAll('[data-i18n-content]').forEach(el => {
             const key = el.getAttribute('data-i18n-content');
-            if (translations[lang][key]) {
+            if (translations[lang] && translations[lang][key]) {
                 el.setAttribute('content', translations[lang][key]);
             }
         });
 
-        document.getElementById('current-lang').innerText = lang.toUpperCase();
+        const langDisplay = document.getElementById('current-lang');
+        if (langDisplay) langDisplay.innerText = lang.toUpperCase();
+        
         document.documentElement.lang = lang;
         localStorage.setItem('preferred_lang', lang);
 
@@ -203,4 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1500);
         });
     }
+
+    // Listen for storage changes (experimental: if admin updates in another tab)
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'bizsolutions_content') {
+            translations = getTranslations();
+            const currentLang = localStorage.getItem('preferred_lang') || 'tr';
+            setLanguage(currentLang);
+        }
+    });
 });

@@ -566,6 +566,18 @@ footer {
 .footer-brand p {
     color: var(--text-dim);
     font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.admin-link {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    transition: 0.3s;
+}
+
+.admin-link:hover {
+    color: var(--primary-color);
 }
 
 .footer-links {
