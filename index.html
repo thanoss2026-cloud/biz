@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BizSolutions | Profesyonel Yazılım Outsourcing Hizmetleri</title>
-    <meta name="description" content="BizSolutions ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız.">
-    <meta name="keywords" content="yazılım outsourcing, yazılım kiralama, web geliştirme, mobil uygulama, yapay zeka, kurumsal yazılım">
+    <title data-i18n="title">BizSolutions | Profesyonel Yazılım Outsourcing Hizmetleri</title>
+    <meta name="description" content="BizSolutions ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız." data-i18n-content="meta_description">
+    <meta name="keywords" content="yazılım outsourcing, yazılım kiralama, web geliştirme, mobil uygulama, yapay zeka, kurumsal yazılım" data-i18n-content="meta_keywords">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,13 +19,24 @@
                 <span class="gradient-text">BizSolutions</span>
             </div>
             <ul class="nav-links">
-                <li><a href="#home">Ana Sayfa</a></li>
-                <li><a href="#services">Hizmetler</a></li>
-                <li><a href="#about">Hakkımızda</a></li>
-                <li><a href="#contact">İletişim</a></li>
+                <li><a href="#home" data-i18n="nav_home">Ana Sayfa</a></li>
+                <li><a href="#services" data-i18n="nav_services">Hizmetler</a></li>
+                <li><a href="#about" data-i18n="nav_about">Hakkımızda</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
             </ul>
             <div class="nav-cta">
-                <a href="#contact" class="btn btn-primary">Teklif Al</a>
+                <div class="lang-switcher">
+                    <button class="lang-btn">
+                        <i class="fas fa-globe"></i>
+                        <span id="current-lang">TR</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                    </button>
+                    <div class="lang-dropdown">
+                        <div class="lang-option active" data-lang="tr">TR - Türkçe</div>
+                        <div class="lang-option" data-lang="en">EN - English</div>
+                    </div>
+                </div>
+                <a href="#contact" class="btn btn-primary" data-i18n="btn_get_quote">Teklif Al</a>
             </div>
             <div class="menu-toggle">
                 <span></span>
@@ -39,11 +50,11 @@
         <section id="home" class="hero">
             <div class="hero-overlay"></div>
             <div class="container hero-content">
-                <h1 class="reveal">Geleceğin Teknolojilerini <br><span class="gradient-text">Birlikte İnşa Edelim</span></h1>
-                <p class="reveal">Kurumsal ihtiyaçlarınıza özel, ölçeklenebilir ve yüksek performanslı yazılım ekipleriyle işinizi dijital dünyada bir adım öne taşıyın.</p>
+                <h1 class="reveal" data-i18n="hero_title">Geleceğin Teknolojilerini <br><span class="gradient-text">Birlikte İnşa Edelim</span></h1>
+                <p class="reveal" data-i18n="hero_subtitle">Kurumsal ihtiyaçlarınıza özel, ölçeklenebilir ve yüksek performanslı yazılım ekipleriyle işinizi dijital dünyada bir adım öne taşıyın.</p>
                 <div class="hero-btns reveal">
-                    <a href="#services" class="btn btn-primary">Hizmetlerimizi İnceleyin</a>
-                    <a href="#about" class="btn btn-secondary">Bizi Tanıyın</a>
+                    <a href="#services" class="btn btn-primary" data-i18n="btn_view_services">Hizmetlerimizi İnceleyin</a>
+                    <a href="#about" class="btn btn-secondary" data-i18n="btn_know_us">Bizi Tanıyın</a>
                 </div>
             </div>
         </section>
@@ -51,27 +62,27 @@
         <section class="stats container">
             <div class="stat-item reveal">
                 <h3>50+</h3>
-                <p>Uzman Geliştirici</p>
+                <p data-i18n="stat_experts">Uzman Geliştirici</p>
             </div>
             <div class="stat-item reveal">
                 <h3>100+</h3>
-                <p>Tamamlanan Proje</p>
+                <p data-i18n="stat_projects">Tamamlanan Proje</p>
             </div>
             <div class="stat-item reveal">
                 <h3>10+</h3>
-                <p>Yıllık Tecrübe</p>
+                <p data-i18n="stat_experience">Yıllık Tecrübe</p>
             </div>
             <div class="stat-item reveal">
                 <h3>%98</h3>
-                <p>Müşteri Memnuniyeti</p>
+                <p data-i18n="stat_satisfaction">Müşteri Memnuniyeti</p>
             </div>
         </section>
 
         <section id="services" class="services">
             <div class="container">
                 <div class="section-header reveal">
-                    <h2>Uzmanlık Alanlarımız</h2>
-                    <p>En son teknolojileri kullanarak iş süreçlerinizi optimize eden çözümler sunuyoruz.</p>
+                    <h2 data-i18n="services_title">Uzmanlık Alanlarımız</h2>
+                    <p data-i18n="services_subtitle">En son teknolojileri kullanarak iş süreçlerinizi optimize eden çözümler sunuyoruz.</p>
                 </div>
                 <div class="services-grid">
                     <div class="service-card reveal">
@@ -79,8 +90,8 @@
                             <img src="assets/web_mobile.png" alt="Web ve Mobil Geliştirme">
                         </div>
                         <div class="service-info">
-                            <h3>Web & Mobil Geliştirme</h3>
-                            <p>Modern, responsive ve kullanıcı odaklı web ve mobil uygulamalar geliştiriyoruz.</p>
+                            <h3 data-i18n="service_1_title">Web & Mobil Geliştirme</h3>
+                            <p data-i18n="service_1_desc">Modern, responsive ve kullanıcı odaklı web ve mobil uygulamalar geliştiriyoruz.</p>
                         </div>
                     </div>
                     <div class="service-card reveal">
@@ -88,8 +99,8 @@
                             <img src="assets/ai_automation.png" alt="Yapay Zeka ve Otomasyon">
                         </div>
                         <div class="service-info">
-                            <h3>Yapay Zeka & AI</h3>
-                            <p>Veri analitiği ve yapay zeka çözümleri ile iş kararlarınızı veriye dayalı hale getirin.</p>
+                            <h3 data-i18n="service_2_title">Yapay Zeka & AI</h3>
+                            <p data-i18n="service_2_desc">Veri analitiği ve yapay zeka çözümleri ile iş kararlarınızı veriye dayalı hale getirin.</p>
                         </div>
                     </div>
                     <div class="service-card reveal">
@@ -97,8 +108,8 @@
                             <img src="assets/hero.png" alt="Bulut Çözümleri">
                         </div>
                         <div class="service-info">
-                            <h3>Bulut & DevOps</h3>
-                            <p>Güvenli, ölçeklenebilir bulut altyapıları ve sürekli entegrasyon süreçleri kuruyoruz.</p>
+                            <h3 data-i18n="service_3_title">Bulut & DevOps</h3>
+                            <p data-i18n="service_3_desc">Güvenli, ölçeklenebilir bulut altyapıları ve sürekli entegrasyon süreçleri kuruyoruz.</p>
                         </div>
                     </div>
                 </div>
@@ -108,18 +119,18 @@
         <section id="about" class="about">
             <div class="container about-wrapper">
                 <div class="about-content reveal">
-                    <h2>Neden <span class="gradient-text">BizSolutions</span>?</h2>
-                    <p>Yazılım outsourcing sadece kod yazmak değildir; doğru iş ortağını bulmaktır. BizSolutions olarak, projelerinize sadece iş gücü değil, vizyon ve teknik derinlik katıyoruz.</p>
+                    <h2 data-i18n="about_title">Neden <span class="gradient-text">BizSolutions</span>?</h2>
+                    <p data-i18n="about_desc">Yazılım outsourcing sadece kod yazmak değildir; doğru iş ortağını bulmaktır. BizSolutions olarak, projelerinize sadece iş gücü değil, vizyon ve teknik derinlik katıyoruz.</p>
                     <ul class="features-list">
-                        <li><i class="fas fa-check-circle"></i> Çevik (Agile) Metodoloji</li>
-                        <li><i class="fas fa-check-circle"></i> Küresel Kalite Standartları</li>
-                        <li><i class="fas fa-check-circle"></i> Şeffaf İletişim & Süreç Takibi</li>
-                        <li><i class="fas fa-check-circle"></i> Esnek Ekip Yapılandırması</li>
+                        <li data-i18n="feature_1"><i class="fas fa-check-circle"></i> Çevik (Agile) Metodoloji</li>
+                        <li data-i18n="feature_2"><i class="fas fa-check-circle"></i> Küresel Kalite Standartları</li>
+                        <li data-i18n="feature_3"><i class="fas fa-check-circle"></i> Şeffaf İletişim & Süreç Takibi</li>
+                        <li data-i18n="feature_4"><i class="fas fa-check-circle"></i> Esnek Ekip Yapılandırması</li>
                     </ul>
                 </div>
                 <div class="about-visual reveal">
                     <div class="glass-box">
-                        <p>"Teknoloji ile iş dünyasını birleştiriyoruz."</p>
+                        <p data-i18n="about_quote">"Teknoloji ile iş dünyasını birleştiriyoruz."</p>
                     </div>
                 </div>
             </div>
@@ -129,32 +140,32 @@
             <div class="container">
                 <div class="contact-box reveal">
                     <div class="contact-info">
-                        <h2>Hemen Başlayalım</h2>
-                        <p>Projenizi anlatın, size en uygun ekibi ve stratejiyi birlikte belirleyelim.</p>
+                        <h2 data-i18n="contact_title">Hemen Başlayalım</h2>
+                        <p data-i18n="contact_subtitle">Projenizi anlatın, size en uygun ekibi ve stratejiyi birlikte belirleyelim.</p>
                         <div class="info-item">
                             <i class="fas fa-envelope"></i>
-                            <p><strong>E-posta:</strong> hello@bizsolutions.com</p>
+                            <p><strong data-i18n="contact_email">E-posta:</strong> hello@bizsolutions.com</p>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-phone"></i>
-                            <p><strong>Telefon:</strong> +90 212 000 00 00</p>
+                            <p><strong data-i18n="contact_phone">Telefon:</strong> +90 212 000 00 00</p>
                         </div>
                         <div class="info-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <p><strong>Adres:</strong> Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul</p>
+                            <p><strong data-i18n="contact_address">Adres:</strong> Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul</p>
                         </div>
                     </div>
                     <form class="contact-form">
                         <div class="form-group">
-                            <input type="text" placeholder="Adınız Soyadınız" required>
+                            <input type="text" placeholder="Adınız Soyadınız" required data-i18n-placeholder="form_name">
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="E-posta Adresiniz" required>
+                            <input type="email" placeholder="E-posta Adresiniz" required data-i18n-placeholder="form_email">
                         </div>
                         <div class="form-group">
-                            <textarea rows="4" placeholder="Mesajınız" required></textarea>
+                            <textarea rows="4" placeholder="Mesajınız" required data-i18n-placeholder="form_message"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Gönder</button>
+                        <button type="submit" class="btn btn-primary" data-i18n="btn_send">Gönder</button>
                     </form>
                 </div>
             </div>
@@ -165,12 +176,12 @@
         <div class="container footer-content">
             <div class="footer-brand">
                 <span class="logo gradient-text">BizSolutions</span>
-                <p>© 2026 BizSolutions. Tüm hakları saklıdır.</p>
+                <p data-i18n="footer_copy">© 2026 BizSolutions. Tüm hakları saklıdır.</p>
             </div>
             <ul class="footer-links">
-                <li><a href="#">Kullanım Koşulları</a></li>
-                <li><a href="#">Gizlilik Politikası</a></li>
-                <li><a href="#">KVKK Aydınlatma Metni</a></li>
+                <li><a href="#" data-i18n="footer_terms">Kullanım Koşulları</a></li>
+                <li><a href="#" data-i18n="footer_privacy">Gizlilik Politikası</a></li>
+                <li><a href="#" data-i18n="footer_kvkk">KVKK Aydınlatma Metni</a></li>
             </ul>
         </div>
     </footer>
