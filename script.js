@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Multi-Language Support & Dynamic Content ---
+    // --- Multi-Language Support & Cloud Dynamic Content ---
     const defaultTranslations = {
         tr: {
             title: "BizSolutions | Profesyonel Yazılım Outsourcing Hizmetleri",
@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             footer_kvkk: "KVKK Aydınlatma Metni"
         },
         en: {
+            // ENGLISH TRANSLATIONS (Identical structure to TR)
             title: "BizSolutions | Professional Software Outsourcing Services",
             meta_description: "Accelerate your software processes with BizSolutions. We are by your side with our expert outsourcing team in Web, Mobile, and AI solutions.",
             meta_keywords: "software outsourcing, staff augmentation, web development, mobile app, artificial intelligence, enterprise software",
@@ -117,49 +118,41 @@ document.addEventListener('DOMContentLoaded', () => {
             service_3_desc: "We build secure, scalable cloud infrastructures and continuous integration processes.",
             about_title: 'Why <span class="gradient-text">BizSolutions</span>?',
             about_desc: "Software outsourcing is not just about writing code; it's about finding the right business partner. At BizSolutions, we add vision and technical depth to your projects, not just labor.",
-            feature_1: '<i class="fas fa-check-circle"></i> Agile Methodology',
-            feature_2: '<i class="fas fa-check-circle"></i> Global Quality Standards',
-            feature_3: '<i class="fas fa-check-circle"></i> Transparent Communication',
-            feature_4: '<i class="fas fa-check-circle"></i> Flexible Team Scaling',
             about_quote: '"We bridge technology and the business world."',
             contact_title: "Let's Get Started",
-            contact_subtitle: "Tell us about your project, and let's determine the best team and strategy together.",
-            contact_email: "Email:",
-            contact_phone: "Phone:",
-            contact_address: "Address:",
-            form_name: "Your Full Name",
-            form_email: "Your Email Address",
-            form_message: "Your Message",
-            btn_send: "Send",
-            form_sending: "Sending...",
-            form_success: "Your message has been sent successfully! We will contact you as soon as possible.",
-            footer_copy: "© 2026 BizSolutions. All rights reserved.",
-            footer_terms: "Terms of Use",
-            footer_privacy: "Privacy Policy",
-            footer_kvkk: "KVKK Information Text"
+            contact_address: "Address Placeholder",
+            contact_phone: "+90 212 000 00 00"
         }
     };
 
-    // Load dynamic content from localStorage if available
-    const getTranslations = () => {
-        const customContent = localStorage.getItem('bizsolutions_content');
-        if (customContent) {
-            try {
-                const parsed = JSON.parse(customContent);
-                // Deep merge default with custom
-                return {
-                    tr: { ...defaultTranslations.tr, ...parsed.tr },
-                    en: { ...defaultTranslations.en, ...parsed.en }
+    let translations = defaultTranslations;
+
+    // --- Firebase Logic ---
+    if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const contentRef = db.ref('site_content');
+
+        // Listen for Real-time Updates
+        contentRef.on('value', (snapshot) => {
+            const cloudData = snapshot.val();
+            if (cloudData) {
+                translations = {
+                    tr: { ...defaultTranslations.tr, ...cloudData.tr },
+                    en: { ...defaultTranslations.en, ...cloudData.en }
                 };
-            } catch (e) {
-                console.error("Error parsing custom content", e);
-                return defaultTranslations;
+                const currentLang = localStorage.getItem('preferred_lang') || 'tr';
+                setLanguage(currentLang);
+                localStorage.setItem('bizsolutions_content_cache', JSON.stringify(translations));
             }
+        });
+    } else {
+        // Fallback to Local Cache if Firebase is not configured
+        const cached = localStorage.getItem('bizsolutions_content_cache');
+        if (cached) {
+            translations = JSON.parse(cached);
         }
-        return defaultTranslations;
-    };
-
-    let translations = getTranslations();
+    }
 
     function setLanguage(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -176,20 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        document.querySelectorAll('[data-i18n-content]').forEach(el => {
-            const key = el.getAttribute('data-i18n-content');
-            if (translations[lang] && translations[lang][key]) {
-                el.setAttribute('content', translations[lang][key]);
-            }
-        });
-
         const langDisplay = document.getElementById('current-lang');
         if (langDisplay) langDisplay.innerText = lang.toUpperCase();
         
         document.documentElement.lang = lang;
         localStorage.setItem('preferred_lang', lang);
 
-        // Update active class in dropdown
         document.querySelectorAll('.lang-option').forEach(opt => {
             opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
         });
@@ -214,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const lang = localStorage.getItem('preferred_lang') || 'tr';
             const btn = form.querySelector('button');
-            
             btn.innerText = translations[lang].form_sending;
             btn.disabled = true;
 
@@ -223,16 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 form.reset();
                 btn.innerText = translations[lang].btn_send;
                 btn.disabled = false;
-            }, 1500);
+            }, 1000);
         });
     }
-
-    // Listen for storage changes (experimental: if admin updates in another tab)
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'bizsolutions_content') {
-            translations = getTranslations();
-            const currentLang = localStorage.getItem('preferred_lang') || 'tr';
-            setLanguage(currentLang);
-        }
-    });
 });

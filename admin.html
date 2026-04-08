@@ -3,27 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BizSolutions | Yönetim Paneli</title>
+    <title>BizSolutions | Yönetim Paneli (Cloud)</title>
     <link rel="stylesheet" href="admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-box">
             <i class="fas fa-lock" style="font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem;"></i>
-            <h2>Yönetim Girişi</h2>
+            <h2>Bulut Yönetim Girişi</h2>
             <input type="password" id="admin-pass" placeholder="Şifrenizi Girin">
             <button class="btn btn-save" onclick="checkPass()">Giriş Yap</button>
-            <p id="login-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; display: none;">Hatalı şifre. Lütfen tekrar deneyin.</p>
+            <p id="login-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; display: none;">Hatalı şifre.</p>
         </div>
     </div>
 
     <aside>
         <div class="logo">
             <span style="color: white">Biz</span><span style="color: var(--primary)">Solutions</span>
-            <div style="font-size: 0.7rem; color: #64748b; margin-top: 0.5rem;">DASHBOARD V1.0</div>
+            <div id="sync-status" style="font-size: 0.7rem; color: #ef4444; margin-top: 0.5rem;"><i class="fas fa-circle"></i> CLOUD DISCONNECTED</div>
         </div>
         <div class="nav-item active" data-section="hero"><i class="fas fa-rocket"></i> &nbsp; Hero Bölümü</div>
         <div class="nav-item" data-section="services"><i class="fas fa-concierge-bell"></i> &nbsp; Hizmetler</div>
@@ -33,12 +37,16 @@
 
     <main>
         <header>
-            <h2>İçerik Yönetimi</h2>
+            <h2>Bulut İçerik Yönetimi</h2>
             <div class="actions">
                 <button class="btn btn-reset" onclick="resetDefaults()">Sıfırla</button>
-                <button class="btn btn-save" onclick="saveChanges()">Değişiklikleri Kaydet</button>
+                <button class="btn btn-save" onclick="saveChanges()">Buluta Kaydet</button>
             </div>
         </header>
+
+        <div id="config-alert" style="background: rgba(227, 6, 19, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: none;">
+            <p style="color: white; font-size: 0.9rem;"><i class="fas fa-exclamation-triangle" style="color: var(--accent);"></i> <strong>Dikkat:</strong> Firebase yapılandırması eksik. Lütfen <code>firebase-config.js</code> dosyasını güncelleyin.</p>
+        </div>
 
         <div class="lang-toggle">
             <button class="lang-btn active" data-lang="tr">TÜRKÇE (TR)</button>
@@ -64,9 +72,9 @@
             </div>
         </div>
 
-        <!-- Section: Services -->
+        <!-- Sections: Services, About, Contact (Keeping the IDs consistent) -->
         <div id="section-services" class="section">
-            <div class="card">
+             <div class="card">
                 <h3>Üst Başlıklar</h3>
                 <div class="form-group">
                     <label>Bölüm Başlığı</label>
@@ -101,9 +109,8 @@
             </div>
         </div>
 
-        <!-- Section: About -->
         <div id="section-about" class="section">
-            <div class="card">
+             <div class="card">
                 <h3>Hakkımızda Metinleri</h3>
                 <div class="form-group">
                     <label>Başlık</label>
@@ -120,9 +127,8 @@
             </div>
         </div>
 
-        <!-- Section: Contact -->
         <div id="section-contact" class="section">
-            <div class="card">
+             <div class="card">
                 <h3>İletişim Formu ve Bilgileri</h3>
                 <div class="form-group">
                     <label>Başlık</label>
@@ -138,134 +144,78 @@
                 </div>
             </div>
         </div>
-
-        <div style="margin-top: 3rem; text-align: center; font-size: 0.8rem; color: #475569;">
-            <p>Değişiklikleri kaydettikten sonra ana sayfayı yenileyin.</p>
-            <button class="btn" style="background: rgba(255,255,255,0.05); color: #94a3b8; margin-top: 1rem;" onclick="exportConfig()">Konfigürasyonu Dışa Aktar (AI için)</button>
-        </div>
     </main>
 
     <script>
-        // --- Security ---
-        const ADMIN_PASS = "admin2026"; // Simüle edilmiş şifre
+        const ADMIN_PASS = "admin2026";
+        let db = null;
+        let currentLang = 'tr';
+        let content = { tr: {}, en: {} };
+
+        // --- Firebase Init ---
+        if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #22c55e"></i> CLOUD CONNECTED';
+            document.getElementById('sync-status').style.color = '#22c55e';
+            
+            // Initial data pull
+            db.ref('site_content').once('value').then((snapshot) => {
+                const cloudData = snapshot.val();
+                if (cloudData) {
+                    content.tr = { ...content.tr, ...cloudData.tr };
+                    content.en = { ...content.en, ...cloudData.en };
+                    updateForm();
+                }
+            });
+        } else {
+            document.getElementById('config-alert').style.display = 'block';
+        }
 
         function checkPass() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === ADMIN_PASS) {
+            if (document.getElementById('admin-pass').value === ADMIN_PASS) {
                 document.getElementById('login-overlay').style.display = 'none';
                 sessionStorage.setItem('admin_auth', 'true');
             } else {
                 document.getElementById('login-error').style.display = 'block';
             }
         }
-
-        // Check if already logged in this session
-        if (sessionStorage.getItem('admin_auth') === 'true') {
-            document.getElementById('login-overlay').style.display = 'none';
-        }
-
-        // --- Data Management ---
-        let currentLang = 'tr';
-        let content = {
-            tr: {},
-            en: {}
-        };
-
-        const defaultData = {
-            tr: {
-                hero_ghost: "OUTSOURCING",
-                hero_title: 'Geleceğin Teknolojilerini <br><span class="gradient-text">Birlikte İnşa Edelim</span>',
-                hero_subtitle: "Kurumsal ihtiyaçlarınıza özel, ölçeklenebilir ve yüksek performanslı yazılım ekipleriyle işinizi dijital dünyada bir adım öne taşıyın.",
-                services_title: "Uzmanlık Alanlarımız",
-                services_subtitle: "En son teknolojileri kullanarak iş süreçlerinizi optimize eden çözümler sunuyoruz.",
-                service_1_title: "Web & Mobil Geliştirme",
-                service_1_desc: "Modern, responsive ve kullanıcı odaklı web ve mobil uygulamalar geliştiriyoruz.",
-                service_2_title: "Yapay Zeka & AI",
-                service_2_desc: "Veri analitiği ve yapay zeka çözümleri ile iş kararlarınızı veriye dayalı hale getirin.",
-                about_title: 'Neden <span class="gradient-text">BizSolutions</span>?',
-                about_desc: "Yazılım outsourcing sadece kod yazmak değildir; doğru iş ortağını bulmaktır. BizSolutions olarak, projelerinize sadece iş gücü değil, vizyon ve teknik derinlik katıyoruz.",
-                about_quote: '"Teknoloji ile iş dünyasını birleştiriyoruz."',
-                contact_title: "Hemen Başlayalım",
-                contact_address: "Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul",
-                contact_phone: "+90 212 000 00 00"
-            },
-            en: {
-                hero_ghost: "TECHNOLOGY",
-                hero_title: 'Let\'s Build the <br><span class="gradient-text">Future Together</span>',
-                hero_subtitle: "Take your business a step forward in the digital world with scalable and high-performance software teams tailored to your corporate needs.",
-                services_title: "Our Areas of Expertise",
-                services_subtitle: "We offer solutions that optimize your business processes using the latest technologies.",
-                service_1_title: "Web & Mobile Development",
-                service_1_desc: "We develop modern, responsive, and user-oriented web and mobile applications.",
-                service_2_title: "Artificial Intelligence & AI",
-                service_2_desc: "Make your business decisions data-driven with data analytics and AI solutions.",
-                about_title: 'Why <span class="gradient-text">BizSolutions</span>?',
-                about_desc: "Software outsourcing is not just about writing code; it's about finding the right business partner. At BizSolutions, we add vision and technical depth to your projects, not just labor.",
-                about_quote: '"We bridge technology and the business world."',
-                contact_title: "Let's Get Started",
-                contact_address: "Levent Plaza, No: 42, Kat: 8, Beşiktaş, Istanbul",
-                contact_phone: "+90 212 000 00 00"
-            }
-        };
-
-        // Load current content
-        function loadContent() {
-            const saved = localStorage.getItem('bizsolutions_content');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                content.tr = { ...defaultData.tr, ...parsed.tr };
-                content.en = { ...defaultData.en, ...parsed.en };
-            } else {
-                content = JSON.parse(JSON.stringify(defaultData));
-            }
-            updateForm();
-        }
+        if (sessionStorage.getItem('admin_auth') === 'true') document.getElementById('login-overlay').style.display = 'none';
 
         function updateForm() {
             const langData = content[currentLang];
             document.querySelectorAll('input, textarea').forEach(el => {
-                if (langData[el.id] !== undefined) {
-                    el.value = langData[el.id];
-                }
+                if (langData && langData[el.id] !== undefined) el.value = langData[el.id];
             });
         }
 
         function saveChanges() {
-            // Collect current form data into active language
+            if (!db) return alert('Hata: Firebase bağlantısı kurulamadı. Lütfen yapılandırmayı kontrol edin.');
+
+            // Sync current form first
             const langData = content[currentLang];
             document.querySelectorAll('input, textarea').forEach(el => {
-                if (el.id !== 'admin-pass') {
-                    langData[el.id] = el.value;
-                }
+                if (el.id !== 'admin-pass') langData[el.id] = el.value;
             });
 
-            localStorage.setItem('bizsolutions_content', JSON.stringify(content));
-            alert('Değişiklikler kaydedildi! Ana sayfaya giderek kontrol edebilirsiniz.');
+            db.ref('site_content').set(content).then(() => {
+                alert('Tüm veriler saniyeler içinde buluta gönderildi ve tüm ziyaretçiler için güncellendi!');
+            }).catch(err => {
+                alert('Bulut kayıt hatası: ' + err.message);
+            });
         }
 
         function resetDefaults() {
-            if (confirm('Tüm içerikleri varsayılan ayarlara döndürmek istediğinize emin misiniz?')) {
-                localStorage.removeItem('bizsolutions_content');
-                location.reload();
+            if (confirm('Buluttaki tüm verileri temizlemek istediğinize emin misiniz?')) {
+                db.ref('site_content').remove().then(() => location.reload());
             }
         }
 
-        function exportConfig() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(content, null, 2));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "bizsolutions_content.json");
-            document.body.appendChild(downloadAnchorNode);
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
-        }
-
-        // --- Navigation ---
+        // Navigation (Sidebar & Lang)
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                 item.classList.add('active');
-                
                 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
                 document.getElementById('section-' + item.dataset.section).classList.add('active');
             });
@@ -273,22 +223,16 @@
 
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                // Sync current form before switching
                 const langData = content[currentLang];
                 document.querySelectorAll('input, textarea').forEach(el => {
                     if (el.id !== 'admin-pass') langData[el.id] = el.value;
                 });
-
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentLang = btn.dataset.lang;
                 updateForm();
             });
         });
-
-        // Initialize
-        loadContent();
-
     </script>
 </body>
 </html>
