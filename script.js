@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const header = document.getElementById('header');
     const reveals = document.querySelectorAll('.reveal');
 
-    // Header scroll background
+    // Header scroll background and position
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
+        if (window.scrollY > 38) { // Top bar height
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nav_about: "Hakkımızda",
             nav_contact: "İletişim",
             btn_get_quote: "Teklif Al",
+            hero_ghost: "OUTSOURCING",
             hero_title: 'Geleceğin Teknolojilerini <br><span class="gradient-text">Birlikte İnşa Edelim</span>',
             hero_subtitle: "Kurumsal ihtiyaçlarınıza özel, ölçeklenebilir ve yüksek performanslı yazılım ekipleriyle işinizi dijital dünyada bir adım öne taşıyın.",
             btn_view_services: "Hizmetlerimizi İnceleyin",
@@ -97,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nav_about: "About Us",
             nav_contact: "Contact",
             btn_get_quote: "Get Quote",
+            hero_ghost: "TECHNOLOGY",
             hero_title: 'Let\'s Build the <br><span class="gradient-text">Future Together</span>',
             hero_subtitle: "Take your business a step forward in the digital world with scalable and high-performance software teams tailored to your corporate needs.",
             btn_view_services: "Explore Services",
@@ -189,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const lang = localStorage.getItem('preferred_lang') || 'tr';
             const btn = form.querySelector('button');
-            const originalText = btn.innerText;
             
             btn.innerText = translations[lang].form_sending;
             btn.disabled = true;

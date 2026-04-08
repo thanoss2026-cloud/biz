@@ -13,6 +13,36 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <a href="#"><i class="fas fa-briefcase"></i> Kariyer</a>
+                <a href="#"><i class="fas fa-blog"></i> Blog</a>
+            </div>
+            <div class="top-bar-right">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="lang-switcher">
+                    <button class="lang-btn">
+                        <i class="fas fa-globe"></i>
+                        <span id="current-lang">TR</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                    </button>
+                    <div class="lang-dropdown">
+                        <div class="lang-option active" data-lang="tr">
+                            <img src="https://flagcdn.com/w20/tr.png" alt="TR"> Türkçe
+                        </div>
+                        <div class="lang-option" data-lang="en">
+                            <img src="https://flagcdn.com/w20/gb.png" alt="EN"> English
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <header id="header">
         <nav class="container">
             <div class="logo">
@@ -25,17 +55,6 @@
                 <li><a href="#contact" data-i18n="nav_contact">İletişim</a></li>
             </ul>
             <div class="nav-cta">
-                <div class="lang-switcher">
-                    <button class="lang-btn">
-                        <i class="fas fa-globe"></i>
-                        <span id="current-lang">TR</span>
-                        <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
-                    </button>
-                    <div class="lang-dropdown">
-                        <div class="lang-option active" data-lang="tr">TR - Türkçe</div>
-                        <div class="lang-option" data-lang="en">EN - English</div>
-                    </div>
-                </div>
                 <a href="#contact" class="btn btn-primary" data-i18n="btn_get_quote">Teklif Al</a>
             </div>
             <div class="menu-toggle">
@@ -49,6 +68,7 @@
     <main>
         <section id="home" class="hero">
             <div class="hero-overlay"></div>
+            <div class="ghost-text" data-i18n="hero_ghost">OUTSOURCING</div>
             <div class="container hero-content">
                 <h1 class="reveal" data-i18n="hero_title">Geleceğin Teknolojilerini <br><span class="gradient-text">Birlikte İnşa Edelim</span></h1>
                 <p class="reveal" data-i18n="hero_subtitle">Kurumsal ihtiyaçlarınıza özel, ölçeklenebilir ve yüksek performanslı yazılım ekipleriyle işinizi dijital dünyada bir adım öne taşıyın.</p>
