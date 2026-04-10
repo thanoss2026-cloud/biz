@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Firebase SDK (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
 </head>
@@ -18,9 +19,14 @@
         <div class="login-box">
             <i class="fas fa-lock" style="font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem;"></i>
             <h2>Bulut Yönetim Girişi</h2>
-            <input type="password" id="admin-pass" placeholder="Şifrenizi Girin">
-            <button class="btn btn-save" onclick="checkPass()">Giriş Yap</button>
-            <p id="login-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; display: none;">Hatalı şifre.</p>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <input type="email" id="admin-email" placeholder="Email Adresiniz" autofocus>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <input type="password" id="admin-pass" placeholder="Şifrenizi Girin">
+            </div>
+            <button class="btn btn-save" onclick="handleLogin()" id="login-btn">Giriş Yap</button>
+            <p id="login-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; display: none;">Hatalı email veya şifre.</p>
         </div>
     </div>
 
@@ -39,8 +45,9 @@
         <header>
             <h2>Bulut İçerik Yönetimi</h2>
             <div class="actions">
-                <button class="btn btn-reset" onclick="resetDefaults()">Sıfırla</button>
+                <button class="btn btn-reset" onclick="resetDefaults()" style="background: transparent; border: 1px solid rgba(255,255,255,0.1);">Sıfırla</button>
                 <button class="btn btn-save" onclick="saveChanges()">Buluta Kaydet</button>
+                <button class="btn btn-reset" onclick="handleLogout()" style="margin-left: 10px; background: #334155;"><i class="fas fa-sign-out-alt"></i></button>
             </div>
         </header>
 
@@ -147,8 +154,8 @@
     </main>
 
     <script>
-        const ADMIN_PASS = "admin2026";
         let db = null;
+        let auth = null;
         let currentLang = 'tr';
         let content = { tr: {}, en: {} };
 
@@ -156,31 +163,88 @@
         if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
             firebase.initializeApp(firebaseConfig);
             db = firebase.database();
-            document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #22c55e"></i> CLOUD CONNECTED';
-            document.getElementById('sync-status').style.color = '#22c55e';
-            
-            // Initial data pull
-            db.ref('site_content').once('value').then((snapshot) => {
-                const cloudData = snapshot.val();
-                if (cloudData) {
-                    content.tr = { ...content.tr, ...cloudData.tr };
-                    content.en = { ...content.en, ...cloudData.en };
-                    updateForm();
+            auth = firebase.auth();
+
+            // Monitor Auth State
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    document.getElementById('login-overlay').style.display = 'none';
+                    document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #22c55e"></i> CLOUD CONNECTED';
+                    document.getElementById('sync-status').style.color = '#22c55e';
+                    
+                    // Initial data pull
+                    db.ref('site_content').once('value').then((snapshot) => {
+                        const cloudData = snapshot.val();
+                        if (cloudData) {
+                            content.tr = { ...content.tr, ...cloudData.tr };
+                            content.en = { ...content.en, ...cloudData.en };
+                            updateForm();
+                        }
+                    });
+                } else {
+                    document.getElementById('login-overlay').style.display = 'flex';
+                    document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #ef4444"></i> CLOUD DISCONNECTED';
+                    document.getElementById('sync-status').style.color = '#ef4444';
                 }
             });
         } else {
             document.getElementById('config-alert').style.display = 'block';
         }
 
-        function checkPass() {
-            if (document.getElementById('admin-pass').value === ADMIN_PASS) {
-                document.getElementById('login-overlay').style.display = 'none';
-                sessionStorage.setItem('admin_auth', 'true');
-            } else {
-                document.getElementById('login-error').style.display = 'block';
+        async function handleLogin() {
+            if (!auth) return alert('Firebase kimlik doğrulama sistemi henüz hazır değil. Lütfen sayfayı yenileyin.');
+
+            const email = document.getElementById('admin-email').value;
+            const pass = document.getElementById('admin-pass').value;
+            const errorEl = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+
+            if (!email || !pass) return alert('Lütfen email ve şifre girin.');
+
+            try {
+                btn.innerText = 'Giriş Yapılıyor...';
+                btn.disabled = true;
+                errorEl.style.display = 'none';
+                await auth.signInWithEmailAndPassword(email, pass);
+            } catch (error) {
+                console.error(error);
+                errorEl.style.display = 'block';
+                
+                // User-friendly error messages
+                let message = 'Hatalı email veya şifre.';
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    message = 'E-posta adresi veya şifre hatalı.';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Geçersiz bir e-posta adresi girdiniz.';
+                } else if (error.code === 'auth/user-disabled') {
+                    message = 'Bu kullanıcı hesabı askıya alınmış.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = 'Çok fazla hatalı giriş denemesi. Lütfen daha sonra tekrar deneyin.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    message = 'İnternet bağlantısı kurulamadı.';
+                } else if (error.message.includes('identity_toolkit')) {
+                    message = 'Firebase Auth ayarlarınız henüz aktif değil. Lütfen Firebase Console\'dan Email/Password özelliğini açın.';
+                }
+                
+                errorEl.innerText = 'Hata: ' + message;
+            } finally {
+                btn.innerText = 'Giriş Yap';
+                btn.disabled = false;
             }
         }
-        if (sessionStorage.getItem('admin_auth') === 'true') document.getElementById('login-overlay').style.display = 'none';
+
+        // Handle Enter key for login
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.getElementById('login-overlay').style.display !== 'none') {
+                handleLogin();
+            }
+        });
+
+        function handleLogout() {
+            if (confirm('Oturumu kapatmak istediğinize emin misiniz?')) {
+                auth.signOut();
+            }
+        }
 
         function updateForm() {
             const langData = content[currentLang];
@@ -195,7 +259,7 @@
             // Sync current form first
             const langData = content[currentLang];
             document.querySelectorAll('input, textarea').forEach(el => {
-                if (el.id !== 'admin-pass') langData[el.id] = el.value;
+                if (el.id !== 'admin-pass' && el.id !== 'admin-email') langData[el.id] = el.value;
             });
 
             db.ref('site_content').set(content).then(() => {
