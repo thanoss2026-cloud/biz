@@ -41,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Multi-Language Support & Cloud Dynamic Content ---
     const defaultTranslations = {
         tr: {
-            title: "BizSolutions | Profesyonel Yazılım Outsourcing Hizmetleri",
-            meta_description: "BizSolutions ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız.",
+            title: "BIZ IT Works | Profesyonel Yazılım Outsourcing Hizmetleri",
+            meta_description: "BIZ IT Works ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız.",
             meta_keywords: "yazılım outsourcing, yazılım kiralama, web geliştirme, mobil uygulama, yapay zeka, kurumsal yazılım",
             nav_home: "Ana Sayfa",
             nav_services: "Hizmetler",
@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
             service_2_desc: "Veri analitiği ve yapay zeka çözümleri ile iş kararlarınızı veriye dayalı hale getirin.",
             service_3_title: "Bulut & DevOps",
             service_3_desc: "Güvenli, ölçeklenebilir bulut altyapıları ve sürekli entegrasyon süreçleri kuruyoruz.",
-            about_title: 'Neden <span class="gradient-text">BizSolutions</span>?',
-            about_desc: "Yazılım outsourcing sadece kod yazmak değildir; doğru iş ortağını bulmaktır. BizSolutions olarak, projelerinize sadece iş gücü değil, vizyon ve teknik derinlik katıyoruz.",
+            about_title: 'Neden <span class="gradient-text">BIZ IT Works</span>?',
+            about_desc: "Yazılım outsourcing sadece kod yazmak değildir; doğru iş ortağını bulmaktır. BIZ IT Works olarak, projelerinize sadece iş gücü değil, vizyon ve teknik derinlik katıyoruz.",
             feature_1: '<i class="fas fa-check-circle"></i> Çevik (Agile) Metodoloji',
             feature_2: '<i class="fas fa-check-circle"></i> Küresel Kalite Standartları',
             feature_3: '<i class="fas fa-check-circle"></i> Şeffaf İletişim & Süreç Takibi',
@@ -84,15 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
             btn_send: "Gönder",
             form_sending: "Gönderiliyor...",
             form_success: "Mesajınız başarıyla gönderildi! Sizinle en kısa sürede iletişime geçeceğiz.",
-            footer_copy: "© 2026 BizSolutions. Tüm hakları saklıdır.",
+            footer_copy: "© 2026 BIZ IT Works. Tüm hakları saklıdır.",
             footer_terms: "Kullanım Koşulları",
             footer_privacy: "Gizlilik Politikası",
             footer_kvkk: "KVKK Aydınlatma Metni"
         },
         en: {
             // ENGLISH TRANSLATIONS (Identical structure to TR)
-            title: "BizSolutions | Professional Software Outsourcing Services",
-            meta_description: "Accelerate your software processes with BizSolutions. We are by your side with our expert outsourcing team in Web, Mobile, and AI solutions.",
+            title: "BIZ IT Works | Professional Software Outsourcing Services",
+            meta_description: "Accelerate your software processes with BIZ IT Works. We are by your side with our expert outsourcing team in Web, Mobile, and AI solutions.",
             meta_keywords: "software outsourcing, staff augmentation, web development, mobile app, artificial intelligence, enterprise software",
             nav_home: "Home",
             nav_services: "Services",
@@ -116,12 +116,13 @@ document.addEventListener('DOMContentLoaded', () => {
             service_2_desc: "Make your business decisions data-driven with data analytics and AI solutions.",
             service_3_title: "Cloud & DevOps",
             service_3_desc: "We build secure, scalable cloud infrastructures and continuous integration processes.",
-            about_title: 'Why <span class="gradient-text">BizSolutions</span>?',
-            about_desc: "Software outsourcing is not just about writing code; it's about finding the right business partner. At BizSolutions, we add vision and technical depth to your projects, not just labor.",
+            about_title: 'Why <span class="gradient-text">BIZ IT Works</span>?',
+            about_desc: "Software outsourcing is not just about writing code; it's about finding the right business partner. At BIZ IT Works, we add vision and technical depth to your projects, not just labor.",
             about_quote: '"We bridge technology and the business world."',
             contact_title: "Let's Get Started",
             contact_address: "Address Placeholder",
-            contact_phone: "+90 212 000 00 00"
+            contact_phone: "+90 212 000 00 00",
+            footer_copy: "© 2026 BIZ IT Works. All rights reserved."
         }
     };
 
