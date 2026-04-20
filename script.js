@@ -78,7 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
             contact_email: "E-posta:",
             contact_email_val: "hello@bizitworks.com",
             contact_phone: "Telefon:",
+            contact_phone_val: "+90 212 000 00 00",
             contact_address: "Adres:",
+            contact_address_val: "Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul",
             form_name: "Adınız Soyadınız",
             form_email: "E-posta Adresiniz",
             form_message: "Mesajınız",
@@ -122,8 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
             about_quote: '"We bridge technology and the business world."',
             contact_title: "Let's Get Started",
             contact_address: "Address Placeholder",
+            contact_address_val: "Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul",
             contact_email_val: "hello@bizitworks.com",
             contact_phone: "+90 212 000 00 00",
+            contact_phone_val: "+90 212 000 00 00",
             footer_copy: "© 2026 BIZ IT Works. All rights reserved."
         }
     };
@@ -181,6 +185,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.lang-option').forEach(opt => {
             opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
         });
+
+        // --- Update Interactive Link Hrefs ---
+        const emailLink = document.getElementById('contact-email-link');
+        const phoneLink = document.getElementById('contact-phone-link');
+        const addressLink = document.getElementById('contact-address-link');
+
+        if (emailLink && translations[lang].contact_email_val) {
+            emailLink.href = `mailto:${translations[lang].contact_email_val}`;
+        }
+        if (phoneLink && translations[lang].contact_phone_val) {
+            phoneLink.href = `tel:${translations[lang].contact_phone_val.replace(/\s/g, '')}`;
+        }
+        if (addressLink && translations[lang].contact_address_val) {
+            addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(translations[lang].contact_address_val)}`;
+        }
     }
 
     // Init language
