@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             contact_title: "Hemen Başlayalım",
             contact_subtitle: "Projenizi anlatın, size en uygun ekibi ve stratejiyi birlikte belirleyelim.",
             contact_email: "E-posta:",
+            contact_email_val: "hello@bizitworks.com",
             contact_phone: "Telefon:",
             contact_address: "Adres:",
             form_name: "Adınız Soyadınız",
@@ -121,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             about_quote: '"We bridge technology and the business world."',
             contact_title: "Let's Get Started",
             contact_address: "Address Placeholder",
+            contact_email_val: "hello@bizitworks.com",
             contact_phone: "+90 212 000 00 00",
             footer_copy: "© 2026 BIZ IT Works. All rights reserved."
         }
