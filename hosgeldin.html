@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aramıza Hoş Geldin! | BIZ IT Works</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="hosgeldin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+</head>
+<body class="welcome-page">
+
+    <!-- Header -->
+    <header class="welcome-header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.svg" alt="BIZ IT Works">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="welcome-main">
+        <div class="container welcome-grid">
+            <div class="welcome-text">
+                <h1>Hoş Geldin!</h1>
+                <h2 id="welcome-name">Merhaba <span id="employee-name">...</span>,</h2>
+                
+                <p>Biz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Aramıza hoş geldin! Yeni yolculuğunda başarılar diler, birlikte nice güzel işlere imza atacağımıza inanıyoruz.</p>
+                
+                <p>Sana destek olmak ve uyum sürecini kolaylaştırmak için her zaman yanındayız.</p>
+                
+                <p class="signature">Tekrar hoş geldin!<br>Biz Teknoloji Çözümleri Ailesi</p>
+            </div>
+            <div class="welcome-graphic">
+                <div class="handwriting">Aramıza <span class="highlight">Hoş Geldin!</span></div>
+                <img src="assets/team_welcome.png" alt="Ekip İllüstrasyonu" class="graphic-img">
+            </div>
+        </div>
+    </main>
+
+    <!-- Cards Section -->
+    <section class="welcome-cards-section">
+        <div class="container cards-grid">
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Ekibinle Tanış</h3>
+                <p>Ekip arkadaşlarınla tanışmak için ilk fırsatta bir araya gelmeni heyecanla bekliyoruz.</p>
+            </div>
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>Süreçlere Göz At</h3>
+                <p>İş süreçlerimiz ve kurum içi kaynaklara göz atarak ilk adımlarını kolaylaştırabilirsin.</p>
+            </div>
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Destek İçin Yanındayız</h3>
+                <p>Uyum sürecin boyunca aklına takılan her konuda bize ulaşabilirsin.</p>
+            </div>
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Birlikte Başaracağız</h3>
+                <p>Fikirlerin, enerjin ve katkılarınla ekibimize değer katacağına inanıyoruz.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="welcome-footer">
+        <div class="container">
+            <div class="footer-item">
+                <div class="footer-icon">
+                    <i class="far fa-envelope"></i>
+                </div>
+                <div class="footer-text">
+                    <p>Herhangi bir sorunda bize ulaşabilirsin:</p>
+                    <strong>ik@bizteknoloji.com.tr</strong>
+                </div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-icon" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="footer-text">
+                    <p>İyi ki aramıza katıldın!</p>
+                    <strong>Birlikte daha güçlüyüz.</strong>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Load data based on URL parameter
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const employeeId = urlParams.get('id');
+            const nameParam = urlParams.get('isim') || urlParams.get('name');
+            const nameSpan = document.getElementById('employee-name');
+
+            if (employeeId && typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured()) {
+                // Read from DB (Option 2 implementation)
+                firebase.initializeApp(firebaseConfig);
+                const db = firebase.database();
+                
+                db.ref('welcome_pages/' + employeeId).once('value').then((snapshot) => {
+                    const data = snapshot.val();
+                    if (data && data.name) {
+                        nameSpan.textContent = data.name;
+                    } else {
+                        nameSpan.textContent = "Yeni Çalışma Arkadaşımız"; // Fallback
+                    }
+                }).catch(err => {
+                    console.error("Firebase error:", err);
+                    nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                });
+            } else if (nameParam) {
+                // Fallback to reading name directly from URL (Option 1 support just in case)
+                nameSpan.textContent = nameParam;
+            } else {
+                nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+            }
+        });
+    </script>
+</body>
+</html>

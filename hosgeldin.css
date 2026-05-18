@@ -1,0 +1,274 @@
+/* Hosgeldin Page Specific Styles */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+
+:root {
+    --biz-dark: #091a38;
+    --biz-blue: #004fb6;
+    --biz-light-bg: #f8fbff;
+    --biz-text: #334155;
+    --biz-gray: #64748b;
+}
+
+body.welcome-page {
+    background-color: #ffffff;
+    color: var(--biz-text);
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.welcome-header {
+    background-color: var(--biz-dark);
+    padding: 2rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-image: radial-gradient(circle at 100% 50%, rgba(0, 210, 255, 0.1) 0%, transparent 60%),
+                      url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+    background-size: 100% 100%, 20px 20px;
+    z-index: 1;
+}
+
+.welcome-header .container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+.welcome-header .logo img {
+    height: 60px;
+}
+
+.welcome-header .logo-text {
+    color: white;
+    margin-left: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.welcome-header .logo-text span {
+    display: block;
+    font-size: 0.8rem;
+    color: #00d2ff;
+    letter-spacing: 2px;
+}
+
+/* Main Content */
+.welcome-main {
+    flex: 1;
+    padding: 5rem 0 3rem 0;
+}
+
+.welcome-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.welcome-text h1 {
+    font-size: 4rem;
+    color: var(--biz-dark);
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.welcome-text h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--biz-blue);
+}
+
+.welcome-text h2 {
+    font-size: 1.5rem;
+    color: var(--biz-dark);
+    margin-bottom: 1.5rem;
+}
+
+.welcome-text p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-text .signature {
+    font-weight: 700;
+    color: var(--biz-blue);
+    margin-top: 2rem;
+}
+
+/* Graphic Side */
+.welcome-graphic {
+    position: relative;
+    text-align: center;
+}
+
+.handwriting {
+    font-family: 'Caveat', cursive;
+    font-size: 3.5rem;
+    color: var(--biz-dark);
+    transform: rotate(-5deg);
+    position: relative;
+    margin-bottom: -40px;
+    z-index: 2;
+}
+
+.handwriting .highlight {
+    color: var(--biz-blue);
+}
+
+.graphic-img {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Cards Section */
+.welcome-cards-section {
+    background-color: var(--biz-light-bg);
+    padding: 4rem 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.welcome-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.welcome-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 79, 182, 0.1);
+    border-color: rgba(0, 79, 182, 0.2);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 79, 182, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-icon i {
+    font-size: 1.8rem;
+    color: var(--biz-blue);
+}
+
+.welcome-card h3 {
+    font-size: 1.1rem;
+    color: var(--biz-dark);
+    margin-bottom: 1rem;
+}
+
+.welcome-card p {
+    font-size: 0.9rem;
+    color: var(--biz-gray);
+    line-height: 1.5;
+}
+
+/* Footer */
+.welcome-footer {
+    background-color: var(--biz-dark);
+    color: white;
+    padding: 2rem 0;
+}
+
+.welcome-footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer-icon {
+    width: 45px;
+    height: 45px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #00d2ff;
+}
+
+.footer-text p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+}
+
+.footer-text strong {
+    display: block;
+    color: white;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .welcome-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+    .welcome-text h1::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .welcome-footer .container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .welcome-text h1 {
+        font-size: 3rem;
+    }
+}

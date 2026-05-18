@@ -39,6 +39,7 @@
         <div class="nav-item" data-section="services"><i class="fas fa-concierge-bell"></i> &nbsp; Hizmetler</div>
         <div class="nav-item" data-section="about"><i class="fas fa-info-circle"></i> &nbsp; Hakkımızda</div>
         <div class="nav-item" data-section="contact"><i class="fas fa-envelope"></i> &nbsp; İletişim</div>
+        <div class="nav-item" data-section="welcome"><i class="fas fa-hand-holding-heart"></i> &nbsp; Hoş Geldin Linkleri</div>
     </aside>
 
     <main>
@@ -155,6 +156,25 @@
                 </div>
             </div>
         </div>
+
+        <div id="section-welcome" class="section">
+             <div class="card">
+                <h3>Yeni Hoş Geldin Linki Oluştur</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">İşe yeni başlayan bir kişi için isim girerek ona özel bir karşılama sayfası linki üretebilirsiniz.</p>
+                <div class="form-group">
+                    <label>Kişinin Adı ve Soyadı</label>
+                    <input type="text" id="new_employee_name" placeholder="Örn: Ahmet Yılmaz">
+                </div>
+                <button class="btn btn-save" onclick="generateWelcomeLink()">Link Üret ve Kaydet</button>
+            </div>
+            
+            <div class="card">
+                <h3>Oluşturulan Linkler</h3>
+                <div id="welcome-links-container">
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Yükleniyor...</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -180,11 +200,22 @@
                     db.ref('site_content').once('value').then((snapshot) => {
                         const cloudData = snapshot.val();
                         if (cloudData) {
+                            // Migration: Old IDs to New IDs
+                            ['tr', 'en'].forEach(l => {
+                                if (cloudData[l]) {
+                                    if (cloudData[l].contact_address && !cloudData[l].contact_address_val) cloudData[l].contact_address_val = cloudData[l].contact_address;
+                                    if (cloudData[l].contact_phone && !cloudData[l].contact_phone_val) cloudData[l].contact_phone_val = cloudData[l].contact_phone;
+                                }
+                            });
+                            
                             content.tr = { ...content.tr, ...cloudData.tr };
                             content.en = { ...content.en, ...cloudData.en };
                             updateForm();
                         }
                     });
+                    
+                    // Load Welcome Pages
+                    loadWelcomeLinks();
                 } else {
                     document.getElementById('login-overlay').style.display = 'flex';
                     document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #ef4444"></i> CLOUD DISCONNECTED';
@@ -278,6 +309,76 @@
                 db.ref('site_content').remove().then(() => location.reload());
             }
         }
+
+        // --- Welcome Links Logic ---
+        function loadWelcomeLinks() {
+            if (!db) return;
+            const container = document.getElementById('welcome-links-container');
+            
+            db.ref('welcome_pages').on('value', (snapshot) => {
+                const data = snapshot.val();
+                container.innerHTML = '';
+                
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.9rem;">Henüz bir link oluşturulmamış.</p>';
+                    return;
+                }
+                
+                // Reverse iterate to show newest first
+                const ids = Object.keys(data).reverse();
+                
+                ids.forEach(id => {
+                    const person = data[id];
+                    const url = window.location.origin + '/hosgeldin.html?id=' + id;
+                    // If running locally, you might want a relative path or handle file:// differently. 
+                    // But typically this panel is on a domain.
+                    const displayUrl = url.replace(window.location.origin, '');
+                    
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;';
+                    div.innerHTML = `
+                        <div>
+                            <strong style="display: block; margin-bottom: 0.3rem;">${person.name}</strong>
+                            <a href="${url}" target="_blank" style="color: var(--primary); font-size: 0.85rem; text-decoration: underline;">${displayUrl}</a>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #334155; color: white;" onclick="copyToClipboard('${url}')"><i class="fas fa-copy"></i></button>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;" onclick="deleteWelcomeLink('${id}')"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function generateWelcomeLink() {
+            if (!db) return alert('Firebase bağlantısı yok.');
+            const nameInput = document.getElementById('new_employee_name');
+            const name = nameInput.value.trim();
+            if (!name) return alert('Lütfen bir isim girin.');
+            
+            const newRef = db.ref('welcome_pages').push();
+            newRef.set({
+                name: name,
+                created_at: new Date().toISOString()
+            }).then(() => {
+                nameInput.value = '';
+                alert(name + ' için link başarıyla oluşturuldu!');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function deleteWelcomeLink(id) {
+            if (confirm('Bu linki silmek istediğinize emin misiniz? Sayfaya girenler artık isimsiz genel sayfayı görür.')) {
+                db.ref('welcome_pages/' + id).remove();
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link kopyalandı!');
+            });
+        }
+
 
         // Navigation (Sidebar & Lang)
         document.querySelectorAll('.nav-item').forEach(item => {
