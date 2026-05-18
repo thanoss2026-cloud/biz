@@ -290,7 +290,15 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 btn.disabled = true;
                 errorEl.style.display = 'none';
                 
-                await auth.signInWithEmailAndPassword(email, pass);
+                // 10 saniyelik zaman aşımı (timeout) ekliyoruz
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Bağlantı zaman aşımına uğradı. İnternetinizi veya reklam engelleyicinizi kontrol edin.')), 10000)
+                );
+                
+                await Promise.race([
+                    auth.signInWithEmailAndPassword(email, pass),
+                    timeoutPromise
+                ]);
             } catch (error) {
                 console.error(error);
                 errorEl.style.display = 'block';
