@@ -34,14 +34,14 @@
                 <h1>Hoş Geldin!</h1>
                 <h2 id="welcome-name">Merhaba <span id="employee-name">...</span>,</h2>
                 
-                <p>Biz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Aramıza hoş geldin! Yeni yolculuğunda başarılar diler, birlikte nice güzel işlere imza atacağımıza inanıyoruz.</p>
+                <p id="welcome-msg-1">Biz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Aramıza hoş geldin! Yeni yolculuğunda başarılar diler, birlikte nice güzel işlere imza atacağımıza inanıyoruz.</p>
                 
-                <p>Sana destek olmak ve uyum sürecini kolaylaştırmak için her zaman yanındayız.</p>
+                <p id="welcome-msg-2">Sana destek olmak ve uyum sürecini kolaylaştırmak için her zaman yanındayız.</p>
                 
-                <p class="signature">Tekrar hoş geldin!<br>Biz Teknoloji Çözümleri Ailesi</p>
+                <p class="signature" id="welcome-signature">Tekrar hoş geldin!<br>Biz Teknoloji Çözümleri Ailesi</p>
             </div>
             <div class="welcome-graphic">
-                <div class="handwriting">Aramıza <span class="highlight">Hoş Geldin!</span></div>
+                <div class="handwriting">Aramıza Hoş Geldin!</div>
                 <img src="assets/team_welcome.png" alt="Ekip İllüstrasyonu" class="graphic-img">
             </div>
         </div>
@@ -54,29 +54,37 @@
                 <div class="card-icon">
                     <i class="fas fa-users"></i>
                 </div>
-                <h3>Ekibinle Tanış</h3>
-                <p>Ekip arkadaşlarınla tanışmak için ilk fırsatta bir araya gelmeni heyecanla bekliyoruz.</p>
+                <div class="card-content">
+                    <h3 id="welcome-card1-title">Ekibinle Tanış</h3>
+                    <p id="welcome-card1-desc">Ekip arkadaşlarınla tanışmak için ilk fırsatta bir araya gelmeni heyecanla bekliyoruz.</p>
+                </div>
             </div>
             <div class="welcome-card">
                 <div class="card-icon">
                     <i class="fas fa-file-alt"></i>
                 </div>
-                <h3>Süreçlere Göz At</h3>
-                <p>İş süreçlerimiz ve kurum içi kaynaklara göz atarak ilk adımlarını kolaylaştırabilirsin.</p>
+                <div class="card-content">
+                    <h3 id="welcome-card2-title">Süreçlere Göz At</h3>
+                    <p id="welcome-card2-desc">İş süreçlerimiz ve kurum içi kaynaklara göz atarak ilk adımlarını kolaylaştırabilirsin.</p>
+                </div>
             </div>
             <div class="welcome-card">
                 <div class="card-icon">
                     <i class="fas fa-handshake"></i>
                 </div>
-                <h3>Destek İçin Yanındayız</h3>
-                <p>Uyum sürecin boyunca aklına takılan her konuda bize ulaşabilirsin.</p>
+                <div class="card-content">
+                    <h3 id="welcome-card3-title">Destek İçin Yanındayız</h3>
+                    <p id="welcome-card3-desc">Uyum sürecin boyunca aklına takılan her konuda bize ulaşabilirsin.</p>
+                </div>
             </div>
             <div class="welcome-card">
                 <div class="card-icon">
-                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
                 </div>
-                <h3>Birlikte Başaracağız</h3>
-                <p>Fikirlerin, enerjin ve katkılarınla ekibimize değer katacağına inanıyoruz.</p>
+                <div class="card-content">
+                    <h3 id="welcome-card4-title">Birlikte Başaracağız</h3>
+                    <p id="welcome-card4-desc">Fikirlerin, enerjin ve katkılarınla ekibimize değer katacağına inanıyoruz.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -94,7 +102,7 @@
                 </div>
             </div>
             <div class="footer-item">
-                <div class="footer-icon" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                <div class="footer-icon heart">
                     <i class="far fa-heart"></i>
                 </div>
                 <div class="footer-text">
@@ -106,34 +114,62 @@
     </footer>
 
     <script>
-        // Load data based on URL parameter
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const employeeId = urlParams.get('id');
             const nameParam = urlParams.get('isim') || urlParams.get('name');
             const nameSpan = document.getElementById('employee-name');
 
-            if (employeeId && typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured()) {
-                // Read from DB (Option 2 implementation)
+            if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured()) {
                 firebase.initializeApp(firebaseConfig);
                 const db = firebase.database();
                 
-                db.ref('site_content/welcome_pages/' + employeeId).once('value').then((snapshot) => {
+                // Fetch dynamic text content from admin panel
+                db.ref('site_content/tr').once('value').then((snapshot) => {
                     const data = snapshot.val();
-                    if (data && data.name) {
-                        nameSpan.textContent = data.name;
-                    } else {
-                        nameSpan.textContent = "Yeni Çalışma Arkadaşımız"; // Fallback
+                    if (data) {
+                        if (data.welcome_msg_1) document.getElementById('welcome-msg-1').innerHTML = data.welcome_msg_1.replace(/\n/g, '<br>');
+                        if (data.welcome_msg_2) document.getElementById('welcome-msg-2').innerHTML = data.welcome_msg_2.replace(/\n/g, '<br>');
+                        if (data.welcome_signature) document.getElementById('welcome-signature').innerHTML = data.welcome_signature.replace(/\n/g, '<br>');
+                        
+                        if (data.welcome_card1_title) document.getElementById('welcome-card1-title').textContent = data.welcome_card1_title;
+                        if (data.welcome_card1_desc) document.getElementById('welcome-card1-desc').textContent = data.welcome_card1_desc;
+                        
+                        if (data.welcome_card2_title) document.getElementById('welcome-card2-title').textContent = data.welcome_card2_title;
+                        if (data.welcome_card2_desc) document.getElementById('welcome-card2-desc').textContent = data.welcome_card2_desc;
+                        
+                        if (data.welcome_card3_title) document.getElementById('welcome-card3-title').textContent = data.welcome_card3_title;
+                        if (data.welcome_card3_desc) document.getElementById('welcome-card3-desc').textContent = data.welcome_card3_desc;
+                        
+                        if (data.welcome_card4_title) document.getElementById('welcome-card4-title').textContent = data.welcome_card4_title;
+                        if (data.welcome_card4_desc) document.getElementById('welcome-card4-desc').textContent = data.welcome_card4_desc;
                     }
-                }).catch(err => {
-                    console.error("Firebase error:", err);
-                    nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
                 });
-            } else if (nameParam) {
-                // Fallback to reading name directly from URL (Option 1 support just in case)
-                nameSpan.textContent = nameParam;
+
+                // Fetch employee name
+                if (employeeId) {
+                    db.ref('site_content/welcome_pages/' + employeeId).once('value').then((snapshot) => {
+                        const data = snapshot.val();
+                        if (data && data.name) {
+                            nameSpan.textContent = data.name;
+                        } else {
+                            nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                        }
+                    }).catch(err => {
+                        console.error("Firebase error:", err);
+                        nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                    });
+                } else if (nameParam) {
+                    nameSpan.textContent = nameParam;
+                } else {
+                    nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                }
             } else {
-                nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                if (nameParam) {
+                    nameSpan.textContent = nameParam;
+                } else {
+                    nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                }
             }
         });
     </script>

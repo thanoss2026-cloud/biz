@@ -2,11 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 
 :root {
-    --biz-dark: #091a38;
+    --biz-dark: #0f1e3a;
     --biz-blue: #004fb6;
     --biz-light-bg: #f8fbff;
     --biz-text: #334155;
     --biz-gray: #64748b;
+    --accent-blue: #2563eb;
 }
 
 body.welcome-page {
@@ -16,12 +17,14 @@ body.welcome-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 /* Header */
 .welcome-header {
     background-color: var(--biz-dark);
-    padding: 2rem 0;
+    padding: 1.5rem 0;
     position: relative;
     overflow: hidden;
 }
@@ -31,11 +34,10 @@ body.welcome-page {
     position: absolute;
     top: 0;
     right: 0;
-    width: 50%;
+    width: 60%;
     height: 100%;
-    background-image: radial-gradient(circle at 100% 50%, rgba(0, 210, 255, 0.1) 0%, transparent 60%),
-                      url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
-    background-size: 100% 100%, 20px 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg"><g stroke="rgba(255,255,255,0.05)" stroke-width="1"><line x1="0" y1="0" x2="100" y2="100"/><circle cx="100" cy="100" r="2" fill="rgba(255,255,255,0.1)"/></g></svg>');
+    background-size: 100px 100px;
     z-index: 1;
 }
 
@@ -46,97 +48,106 @@ body.welcome-page {
     align-items: center;
 }
 
+.welcome-header .logo {
+    display: flex;
+    align-items: center;
+}
+
 .welcome-header .logo img {
-    height: 60px;
+    height: 45px;
 }
 
 .welcome-header .logo-text {
     color: white;
-    margin-left: 1rem;
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: 1px;
+    margin-left: 0.8rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.1;
 }
 
 .welcome-header .logo-text span {
     display: block;
-    font-size: 0.8rem;
-    color: #00d2ff;
-    letter-spacing: 2px;
+    font-size: 0.7rem;
+    color: #93c5fd;
+    font-weight: 400;
+    letter-spacing: 1px;
 }
 
 /* Main Content */
 .welcome-main {
     flex: 1;
-    padding: 5rem 0 3rem 0;
+    padding: 4rem 0;
 }
 
 .welcome-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 2rem;
     align-items: center;
 }
 
 .welcome-text h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     color: var(--biz-dark);
     margin-bottom: 2rem;
     position: relative;
     display: inline-block;
+    font-weight: 700;
 }
 
 .welcome-text h1::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -15px;
     left: 0;
-    width: 60px;
+    width: 50px;
     height: 4px;
-    background-color: var(--biz-blue);
+    background-color: var(--accent-blue);
 }
 
 .welcome-text h2 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--biz-dark);
     margin-bottom: 1.5rem;
+    font-weight: 700;
 }
 
 .welcome-text p {
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.6;
     margin-bottom: 1.5rem;
+    color: #475569;
 }
 
 .welcome-text .signature {
     font-weight: 700;
-    color: var(--biz-blue);
-    margin-top: 2rem;
+    color: var(--accent-blue);
+    margin-top: 1.5rem;
 }
 
 /* Graphic Side */
 .welcome-graphic {
     position: relative;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .handwriting {
     font-family: 'Caveat', cursive;
     font-size: 3.5rem;
     color: var(--biz-dark);
-    transform: rotate(-5deg);
+    transform: rotate(-3deg);
     position: relative;
-    margin-bottom: -40px;
+    margin-bottom: -20px;
     z-index: 2;
-}
-
-.handwriting .highlight {
-    color: var(--biz-blue);
 }
 
 .graphic-img {
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
     position: relative;
     z-index: 1;
 }
@@ -144,68 +155,58 @@ body.welcome-page {
 /* Cards Section */
 .welcome-cards-section {
     background-color: var(--biz-light-bg);
-    padding: 4rem 0;
+    padding: 2.5rem 0;
     border-top: 1px solid #e2e8f0;
 }
 
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .welcome-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    border: 1px solid #e2e8f0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.welcome-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 79, 182, 0.1);
-    border-color: rgba(0, 79, 182, 0.2);
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.5rem;
 }
 
 .card-icon {
-    width: 60px;
-    height: 60px;
-    background-color: rgba(0, 79, 182, 0.05);
+    width: 45px;
+    height: 45px;
+    background-color: #e0f2fe;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    flex-shrink: 0;
 }
 
 .card-icon i {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     color: var(--biz-blue);
 }
 
-.welcome-card h3 {
-    font-size: 1.1rem;
+.card-content h3 {
+    font-size: 0.95rem;
     color: var(--biz-dark);
-    margin-bottom: 1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
 }
 
-.welcome-card p {
-    font-size: 0.9rem;
+.card-content p {
+    font-size: 0.8rem;
     color: var(--biz-gray);
-    line-height: 1.5;
+    line-height: 1.4;
+    margin: 0;
 }
 
 /* Footer */
 .welcome-footer {
     background-color: var(--biz-dark);
     color: white;
-    padding: 2rem 0;
+    padding: 1.5rem 0;
 }
 
 .welcome-footer .container {
@@ -221,19 +222,24 @@ body.welcome-page {
 }
 
 .footer-icon {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    color: #00d2ff;
+    font-size: 1.1rem;
+    color: #93c5fd;
+}
+
+.footer-icon.heart {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .footer-text p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: rgba(255,255,255,0.7);
     margin: 0;
 }
@@ -241,6 +247,7 @@ body.welcome-page {
 .footer-text strong {
     display: block;
     color: white;
+    font-size: 0.95rem;
     font-weight: 500;
 }
 
@@ -255,12 +262,17 @@ body.welcome-page {
         left: 50%;
         transform: translateX(-50%);
     }
+    .welcome-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
     .cards-grid {
         grid-template-columns: repeat(2, 1fr);
     }
     .welcome-footer .container {
         flex-direction: column;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 }
 
