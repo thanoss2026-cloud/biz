@@ -270,19 +270,35 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             document.getElementById('config-alert').style.display = 'block';
         }
 
+        function debugLog(msg) {
+            let d = document.getElementById('debug-log');
+            if (!d) {
+                d = document.createElement('div');
+                d.id = 'debug-log';
+                d.style.cssText = 'position:fixed; top:0; left:0; width:100%; max-height:200px; overflow-y:auto; background:#facc15; color:#000; z-index:999999; padding:10px; font-family:monospace; font-size:12px; border-bottom:3px solid red;';
+                document.body.appendChild(d);
+            }
+            d.innerHTML += new Date().toLocaleTimeString() + ': ' + msg + '<br>';
+            console.log('DEBUG:', msg);
+        }
+
         async function handleLogin() {
+            debugLog('handleLogin tetiklendi.');
             const errorEl = document.getElementById('login-error');
             const btn = document.getElementById('login-btn');
 
             try {
                 if (typeof firebase === 'undefined' || !auth) {
+                    debugLog('HATA: Firebase veya auth tanımlı değil.');
                     throw new Error('Firebase bağlantısı kurulamadı. Lütfen reklam engelleyiciyi kapatın veya sayfayı yenileyin.');
                 }
+                debugLog('Firebase auth objesi mevcut.');
 
                 const email = document.getElementById('admin-email').value;
                 const pass = document.getElementById('admin-pass').value;
 
                 if (!email || !pass) {
+                    debugLog('HATA: Email veya şifre boş.');
                     throw new Error('Lütfen email ve şifre girin.');
                 }
 
@@ -290,16 +306,24 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 btn.disabled = true;
                 errorEl.style.display = 'none';
                 
+                debugLog('Firebase auth.signInWithEmailAndPassword çağrılıyor...');
                 // 10 saniyelik zaman aşımı (timeout) ekliyoruz
                 const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Bağlantı zaman aşımına uğradı. İnternetinizi veya reklam engelleyicinizi kontrol edin.')), 10000)
+                    setTimeout(() => {
+                        debugLog('ZAMAN AŞIMI: 10 saniye doldu!');
+                        reject(new Error('Bağlantı zaman aşımına uğradı. İnternetinizi veya reklam engelleyicinizi kontrol edin.'));
+                    }, 10000)
                 );
                 
                 await Promise.race([
-                    auth.signInWithEmailAndPassword(email, pass),
+                    auth.signInWithEmailAndPassword(email, pass).then(res => {
+                        debugLog('Giriş başarılı! ' + res.user.email);
+                        return res;
+                    }),
                     timeoutPromise
                 ]);
             } catch (error) {
+                debugLog('HATA YAKALANDI: ' + error.message + ' (KOD: ' + error.code + ')');
                 console.error(error);
                 errorEl.style.display = 'block';
                 
