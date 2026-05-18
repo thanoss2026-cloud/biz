@@ -389,8 +389,10 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                             <a href="${url}" target="_blank" style="color: var(--primary); font-size: 0.85rem; text-decoration: underline;">${displayUrl}</a>
                         </div>
                         <div style="display: flex; gap: 0.5rem;">
-                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #334155; color: white;" onclick="copyToClipboard('${url}')"><i class="fas fa-copy"></i></button>
-                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;" onclick="deleteWelcomeLink('${id}')"><i class="fas fa-trash"></i></button>
+                            <a href="mailto:?subject=Aram%C4%B1za%20Ho%C5%9F%20Geldin!&body=Merhaba%20${encodeURIComponent(person.name)},%0D%0A%0D%0ABiz%20Teknoloji%20%C3%87%C3%B6z%C3%BCmleri%20ailesine%20kat%C4%B1ld%C4%B1%C4%9F%C4%B1n%20i%C3%A7in%20%C3%A7ok%20mutluyuz.%20Sana%20%C3%B6zel%20haz%C4%B1rlad%C4%B1%C4%9F%C4%B1m%C4%B1z%20kar%C5%9F%C4%B1lama%20sayfas%C4%B1na%20a%C5%9Fa%C4%9F%C4%B1daki%20linkten%20ula%C5%9Fabilirsin%3A%0D%0A${encodeURIComponent(url)}%0D%0A%0D%0ATekrar%20ho%C5%9F%20geldin!%0D%0ABiz%20Teknoloji%20%C3%87%C3%B6z%C3%BCmleri%20Ailesi" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #2563eb; color: white; text-decoration: none;" title="Mail İstemcisinde Aç (Taslak)"><i class="fas fa-envelope"></i></a>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #0ea5e9; color: white;" onclick="copyMailText('${person.name.replace(/'/g, "\\'")}', '${url}')" title="Sadece Metni Kopyala (Natro Webmail için)"><i class="fas fa-file-alt"></i></button>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #334155; color: white;" onclick="copyToClipboard('${url}')" title="Sadece Linki Kopyala"><i class="fas fa-link"></i></button>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;" onclick="deleteWelcomeLink('${id}')" title="Sil"><i class="fas fa-trash"></i></button>
                         </div>
                     `;
                     container.appendChild(div);
@@ -423,6 +425,13 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert('Link kopyalandı!');
+            });
+        }
+
+        function copyMailText(name, url) {
+            const text = `Merhaba ${name},\n\nBiz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Sana özel hazırladığımız karşılama sayfasına aşağıdaki linkten ulaşabilirsin:\n${url}\n\nTekrar hoş geldin!\nBiz Teknoloji Çözümleri Ailesi`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Mail metni kopyalandı! Artık webmail\\'e yapıştırabilirsiniz.');
             });
         }
 
