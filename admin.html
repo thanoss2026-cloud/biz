@@ -297,7 +297,10 @@
                 if (el.id !== 'admin-pass' && el.id !== 'admin-email') langData[el.id] = el.value;
             });
 
-            db.ref('site_content').set(content).then(() => {
+            Promise.all([
+                db.ref('site_content/tr').set(content.tr),
+                db.ref('site_content/en').set(content.en)
+            ]).then(() => {
                 alert('Tüm veriler saniyeler içinde buluta gönderildi ve tüm ziyaretçiler için güncellendi!');
             }).catch(err => {
                 alert('Bulut kayıt hatası: ' + err.message);
@@ -315,7 +318,7 @@
             if (!db) return;
             const container = document.getElementById('welcome-links-container');
             
-            db.ref('welcome_pages').on('value', (snapshot) => {
+            db.ref('site_content/welcome_pages').on('value', (snapshot) => {
                 const data = snapshot.val();
                 container.innerHTML = '';
                 
@@ -357,7 +360,7 @@
             const name = nameInput.value.trim();
             if (!name) return alert('Lütfen bir isim girin.');
             
-            const newRef = db.ref('welcome_pages').push();
+            const newRef = db.ref('site_content/welcome_pages').push();
             newRef.set({
                 name: name,
                 created_at: new Date().toISOString()
@@ -369,7 +372,7 @@
 
         function deleteWelcomeLink(id) {
             if (confirm('Bu linki silmek istediğinize emin misiniz? Sayfaya girenler artık isimsiz genel sayfayı görür.')) {
-                db.ref('welcome_pages/' + id).remove();
+                db.ref('site_content/welcome_pages/' + id).remove();
             }
         }
 

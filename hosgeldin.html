@@ -118,7 +118,7 @@
                 firebase.initializeApp(firebaseConfig);
                 const db = firebase.database();
                 
-                db.ref('welcome_pages/' + employeeId).once('value').then((snapshot) => {
+                db.ref('site_content/welcome_pages/' + employeeId).once('value').then((snapshot) => {
                     const data = snapshot.val();
                     if (data && data.name) {
                         nameSpan.textContent = data.name;
