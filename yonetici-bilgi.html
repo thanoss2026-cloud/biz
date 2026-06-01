@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Çalışan Bilgilendirme | BIZ IT Works</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --biz-purple: #7B2FBE;
+            --biz-purple-dark: #5a1f8a;
+            --biz-purple-light: #9b59e0;
+            --biz-accent: #F59E0B;
+            --biz-accent-light: #FCD34D;
+            --bg-dark: #0f0c1a;
+            --bg-card: #1a1530;
+            --bg-card2: #211c38;
+            --text-primary: #f0eaff;
+            --text-secondary: #b0a0cc;
+            --text-muted: #7a6a99;
+            --border: rgba(123, 47, 190, 0.25);
+            --glass: rgba(123, 47, 190, 0.08);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── BG Orbs ── */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before {
+            width: 600px; height: 600px;
+            background: var(--biz-purple);
+            top: -100px; left: -100px;
+            animation: orb1 12s ease-in-out infinite alternate;
+        }
+        body::after {
+            width: 500px; height: 500px;
+            background: var(--biz-accent);
+            bottom: -80px; right: -80px;
+            animation: orb2 14s ease-in-out infinite alternate;
+        }
+        @keyframes orb1 { from { transform: translate(0,0) scale(1); } to { transform: translate(60px,40px) scale(1.15); } }
+        @keyframes orb2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-50px,-30px) scale(1.1); } }
+
+        .page-wrapper { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 20px 60px; }
+
+        /* ── HEADER ── */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 0 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--biz-purple), var(--biz-purple-light));
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 18px; color: #fff;
+            box-shadow: 0 0 20px rgba(123,47,190,0.5);
+        }
+        .logo-text { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .logo-text span { color: var(--biz-purple-light); }
+        .header-badge {
+            background: linear-gradient(135deg, var(--biz-purple), var(--biz-purple-dark));
+            border: 1px solid rgba(123,47,190,0.4);
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ── HERO BANNER ── */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--biz-purple-dark) 0%, #2d1660 50%, #1a0d40 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 40px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 220px; height: 220px;
+            background: rgba(123,47,190,0.3);
+            border-radius: 50%;
+            filter: blur(40px);
+        }
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: 40%;
+            width: 160px; height: 160px;
+            background: rgba(245,158,11,0.15);
+            border-radius: 50%;
+            filter: blur(35px);
+        }
+        .hero-inner { position: relative; z-index: 1; }
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 20px;
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--biz-accent-light);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 14px;
+        }
+        .hero-title {
+            font-size: clamp(22px, 4vw, 32px);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        .hero-title span { color: var(--biz-accent-light); }
+        .hero-subtitle {
+            font-size: 15px;
+            color: rgba(255,255,255,0.65);
+            font-weight: 400;
+            max-width: 500px;
+        }
+        .hero-icon {
+            position: absolute;
+            right: 36px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 72px;
+            opacity: 0.12;
+            color: #fff;
+        }
+
+        /* ── SECTION LABEL ── */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+        .section-label-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--biz-purple), var(--biz-purple-light));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .section-label h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.3px;
+        }
+        .section-label p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        /* ── EMPLOYEE CARD ── */
+        .employee-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .employee-card-header {
+            background: linear-gradient(90deg, rgba(123,47,190,0.2), rgba(123,47,190,0.05));
+            border-bottom: 1px solid var(--border);
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .avatar-circle {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--biz-purple), var(--biz-purple-light));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(123,47,190,0.3);
+            transition: box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-circle::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .employee-name-block h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .employee-name-block .emp-title {
+            font-size: 13px;
+            color: var(--biz-purple-light);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+        .employee-name-block .emp-dept {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ── INFO GRID ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        @media (max-width: 580px) {
+            .info-grid { grid-template-columns: 1fr; }
+        }
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(123,47,190,0.1);
+            border-right: 1px solid rgba(123,47,190,0.1);
+            transition: background 0.2s;
+        }
+        .info-row:nth-child(even) { border-right: none; }
+        .info-row:nth-last-child(-n+2) { border-bottom: none; }
+        @media (max-width: 580px) {
+            .info-row { border-right: none; }
+            .info-row:nth-last-child(-n+2) { border-bottom: 1px solid rgba(123,47,190,0.1); }
+            .info-row:last-child { border-bottom: none; }
+        }
+        .info-row:hover { background: rgba(123,47,190,0.06); }
+        .info-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            color: var(--biz-purple-light);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .info-content label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 3px;
+        }
+        .info-content .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+        .info-content .info-value.loading {
+            color: var(--text-muted);
+            font-style: italic;
+            font-weight: 400;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-active {
+            background: rgba(16,185,129,0.15);
+            color: #34d399;
+            border: 1px solid rgba(16,185,129,0.25);
+        }
+        .status-pending {
+            background: rgba(245,158,11,0.15);
+            color: var(--biz-accent-light);
+            border: 1px solid rgba(245,158,11,0.25);
+        }
+
+        /* ── NOTES CARD ── */
+        .notes-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 8px;
+        }
+        .notes-card .notes-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 10px;
+        }
+        .notes-card .notes-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* ── CONTACT SECTION ── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            text-decoration: none;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+            cursor: pointer;
+        }
+        .contact-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(123,47,190,0.5);
+            box-shadow: 0 12px 30px rgba(123,47,190,0.15);
+        }
+        .contact-card-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .icon-email    { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+        .icon-whatsapp { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.25); }
+        .icon-ik       { background: rgba(245,158,11,0.15); color: var(--biz-accent-light); border: 1px solid rgba(245,158,11,0.25); }
+        .icon-finans   { background: rgba(236,72,153,0.15); color: #f472b6; border: 1px solid rgba(236,72,153,0.25); }
+        .icon-phone    { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+        .icon-web      { background: rgba(6,182,212,0.15); color: #22d3ee; border: 1px solid rgba(6,182,212,0.25); }
+        .contact-info-text h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+        .contact-info-text .contact-dept {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .contact-info-text .contact-val {
+            font-size: 13px;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+
+        /* ── IMPORTANT NOTES ── */
+        .important-box {
+            background: rgba(245,158,11,0.07);
+            border: 1px solid rgba(245,158,11,0.25);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-top: 8px;
+        }
+        .important-box .imp-icon {
+            font-size: 20px;
+            color: var(--biz-accent-light);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .important-box h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--biz-accent-light);
+            margin-bottom: 6px;
+        }
+        .important-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .important-box ul li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 3px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .important-box ul li::before {
+            content: '→';
+            color: var(--biz-accent-light);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        footer .footer-logo { display: flex; align-items: center; gap: 10px; }
+        footer .footer-logo span { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
+        footer .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+        /* ── PRINT ── */
+        .print-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--biz-purple), var(--biz-purple-light));
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+        .print-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+        /* ── DIVIDER ── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 8px 0;
+        }
+
+        /* ── ANIMATIONS ── */
+        .fade-up {
+            animation: fadeUp 0.5s ease both;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up:nth-child(1) { animation-delay: 0.05s; }
+        .fade-up:nth-child(2) { animation-delay: 0.12s; }
+        .fade-up:nth-child(3) { animation-delay: 0.19s; }
+        .fade-up:nth-child(4) { animation-delay: 0.26s; }
+        .fade-up:nth-child(5) { animation-delay: 0.33s; }
+        .fade-up:nth-child(6) { animation-delay: 0.40s; }
+
+        @media print {
+            body { background: #fff; color: #111; }
+            body::before, body::after { display: none; }
+            .print-btn { display: none; }
+            .employee-card, .notes-card, .contact-card, .important-box {
+                border: 1px solid #ddd !important;
+                box-shadow: none !important;
+                background: #f9f9f9 !important;
+            }
+            .hero-banner { background: #5a1f8a !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="fade-up">
+        <div class="logo-area">
+            <div class="logo-icon">B</div>
+            <div class="logo-text">BIZ <span>IT Works</span></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span class="header-badge"><i class="fas fa-user-tie" style="margin-right:5px;"></i>Yönetici Bildirimi</span>
+            <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i> Yazdır</button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero-banner fade-up">
+        <div class="hero-inner">
+            <div class="hero-tag">
+                <i class="fas fa-bell"></i>
+                Yeni Çalışan Bildirimi
+            </div>
+            <h1 class="hero-title">
+                Sayın <span id="manager-name">Yönetici</span>,
+            </h1>
+            <p class="hero-subtitle">
+                Ekibinize yeni bir çalışan katılıyor. Aşağıda çalışana ait bilgiler ve BIZ IT Works iletişim kanalları yer almaktadır.
+            </p>
+        </div>
+        <i class="fas fa-user-plus hero-icon"></i>
+    </div>
+
+    <!-- EMPLOYEE INFO SECTION -->
+    <div class="fade-up">
+        <div class="section-label">
+            <div class="section-label-icon"><i class="fas fa-id-card"></i></div>
+            <div>
+                <h2>Çalışan Bilgileri</h2>
+                <p>Yeni ekip üyenizin kişisel ve iş bilgileri</p>
+            </div>
+        </div>
+
+        <div class="employee-card">
+            <!-- Card Header / Avatar -->
+            <div class="employee-card-header">
+                <div class="avatar-circle" id="avatar-initials">–</div>
+                <div class="employee-name-block">
+                    <h3 id="emp-fullname">Yükleniyor...</h3>
+                    <div class="emp-title" id="emp-position">—</div>
+                    <div class="emp-dept" id="emp-department">—</div>
+                </div>
+            </div>
+
+            <!-- Info Grid -->
+            <div class="info-grid">
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="info-content">
+                        <label>Kurumsal E-posta</label>
+                        <div class="info-value" id="emp-email">—</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-phone"></i></div>
+                    <div class="info-content">
+                        <label>Telefon</label>
+                        <div class="info-value" id="emp-phone">—</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div class="info-content">
+                        <label>İşe Başlama Tarihi</label>
+                        <div class="info-value" id="emp-startdate">—</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-building"></i></div>
+                    <div class="info-content">
+                        <label>Lokasyon / Ofis</label>
+                        <div class="info-value" id="emp-location">—</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-id-badge"></i></div>
+                    <div class="info-content">
+                        <label>Çalışan ID</label>
+                        <div class="info-value" id="emp-id">—</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-circle-check"></i></div>
+                    <div class="info-content">
+                        <label>Durum</label>
+                        <div class="info-value">
+                            <span class="status-badge status-active" id="emp-status">Aktif</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-file-contract"></i></div>
+                    <div class="info-content">
+                        <label>Sözleşme Türü</label>
+                        <div class="info-value" id="emp-contract">—</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-icon"><i class="fas fa-laptop-code"></i></div>
+                    <div class="info-content">
+                        <label>Çalışma Şekli</label>
+                        <div class="info-value" id="emp-worktype">—</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manager Notes -->
+        <div class="notes-card">
+            <div class="notes-label"><i class="fas fa-comment-dots" style="margin-right:6px;"></i>Yönetici Notu</div>
+            <div class="notes-text" id="emp-notes">Bu alana çalışana özel notlar veya yöneticiye iletilmek istenen ek bilgiler eklenebilir.</div>
+        </div>
+    </div>
+
+    <!-- CONTACT SECTION -->
+    <div class="fade-up">
+        <div class="section-label">
+            <div class="section-label-icon"><i class="fas fa-headset"></i></div>
+            <div>
+                <h2>BIZ IT Works İletişim Kanalları</h2>
+                <p>Destek ve bilgi için doğru kişiye ulaşın</p>
+            </div>
+        </div>
+
+        <div class="contact-grid">
+
+            <a class="contact-card fade-up" href="mailto:info@bizitworks.com" id="contact-general-email">
+                <div class="contact-card-icon icon-email"><i class="fas fa-envelope"></i></div>
+                <div class="contact-info-text">
+                    <div class="contact-dept">Genel</div>
+                    <h4>E-posta</h4>
+                    <div class="contact-val">info@bizitworks.com</div>
+                </div>
+            </a>
+
+            <a class="contact-card fade-up" href="https://wa.me/905XXXXXXXXX" target="_blank" id="contact-whatsapp">
+                <div class="contact-card-icon icon-whatsapp"><i class="fab fa-whatsapp"></i></div>
+                <div class="contact-info-text">
+                    <div class="contact-dept">Anlık Destek</div>
+                    <h4>WhatsApp</h4>
+                    <div class="contact-val">+90 5XX XXX XX XX</div>
+                </div>
+            </a>
+
+            <a class="contact-card fade-up" href="mailto:ik@bizitworks.com" id="contact-hr">
+                <div class="contact-card-icon icon-ik"><i class="fas fa-users"></i></div>
+                <div class="contact-info-text">
+                    <div class="contact-dept">İnsan Kaynakları</div>
+                    <h4>İK Birimi</h4>
+                    <div class="contact-val">ik@bizitworks.com</div>
+                </div>
+            </a>
+
+            <a class="contact-card fade-up" href="mailto:finans@bizitworks.com" id="contact-finance">
+                <div class="contact-card-icon icon-finans"><i class="fas fa-coins"></i></div>
+                <div class="contact-info-text">
+                    <div class="contact-dept">Muhasebe & Bordro</div>
+                    <h4>Finans Birimi</h4>
+                    <div class="contact-val">finans@bizitworks.com</div>
+                </div>
+            </a>
+
+            <a class="contact-card fade-up" href="tel:+902121234567" id="contact-phone">
+                <div class="contact-card-icon icon-phone"><i class="fas fa-phone-volume"></i></div>
+                <div class="contact-info-text">
+                    <div class="contact-dept">Genel Hat</div>
+                    <h4>Telefon</h4>
+                    <div class="contact-val">+90 212 123 45 67</div>
+                </div>
+            </a>
+
+            <a class="contact-card fade-up" href="https://www.bizitworks.com" target="_blank" id="contact-web">
+                <div class="contact-card-icon icon-web"><i class="fas fa-globe"></i></div>
+                <div class="contact-info-text">
+                    <div class="contact-dept">Online</div>
+                    <h4>Web Sitesi</h4>
+                    <div class="contact-val">www.bizitworks.com</div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- IMPORTANT NOTES -->
+    <div class="fade-up">
+        <div class="section-label">
+            <div class="section-label-icon" style="background: linear-gradient(135deg,#d97706,#f59e0b);"><i class="fas fa-triangle-exclamation"></i></div>
+            <div>
+                <h2>Yönetici Yapılacaklar Listesi</h2>
+                <p>İlk hafta tamamlanması beklenen adımlar</p>
+            </div>
+        </div>
+        <div class="important-box">
+            <div class="imp-icon"><i class="fas fa-clipboard-list"></i></div>
+            <div>
+                <h4>İlk Hafta Kontrol Listesi</h4>
+                <ul id="checklist-list">
+                    <li>Çalışanın ekipmanlarının (bilgisayar, telefon vb.) hazır olduğundan emin olun</li>
+                    <li>Kurumsal e-posta ve sistem erişimlerini İK ile koordineli olarak ayarlayın</li>
+                    <li>Ekip tanışma toplantısını planlayın</li>
+                    <li>Çalışanı doğrudan yöneticisi ile buluşturun ve görev tanımını paylaşın</li>
+                    <li>İlk 30 gün hedeflerini birlikte belirleyin</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="fade-up">
+        <div class="footer-logo">
+            <div class="logo-icon" style="width:32px;height:32px;font-size:14px;">B</div>
+            <span>BIZ IT Works © <span id="footer-year"></span></span>
+        </div>
+        <div class="footer-copy">Bu belge gizlidir — yalnızca ilgili yöneticiye iletilmek üzere hazırlanmıştır.</div>
+    </footer>
+
+</div><!-- /page-wrapper -->
+
+<script>
+document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const employeeId = params.get('id');
+
+    // ── Helper ──
+    const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val) { el.textContent = val; el.classList.remove('loading'); }
+    };
+    const setHTML = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val) el.innerHTML = val;
+    };
+    const setHref = (id, href) => {
+        const el = document.getElementById(id);
+        if (el && href) el.href = href;
+    };
+
+    // ── Initials Avatar ──
+    function setAvatar(name) {
+        const parts = (name || '').trim().split(' ');
+        const initials = parts.length >= 2
+            ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+            : (parts[0] || '?')[0].toUpperCase();
+        document.getElementById('avatar-initials').textContent = initials;
+    }
+
+    // ── Populate from Firebase ──
+    function populateEmployee(data) {
+        if (!data) return;
+
+        const fullName = data.name || data.fullName || '';
+        set('emp-fullname', fullName || 'Bilinmiyor');
+        setAvatar(fullName);
+
+        set('manager-name', data.managerName || 'Yönetici');
+        set('emp-position', data.position || data.title || '—');
+        set('emp-department', data.department || '—');
+        set('emp-email', data.email || '—');
+        set('emp-phone', data.phone || '—');
+        set('emp-startdate', data.startDate || '—');
+        set('emp-location', data.location || data.office || '—');
+        set('emp-id', data.employeeId || employeeId || '—');
+        set('emp-contract', data.contractType || '—');
+        set('emp-worktype', data.workType || '—');
+        set('emp-notes', data.managerNote || data.notes || '—');
+
+        // Status badge
+        const statusEl = document.getElementById('emp-status');
+        if (statusEl && data.status) {
+            statusEl.textContent = data.status;
+            statusEl.className = 'status-badge ' + (data.status === 'Aktif' ? 'status-active' : 'status-pending');
+        }
+
+        // Checklist
+        if (data.checklist && Array.isArray(data.checklist)) {
+            const ul = document.getElementById('checklist-list');
+            ul.innerHTML = data.checklist.map(item => `<li>${item}</li>`).join('');
+        }
+
+        // Contact overrides from Firebase
+        if (data.contacts) {
+            const c = data.contacts;
+            if (c.generalEmail) { setHref('contact-general-email', 'mailto:' + c.generalEmail); document.querySelector('#contact-general-email .contact-val').textContent = c.generalEmail; }
+            if (c.whatsapp)     { setHref('contact-whatsapp', 'https://wa.me/' + c.whatsapp.replace(/\D/g,'')); document.querySelector('#contact-whatsapp .contact-val').textContent = c.whatsapp; }
+            if (c.hr)           { setHref('contact-hr', 'mailto:' + c.hr); document.querySelector('#contact-hr .contact-val').textContent = c.hr; }
+            if (c.finance)      { setHref('contact-finance', 'mailto:' + c.finance); document.querySelector('#contact-finance .contact-val').textContent = c.finance; }
+            if (c.phone)        { setHref('contact-phone', 'tel:' + c.phone); document.querySelector('#contact-phone .contact-val').textContent = c.phone; }
+        }
+    }
+
+    // ── Firebase Load ──
+    if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured()) {
+        const _app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // ── Load manager_settings (contacts, checklist, hero texts) ──
+        db.ref('site_content/manager_settings').once('value').then(snap => {
+            const s = snap.val();
+            if (!s) return;
+
+            // Checklist
+            if (s.mgr_checklist) {
+                const ul = document.getElementById('checklist-list');
+                const items = s.mgr_checklist.split('\n').filter(l => l.trim());
+                if (items.length > 0) ul.innerHTML = items.map(i => `<li>${i.trim()}</li>`).join('');
+            }
+
+            // Contacts
+            const cMap = {
+                mgr_contact_email:    ['contact-general-email', 'mailto:',        null],
+                mgr_contact_whatsapp: ['contact-whatsapp',      'https://wa.me/', /\D/g],
+                mgr_contact_hr:       ['contact-hr',             'mailto:',        null],
+                mgr_contact_finance:  ['contact-finance',        'mailto:',        null],
+                mgr_contact_phone:    ['contact-phone',          'tel:',           null],
+                mgr_contact_web:      ['contact-web',            'https://',       null]
+            };
+            Object.entries(cMap).forEach(([key, [elId, prefix, strip]]) => {
+                if (!s[key]) return;
+                const val = s[key];
+                const href = strip ? prefix + val.replace(strip,'') : prefix + val;
+                setHref(elId, href);
+                const label = document.querySelector('#' + elId + ' .contact-val');
+                if (label) label.textContent = val;
+            });
+        });
+
+        if (employeeId) {
+            db.ref('site_content/manager_pages/' + employeeId).once('value').then(snap => {
+                const data = snap.val();
+                if (data) {
+                    populateEmployee(data);
+                } else {
+                    // fallback: try welcome_pages path
+                    db.ref('site_content/welcome_pages/' + employeeId).once('value').then(snap2 => {
+                        populateEmployee(snap2.val());
+                    });
+                }
+            }).catch(err => console.error('Firebase error:', err));
+
+            // Also load global site content (contacts, etc.)
+            db.ref('site_content/company_contacts').once('value').then(snap => {
+                const c = snap.val();
+                if (!c) return;
+                if (c.generalEmail) { setHref('contact-general-email', 'mailto:' + c.generalEmail); document.querySelector('#contact-general-email .contact-val').textContent = c.generalEmail; }
+                if (c.whatsapp)     { setHref('contact-whatsapp', 'https://wa.me/' + c.whatsapp.replace(/\D/g,'')); document.querySelector('#contact-whatsapp .contact-val').textContent = c.whatsapp; }
+                if (c.hr)           { setHref('contact-hr', 'mailto:' + c.hr); document.querySelector('#contact-hr .contact-val').textContent = c.hr; }
+                if (c.finance)      { setHref('contact-finance', 'mailto:' + c.finance); document.querySelector('#contact-finance .contact-val').textContent = c.finance; }
+                if (c.phone)        { setHref('contact-phone', 'tel:' + c.phone); document.querySelector('#contact-phone .contact-val').textContent = c.phone; }
+            });
+        }
+    } else {
+        // ── Demo Mode (no Firebase) — URL params ──
+        const demoData = {
+            name:         params.get('isim')        || 'Ayşe Yılmaz',
+            managerName:  params.get('yonetici')    || 'Yönetici',
+            position:     params.get('pozisyon')    || 'Frontend Developer',
+            department:   params.get('departman')   || 'Yazılım Geliştirme',
+            email:        params.get('email')       || 'ayse.yilmaz@bizitworks.com',
+            phone:        params.get('telefon')     || '+90 532 123 45 67',
+            startDate:    params.get('baslangic')   || '02 Haziran 2026',
+            location:     params.get('lokasyon')    || 'İstanbul — Levent Ofis',
+            employeeId:   params.get('emp_id')      || 'BIZ-2026-042',
+            contractType: params.get('sozlesme')    || 'Tam Zamanlı',
+            workType:     params.get('calisma')     || 'Hibrit',
+            status:       'Aktif',
+            managerNote:  params.get('not')         || 'Çalışan, mevcut projeye hızlı adapte olabilmesi için ilk hafta oryantasyon programına dahil edilecektir.'
+        };
+        populateEmployee(demoData);
+    }
+});
+</script>
+
+</body>
+</html>

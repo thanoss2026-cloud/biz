@@ -40,6 +40,7 @@
         <div class="nav-item" data-section="about"><i class="fas fa-info-circle"></i> &nbsp; Hakkımızda</div>
         <div class="nav-item" data-section="contact"><i class="fas fa-envelope"></i> &nbsp; İletişim</div>
         <div class="nav-item" data-section="welcome"><i class="fas fa-hand-holding-heart"></i> &nbsp; Hoş Geldin Linkleri</div>
+        <div class="nav-item" data-section="manager"><i class="fas fa-user-tie"></i> &nbsp; Yönetici Maili</div>
     </aside>
 
     <main>
@@ -219,6 +220,130 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 </div>
             </div>
         </div>
+
+        <!-- Section: Manager Notification Links -->
+        <div id="section-manager" class="section">
+
+            <div class="card">
+                <h3>Yönetici Bildirim Sayfası — Genel Metinler</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Yöneticiye gönderilecek sayfadaki sabit metinleri buradan düzenleyebilirsiniz.
+                </p>
+                <div class="form-group">
+                    <label>Sayfa Başlığı (Hero)</label>
+                    <input type="text" id="mgr_hero_title" placeholder="Sayın [Yönetici Adı],">
+                </div>
+                <div class="form-group">
+                    <label>Hero Alt Metin</label>
+                    <textarea id="mgr_hero_subtitle" rows="2" placeholder="Ekibinize yeni bir çalışan katılıyor..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Yapılacaklar Listesi (her satır bir madde)</label>
+                    <textarea id="mgr_checklist" rows="6" placeholder="Ekipmanların hazır olduğundan emin olun&#10;Kurumsal e-posta erişimlerini ayarlayın&#10;Ekip tanışma toplantısını planlayın"></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Şirket İletişim Bilgileri</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Yönetici sayfasındaki iletişim kartlarını buradan güncelleyin.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label>📧 Genel E-posta</label>
+                        <input type="email" id="mgr_contact_email" placeholder="info@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>💬 WhatsApp Numarası</label>
+                        <input type="text" id="mgr_contact_whatsapp" placeholder="+90 5XX XXX XX XX">
+                    </div>
+                    <div class="form-group">
+                        <label>👥 İK E-posta</label>
+                        <input type="email" id="mgr_contact_hr" placeholder="ik@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>💰 Finans E-posta</label>
+                        <input type="email" id="mgr_contact_finance" placeholder="finans@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>📞 Genel Telefon</label>
+                        <input type="text" id="mgr_contact_phone" placeholder="+90 212 123 45 67">
+                    </div>
+                    <div class="form-group">
+                        <label>🌐 Web Sitesi</label>
+                        <input type="text" id="mgr_contact_web" placeholder="www.bizitworks.com">
+                    </div>
+                </div>
+                <button class="btn btn-save" style="margin-top: 1rem;" onclick="saveMgrContacts()">
+                    <i class="fas fa-save"></i> İletişim Bilgilerini Kaydet
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>Yeni Yönetici Bildirimi Oluştur</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Yöneticiye gönderilecek, çalışana özel bilgi sayfası linki üretin.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Çalışanın Adı Soyadı *</label>
+                        <input type="text" id="mgr_emp_name" placeholder="Örn: Ayşe Yılmaz">
+                    </div>
+                    <div class="form-group">
+                        <label>Yöneticinin Adı</label>
+                        <input type="text" id="mgr_mgr_name" placeholder="Örn: Orkan Haliloğlu">
+                    </div>
+                    <div class="form-group">
+                        <label>Pozisyon / Unvan</label>
+                        <input type="text" id="mgr_position" placeholder="Örn: Frontend Developer">
+                    </div>
+                    <div class="form-group">
+                        <label>Departman</label>
+                        <input type="text" id="mgr_department" placeholder="Örn: Yazılım Geliştirme">
+                    </div>
+                    <div class="form-group">
+                        <label>Kurumsal E-posta</label>
+                        <input type="email" id="mgr_emp_email" placeholder="ayse@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="text" id="mgr_emp_phone" placeholder="+90 532 000 00 00">
+                    </div>
+                    <div class="form-group">
+                        <label>İşe Başlama Tarihi</label>
+                        <input type="text" id="mgr_startdate" placeholder="02 Haziran 2026">
+                    </div>
+                    <div class="form-group">
+                        <label>Lokasyon / Ofis</label>
+                        <input type="text" id="mgr_location" placeholder="İstanbul — Levent Ofis">
+                    </div>
+                    <div class="form-group">
+                        <label>Sözleşme Türü</label>
+                        <input type="text" id="mgr_contract" placeholder="Tam Zamanlı / Yarı Zamanlı">
+                    </div>
+                    <div class="form-group">
+                        <label>Çalışma Şekli</label>
+                        <input type="text" id="mgr_worktype" placeholder="Hibrit / Uzak / Ofis">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Yönetici Notu (opsiyonel)</label>
+                    <textarea id="mgr_note" rows="3" placeholder="Çalışana özel önemli notlar..."></textarea>
+                </div>
+                <button class="btn btn-save" onclick="generateManagerLink()">
+                    <i class="fas fa-link"></i> Yönetici Linki Üret ve Kaydet
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>Oluşturulan Yönetici Linkleri</h3>
+                <div id="manager-links-container">
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Yükleniyor...</p>
+                </div>
+            </div>
+
+        </div>
+
     </main>
 
     <script>
@@ -261,6 +386,9 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                     
                     // Load Welcome Pages
                     loadWelcomeLinks();
+                    // Load Manager Pages
+                    loadMgrSettings();
+                    loadManagerLinks();
                 } else {
                     document.getElementById('login-overlay').style.display = 'flex';
                     document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #ef4444"></i> CLOUD DISCONNECTED';
@@ -515,6 +643,133 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 updateForm();
             });
         });
+
+        // ═══════════════════════════════════════════
+        // MANAGER NOTIFICATION SECTION
+        // ═══════════════════════════════════════════
+
+        const MGR_FIELD_IDS = [
+            'mgr_hero_title', 'mgr_hero_subtitle', 'mgr_checklist',
+            'mgr_contact_email', 'mgr_contact_whatsapp', 'mgr_contact_hr',
+            'mgr_contact_finance', 'mgr_contact_phone', 'mgr_contact_web'
+        ];
+
+        function loadMgrSettings() {
+            if (!db) return;
+            db.ref('site_content/manager_settings').once('value').then(snap => {
+                const data = snap.val();
+                if (!data) return;
+                MGR_FIELD_IDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && data[id] !== undefined) el.value = data[id];
+                });
+            });
+        }
+
+        function saveMgrContacts() {
+            if (!db) return alert('Firebase bağlantısı yok.');
+            const data = {};
+            MGR_FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) data[id] = el.value;
+            });
+            db.ref('site_content/manager_settings').set(data).then(() => {
+                alert('Yönetici sayfası ayarları kaydedildi! ✓');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function generateManagerLink() {
+            if (!db) return alert('Firebase bağlantısı yok.');
+            const name = document.getElementById('mgr_emp_name').value.trim();
+            if (!name) return alert('Lütfen çalışanın adını girin.');
+
+            const payload = {
+                name:         name,
+                managerName:  document.getElementById('mgr_mgr_name').value.trim(),
+                position:     document.getElementById('mgr_position').value.trim(),
+                department:   document.getElementById('mgr_department').value.trim(),
+                email:        document.getElementById('mgr_emp_email').value.trim(),
+                phone:        document.getElementById('mgr_emp_phone').value.trim(),
+                startDate:    document.getElementById('mgr_startdate').value.trim(),
+                location:     document.getElementById('mgr_location').value.trim(),
+                contractType: document.getElementById('mgr_contract').value.trim(),
+                workType:     document.getElementById('mgr_worktype').value.trim(),
+                managerNote:  document.getElementById('mgr_note').value.trim(),
+                status:       'Aktif',
+                created_at:   new Date().toISOString()
+            };
+
+            const newRef = db.ref('site_content/manager_pages').push();
+            newRef.set(payload).then(() => {
+                // Clear form fields
+                ['mgr_emp_name','mgr_mgr_name','mgr_position','mgr_department',
+                 'mgr_emp_email','mgr_emp_phone','mgr_startdate','mgr_location',
+                 'mgr_contract','mgr_worktype','mgr_note'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                alert(name + ' için yönetici linki başarıyla oluşturuldu! ✓');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function loadManagerLinks() {
+            if (!db) return;
+            const container = document.getElementById('manager-links-container');
+
+            db.ref('site_content/manager_pages').on('value', (snapshot) => {
+                const data = snapshot.val();
+                container.innerHTML = '';
+
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.9rem;">Henüz bir link oluşturulmamış.</p>';
+                    return;
+                }
+
+                const ids = Object.keys(data).reverse();
+
+                ids.forEach(id => {
+                    const person = data[id];
+                    const url = window.location.origin + '/yonetici-bilgi.html?id=' + id;
+                    const displayUrl = url.replace(window.location.origin, '');
+
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem;">
+                            <div>
+                                <strong style="display: block; margin-bottom: 0.2rem;">${person.name}</strong>
+                                <span style="font-size: 0.8rem; color: #94a3b8;">${person.position || ''} ${person.department ? '— ' + person.department : ''}</span><br>
+                                <a href="${url}" target="_blank" style="color: var(--primary); font-size: 0.82rem; text-decoration: underline;">${displayUrl}</a>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #2563eb; color: white;"
+                                    onclick="copyMgrMailText('${person.name.replace(/'/g, "\'")}', '${person.managerName ? person.managerName.replace(/'/g, "\'") : 'Yönetici'}', '${url}')"
+                                    title="Mail Metnini Kopyala"><i class="fas fa-file-alt"></i></button>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #334155; color: white;"
+                                    onclick="copyToClipboard('${url}')" title="Linki Kopyala"><i class="fas fa-link"></i></button>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;"
+                                    onclick="deleteManagerLink('${id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function deleteManagerLink(id) {
+            if (confirm('Bu yönetici linkini silmek istediğinize emin misiniz?')) {
+                db.ref('site_content/manager_pages/' + id).remove();
+            }
+        }
+
+        function copyMgrMailText(empName, mgrName, url) {
+            const text = `Sayın ${mgrName},\n\n${empName} adlı çalışanımızın bilgilerini ve BIZ IT Works iletişim kanallarını içeren sayfaya aşağıdaki linkten ulaşabilirsiniz:\n\n${url}\n\nSaygılarımızla,\nBIZ IT Works İnsan Kaynakları`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Yönetici mail metni kopyalandı! ✓');
+            });
+        }
+
     </script>
 </body>
 </html>
