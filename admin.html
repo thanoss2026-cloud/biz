@@ -229,7 +229,8 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
         // --- Firebase Init ---
         if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
-            firebase.initializeApp(firebaseConfig);
+            // Güvenli başlatma
+            const _app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
             db = firebase.database();
             auth = firebase.auth();
 
@@ -365,18 +366,35 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
         function updateForm() {
             const langData = content[currentLang];
-            document.querySelectorAll('input, textarea').forEach(el => {
-                if (langData && langData[el.id] !== undefined) el.value = langData[el.id];
+            CONTENT_FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && langData && langData[id] !== undefined) el.value = langData[id];
             });
         }
+
+        // Kaydedilecek içerik alanlarının beyaz listesi
+        const CONTENT_FIELD_IDS = [
+            'hero_ghost','hero_title','hero_subtitle',
+            'services_title','services_subtitle',
+            'service_1_title','service_1_desc',
+            'service_2_title','service_2_desc',
+            'about_title','about_desc','about_quote',
+            'contact_title','contact_address_val','contact_email_val','contact_phone_val',
+            'welcome_msg_1','welcome_msg_2','welcome_signature',
+            'welcome_card1_title','welcome_card1_desc',
+            'welcome_card2_title','welcome_card2_desc',
+            'welcome_card3_title','welcome_card3_desc',
+            'welcome_card4_title','welcome_card4_desc'
+        ];
 
         function saveChanges() {
             if (!db) return alert('Hata: Firebase bağlantısı kurulamadı. Lütfen yapılandırmayı kontrol edin.');
 
-            // Sync current form first
+            // Sadece içerik alanlarını oku (login, link üretme vs. dahil etme)
             const langData = content[currentLang];
-            document.querySelectorAll('input, textarea').forEach(el => {
-                if (el.id !== 'admin-pass' && el.id !== 'admin-email') langData[el.id] = el.value;
+            CONTENT_FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) langData[id] = el.value;
             });
 
             Promise.all([
@@ -487,8 +505,9 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const langData = content[currentLang];
-                document.querySelectorAll('input, textarea').forEach(el => {
-                    if (el.id !== 'admin-pass') langData[el.id] = el.value;
+                CONTENT_FIELD_IDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) langData[id] = el.value;
                 });
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');

@@ -121,7 +121,8 @@
             const nameSpan = document.getElementById('employee-name');
 
             if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured()) {
-                firebase.initializeApp(firebaseConfig);
+                // Güvenli başlatma: app zaten başlatılmışsa yeniden kullan
+                const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
                 const db = firebase.database();
                 
                 // Fetch dynamic text content from admin panel
