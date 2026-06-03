@@ -432,35 +432,9 @@
                 <div class="cc-text"><div class="cc-dept">Online</div><h4>Web Sitesi</h4><div class="cc-val">www.bizitworks.com</div></div>
             </a>
         </div>
-    </div>
+    </div><!-- /page-body -->
 
-    <!-- CHECKLIST -->
-    <div class="fi">
-        <div class="sec-label" style="margin-top:32px;">
-            <div class="sec-icon amber"><i class="fas fa-triangle-exclamation"></i></div>
-            <div class="sec-label-text">
-                <h2>Yönetici Yapılacaklar Listesi</h2>
-                <p>İlk hafta tamamlanması beklenen adımlar</p>
-            </div>
-        </div>
-        <div class="checklist-box">
-            <div class="cl-icon"><i class="fas fa-clipboard-list"></i></div>
-            <div>
-                <h4>İlk Hafta Kontrol Listesi</h4>
-                <ul id="checklist-list">
-                    <li>Çalışanın ekipmanlarının (bilgisayar, telefon vb.) hazır olduğundan emin olun</li>
-                    <li>Kurumsal e-posta ve sistem erişimlerini İK ile koordineli olarak ayarlayın</li>
-                    <li>Ekip tanışma toplantısını planlayın</li>
-                    <li>Çalışanı doğrudan yöneticisi ile buluşturun ve görev tanımını paylaşın</li>
-                    <li>İlk 30 gün hedeflerini birlikte belirleyin</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-</div><!-- /page-body -->
-
-<!-- FOOTER -->
+    <!-- FOOTER -->
 <footer class="mgr-footer">
     <div class="footer-inner">
         <div class="fl">
@@ -544,8 +518,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (s.mgr_hero_subtitle) set('hero-subtitle-text', s.mgr_hero_subtitle);
             if (s.mgr_checklist) {
                 const ul    = document.getElementById('checklist-list');
-                const items = s.mgr_checklist.split('\n').filter(l => l.trim());
-                if (items.length) ul.innerHTML = items.map(i => `<li>${i.trim()}</li>`).join('');
+                if (ul) {
+                    const items = s.mgr_checklist.split('\n').filter(l => l.trim());
+                    if (items.length) ul.innerHTML = items.map(i => `<li>${i.trim()}</li>`).join('');
+                }
             }
             applyContacts(s);
         });
