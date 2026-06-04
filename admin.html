@@ -241,6 +241,9 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                     <label>Yapılacaklar Listesi (her satır bir madde)</label>
                     <textarea id="mgr_checklist" rows="6" placeholder="Ekipmanların hazır olduğundan emin olun&#10;Kurumsal e-posta erişimlerini ayarlayın&#10;Ekip tanışma toplantısını planlayın"></textarea>
                 </div>
+                <button class="btn btn-save" style="margin-top: 1rem;" onclick="saveMgrContacts()">
+                    <i class="fas fa-save"></i> Genel Metinleri Kaydet
+                </button>
             </div>
 
             <div class="card">
@@ -764,7 +767,12 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         }
 
         function copyMgrMailText(empName, mgrName, url) {
-            const text = `Sayın ${mgrName},\n\n${empName} adlı çalışanımızın bilgilerini ve BIZ IT Works iletişim kanallarını içeren sayfaya aşağıdaki linkten ulaşabilirsiniz:\n\n${url}\n\nSaygılarımızla,\nBIZ IT Works İnsan Kaynakları`;
+            const checklistVal = document.getElementById('mgr_checklist') ? document.getElementById('mgr_checklist').value.trim() : '';
+            let checklistText = '';
+            if (checklistVal) {
+                checklistText = '\n\nYapılacaklar Listesi:\n' + checklistVal.split('\n').filter(l => l.trim()).map(item => `• ${item.trim()}`).join('\n');
+            }
+            const text = `Sayın ${mgrName},\n\n${empName} adlı çalışanımızın bilgilerini ve BIZ IT Works iletişim kanallarını içeren sayfaya aşağıdaki linkten ulaşabilirsiniz:\n\n${url}${checklistText}\n\nSaygılarımızla,\nBIZ IT Works İnsan Kaynakları`;
             navigator.clipboard.writeText(text).then(() => {
                 alert('Yönetici mail metni kopyalandı! ✓');
             });

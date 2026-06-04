@@ -395,6 +395,14 @@
             <div class="notes-lbl"><i class="fas fa-comment-dots" style="margin-right:6px;"></i>Yönetici Notu</div>
             <div class="notes-txt" id="emp-notes">—</div>
         </div>
+
+        <div class="checklist-box" id="checklist-container" style="margin-top: 16px; display: none;">
+            <div class="cl-icon"><i class="fas fa-tasks"></i></div>
+            <div>
+                <h4>Yapılacaklar Listesi</h4>
+                <ul id="checklist-list"></ul>
+            </div>
+        </div>
     </div>
 
     <!-- CONTACTS -->
@@ -518,9 +526,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (s.mgr_hero_subtitle) set('hero-subtitle-text', s.mgr_hero_subtitle);
             if (s.mgr_checklist) {
                 const ul    = document.getElementById('checklist-list');
+                const container = document.getElementById('checklist-container');
                 if (ul) {
                     const items = s.mgr_checklist.split('\n').filter(l => l.trim());
-                    if (items.length) ul.innerHTML = items.map(i => `<li>${i.trim()}</li>`).join('');
+                    if (items.length) {
+                        ul.innerHTML = items.map(i => `<li>${i.trim()}</li>`).join('');
+                        if (container) container.style.display = 'flex';
+                    }
                 }
             }
             applyContacts(s);
