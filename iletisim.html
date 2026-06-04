@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="sub_contact_title">İletişim | BIZ IT Works</title>
+    <meta name="description" content="BIZ IT Works ile iletişime geçin. Projeleriniz için teklif alın, teknik ekibimizle görüşün." data-i18n-content="meta_description">
+    <meta name="keywords" content="iletişim, biz it works adres, yazılım teklifi al, telefon numarası" data-i18n-content="meta_keywords">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="subpage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <a href="#"><i class="fas fa-briefcase"></i> Kariyer</a>
+                <a href="#"><i class="fas fa-blog"></i> Blog</a>
+            </div>
+            <div class="top-bar-right">
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="lang-switcher">
+                    <button class="lang-btn">
+                        <i class="fas fa-globe"></i>
+                        <span id="current-lang">TR</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                    </button>
+                    <div class="lang-dropdown">
+                        <div class="lang-option active" data-lang="tr">
+                            <img src="https://flagcdn.com/w20/tr.png" alt="TR"> Türkçe
+                        </div>
+                        <div class="lang-option" data-lang="en">
+                            <img src="https://flagcdn.com/w20/gb.png" alt="EN"> English
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <header id="header">
+        <nav class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.svg" alt="BIZ IT Works">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" data-i18n="nav_home">Ana Sayfa</a></li>
+                <li><a href="hizmetler.html" data-i18n="nav_services">Hizmetler</a></li>
+                <li><a href="hakkimizda.html" data-i18n="nav_about">Hakkımızda</a></li>
+                <li><a href="iletisim.html" data-i18n="nav_contact">İletişim</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="iletisim.html" class="btn btn-primary" data-i18n="btn_get_quote">Teklif Al</a>
+            </div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="subpage-hero">
+            <div class="container">
+                <h1 data-i18n="sub_contact_title">İletişim</h1>
+                <p data-i18n="sub_contact_subtitle">Bizimle iletişime geçin, fikirlerinizi hayata geçirelim.</p>
+                <div class="breadcrumbs">
+                    <a href="index.html" data-i18n="nav_home">Ana Sayfa</a>
+                    <i class="fas fa-chevron-right" style="font-size: 0.7rem; align-self: center;"></i>
+                    <span class="current" data-i18n="sub_contact_title">İletişim</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="subpage-content">
+            <div class="container">
+                <div class="contact-grid-wrapper reveal active">
+                    <div class="contact-info" style="padding: 0; background: transparent; border-right: none;">
+                        <h2 data-i18n="sub_contact_info_title" style="font-size: 2.2rem; margin-bottom: 1.5rem; text-transform: uppercase;">İletişim Bilgileri</h2>
+                        <p data-i18n="sub_contact_hero_p" style="margin-bottom: 2.5rem;">Sorularınız, iş ortaklığı talepleriniz ve teklif almak için bizimle dilediğiniz kanal üzerinden irtibat kurabilirsiniz.</p>
+                        
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p><strong data-i18n="label_contact_email">E-posta:</strong> <a id="contact-email-link" href="javascript:void(0)"><span data-i18n="contact_email_val">hello@bizitworks.com</span></a></p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <p><strong data-i18n="label_contact_phone">Telefon:</strong> <a id="contact-phone-link" href="javascript:void(0)"><span data-i18n="contact_phone_val">+90 212 000 00 00</span></a></p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p><strong data-i18n="label_contact_address">Adres:</strong> <a id="contact-address-link" href="javascript:void(0)" target="_blank"><span data-i18n="contact_address_val">Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul</span></a></p>
+                        </div>
+
+                        <div class="contact-map">
+                            <!-- Embedded Google Map styled for dark mode using subpage.css filters -->
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3007.828570994119!2d29.011666!3d41.077222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab61389cb43f1%3A0xed4f2c96c464c185!2sLevent%2C%20Be%C5%9Fikta%C5%9F%2F%C4%B0stanbul!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" style="padding: 0;">
+                        <h2 data-i18n="sub_contact_form_title" style="font-size: 2.2rem; margin-bottom: 2rem; text-transform: uppercase;">Bize Mesaj Gönderin</h2>
+                        <div class="form-group">
+                            <input type="text" placeholder="Adınız Soyadınız" required data-i18n-placeholder="form_name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="E-posta Adresiniz" required data-i18n-placeholder="form_email">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="6" placeholder="Mesajınız" required data-i18n-placeholder="form_message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-i18n="btn_send" style="width: 100%;">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">
+                    <img src="assets/logo.svg" alt="BIZ IT Works">
+                </a>
+                <p data-i18n="footer_copy">© 2026 BIZ IT Works. Tüm hakları saklıdır.</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="kullanim-kosullari.html" data-i18n="footer_terms">Kullanım Koşulları</a></li>
+                <li><a href="gizlilik-politikasi.html" data-i18n="footer_privacy">Gizlilik Politikası</a></li>
+                <li><a href="kvkk.html" data-i18n="footer_kvkk">KVKK Aydınlatma Metni</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

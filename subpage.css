@@ -1,0 +1,186 @@
+/* --- Subpage Styling System --- */
+.subpage-hero {
+    position: relative;
+    padding: 12rem 0 6rem;
+    background: radial-gradient(circle at 10% 20%, rgba(10, 14, 27, 0.95) 0%, rgba(22, 28, 49, 0.9) 100%);
+    border-bottom: 1px solid var(--glass-border);
+    overflow: hidden;
+    text-align: center;
+}
+
+.subpage-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 80% 20%, rgba(227, 6, 19, 0.15), transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(0, 210, 255, 0.15), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.subpage-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
+.subpage-hero h1 {
+    font-size: 4rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.breadcrumbs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.breadcrumbs a {
+    color: var(--text-dim);
+    transition: 0.3s;
+}
+
+.breadcrumbs a:hover {
+    color: var(--primary-color);
+}
+
+.breadcrumbs span.current {
+    color: var(--accent-red);
+}
+
+/* --- Content Layouts --- */
+.subpage-content {
+    padding: 8rem 0;
+    background-color: var(--bg-dark);
+}
+
+.subpage-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 3rem;
+    border-radius: 4px;
+    height: 100%;
+    transition: 0.4s ease;
+}
+
+.subpage-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent-red);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.subpage-card .card-icon {
+    font-size: 2.5rem;
+    color: var(--accent-red);
+    margin-bottom: 1.5rem;
+}
+
+.subpage-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.subpage-card p {
+    color: var(--text-dim);
+    line-height: 1.7;
+}
+
+/* --- Legal / Policy Layout --- */
+.policy-box {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 4rem;
+    border-radius: 4px;
+    color: var(--text-dim);
+}
+
+.policy-box h2 {
+    color: var(--text-main);
+    font-size: 1.8rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.policy-box h2:first-of-type {
+    margin-top: 0;
+}
+
+.policy-box p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+}
+
+.policy-box ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    list-style-type: square;
+}
+
+.policy-box ul li {
+    margin-bottom: 0.5rem;
+    line-height: 1.8;
+}
+
+/* --- Contact Page Specific --- */
+.contact-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 4rem;
+}
+
+.contact-map {
+    height: 350px;
+    border: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+    margin-top: 2rem;
+    border-radius: 4px;
+}
+
+.contact-map iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* --- Responsive Adaptations --- */
+@media (max-width: 991px) {
+    .subpage-hero {
+        padding: 9rem 0 4rem;
+    }
+    .subpage-hero h1 {
+        font-size: 3rem;
+    }
+    .subpage-content {
+        padding: 5rem 0;
+    }
+    .contact-grid-wrapper {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+        gap: 3rem;
+    }
+    .policy-box {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .subpage-hero h1 {
+        font-size: 2.2rem;
+    }
+    .policy-box h2 {
+        font-size: 1.4rem;
+    }
+}
