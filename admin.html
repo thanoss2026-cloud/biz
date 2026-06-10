@@ -870,6 +870,8 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         // ═══════════════════════════════════════════
         // AGENDA & TASKS SECTION
         // ═══════════════════════════════════════════
+        let agendaTasksData = null;
+        let editingTaskId = null;
 
         function addAgendaTask() {
             if (!db) return alert('Firebase bağlantısı yok.');
@@ -906,53 +908,89 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
         function loadAgendaTasks() {
             if (!db) return;
-            
             db.ref('site_content/agenda_tasks').on('value', (snapshot) => {
-                const data = snapshot.val();
-                
-                const columns = {
-                    todo: document.getElementById('tasks-todo'),
-                    in_progress: document.getElementById('tasks-in-progress'),
-                    done: document.getElementById('tasks-done')
-                };
-                
-                const counts = {
-                    todo: 0,
-                    in_progress: 0,
-                    done: 0
-                };
-                
+                agendaTasksData = snapshot.val();
+                renderAgendaTasks();
+            });
+        }
+
+        function renderAgendaTasks() {
+            const data = agendaTasksData;
+            const columns = {
+                todo: document.getElementById('tasks-todo'),
+                in_progress: document.getElementById('tasks-in-progress'),
+                done: document.getElementById('tasks-done')
+            };
+            
+            const counts = {
+                todo: 0,
+                in_progress: 0,
+                done: 0
+            };
+            
+            Object.keys(columns).forEach(status => {
+                if (columns[status]) columns[status].innerHTML = '';
+            });
+            
+            if (!data) {
                 Object.keys(columns).forEach(status => {
-                    if (columns[status]) columns[status].innerHTML = '';
+                    if (columns[status]) {
+                        columns[status].innerHTML = '<div style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 2rem 0;">Henüz task yok</div>';
+                    }
                 });
+                document.getElementById('count-todo').innerText = '0';
+                document.getElementById('count-in-progress').innerText = '0';
+                document.getElementById('count-done').innerText = '0';
+                return;
+            }
+            
+            const tasks = [];
+            Object.keys(data).forEach(id => {
+                tasks.push({ id, ...data[id] });
+            });
+            
+            // Sort tasks by created_at ascending
+            tasks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            
+            tasks.forEach(task => {
+                const status = task.status || 'todo';
+                counts[status]++;
                 
-                if (!data) {
-                    Object.keys(columns).forEach(status => {
-                        if (columns[status]) {
-                            columns[status].innerHTML = '<div style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 2rem 0;">Henüz task yok</div>';
-                        }
-                    });
-                    document.getElementById('count-todo').innerText = '0';
-                    document.getElementById('count-in-progress').innerText = '0';
-                    document.getElementById('count-done').innerText = '0';
-                    return;
-                }
+                const card = document.createElement('div');
+                card.className = 'task-card';
                 
-                const tasks = [];
-                Object.keys(data).forEach(id => {
-                    tasks.push({ id, ...data[id] });
-                });
-                
-                // Sort tasks by created_at ascending
-                tasks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-                
-                tasks.forEach(task => {
-                    const status = task.status || 'todo';
-                    counts[status]++;
-                    
-                    const card = document.createElement('div');
-                    card.className = 'task-card';
-                    
+                if (editingTaskId === task.id) {
+                    // Inline Edit Mode UI
+                    card.innerHTML = `
+                        <div style="margin-bottom: 0.8rem;">
+                            <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Başlık *</label>
+                            <input type="text" id="edit_task_title_${task.id}" value="${task.title.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 0.8rem;">
+                            <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Açıklama</label>
+                            <textarea id="edit_task_desc_${task.id}" rows="2" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; resize: vertical; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">${task.description || ''}</textarea>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
+                            <div>
+                                <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Nick *</label>
+                                <input type="text" id="edit_task_nick_${task.id}" value="${task.nick.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Öncelik</label>
+                                <select id="edit_task_priority_${task.id}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: #0f172a; color: white; border: 1px solid var(--border); border-radius: 6px;">
+                                    <option value="düşük" ${task.priority === 'düşük' ? 'selected' : ''}>Düşük</option>
+                                    <option value="orta" ${task.priority === 'orta' ? 'selected' : ''}>Orta</option>
+                                    <option value="yüksek" ${task.priority === 'yüksek' ? 'selected' : ''}>Yüksek</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                            <button class="btn-task-action" onclick="cancelEditTask()" style="background: transparent; border-color: rgba(255,255,255,0.2);">İptal</button>
+                            <button class="btn-task-action" onclick="saveEditTask('${task.id}')" style="background: var(--primary); color: black; border-color: var(--primary); font-weight: bold;">Kaydet</button>
+                        </div>
+                    `;
+                } else {
+                    // Regular Card UI
                     let dateStr = '';
                     if (task.created_at) {
                         try {
@@ -989,24 +1027,59 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                             <div class="task-move-btns">
                                 ${moveBtnsHTML}
                             </div>
-                            <button class="btn-task-action btn-task-delete" onclick="deleteAgendaTask('${task.id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                            <div style="display: flex; gap: 0.3rem;">
+                                <button class="btn-task-action" onclick="startEditTask('${task.id}')" title="Düzenle"><i class="fas fa-edit"></i></button>
+                                <button class="btn-task-action btn-task-delete" onclick="deleteAgendaTask('${task.id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                            </div>
                         </div>
                     `;
-                    
-                    if (columns[status]) {
-                        columns[status].appendChild(card);
-                    }
-                });
+                }
                 
-                Object.keys(counts).forEach(status => {
-                    const countEl = document.getElementById('count-' + status);
-                    if (countEl) countEl.innerText = counts[status];
-                    
-                    if (counts[status] === 0 && columns[status]) {
-                        columns[status].innerHTML = '<div style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 2rem 0; border: 1px dashed rgba(255,255,255,0.05); border-radius: 6px;">Task yok</div>';
-                    }
-                });
+                if (columns[status]) {
+                    columns[status].appendChild(card);
+                }
             });
+            
+            Object.keys(counts).forEach(status => {
+                const countEl = document.getElementById('count-' + status);
+                if (countEl) countEl.innerText = counts[status];
+                
+                if (counts[status] === 0 && columns[status]) {
+                    columns[status].innerHTML = '<div style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 2rem 0; border: 1px dashed rgba(255,255,255,0.05); border-radius: 6px;">Task yok</div>';
+                }
+            });
+        }
+
+        function startEditTask(id) {
+            editingTaskId = id;
+            renderAgendaTasks();
+        }
+
+        function cancelEditTask() {
+            editingTaskId = null;
+            renderAgendaTasks();
+        }
+
+        function saveEditTask(id) {
+            if (!db) return;
+            const title = document.getElementById(`edit_task_title_${id}`).value.trim();
+            const desc = document.getElementById(`edit_task_desc_${id}`).value.trim();
+            const nick = document.getElementById(`edit_task_nick_${id}`).value.trim();
+            const priority = document.getElementById(`edit_task_priority_${id}`).value;
+
+            if (!title || !nick) {
+                return alert('Lütfen Başlık ve Ekleyen Kişi (Nick) alanlarını doldurun.');
+            }
+
+            db.ref('site_content/agenda_tasks/' + id).update({
+                title: title,
+                description: desc,
+                nick: nick,
+                priority: priority
+            }).then(() => {
+                editingTaskId = null;
+                // Firebase .on('value') updates agendaTasksData and calls renderAgendaTasks automatically
+            }).catch(err => alert('Güncelleme hatası: ' + err.message));
         }
 
         function updateTaskStatus(id, newStatus) {
