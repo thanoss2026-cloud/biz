@@ -688,14 +688,39 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
 
         // Navigation (Sidebar & Lang)
+        function showSection(sectionId) {
+            const targetSection = document.getElementById('section-' + sectionId);
+            const targetNav = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+            
+            if (targetSection && targetNav) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                targetNav.classList.add('active');
+                
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                targetSection.classList.add('active');
+            }
+        }
+
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.getElementById('section-' + item.dataset.section).classList.add('active');
+                window.location.hash = item.dataset.section;
             });
         });
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1);
+            if (hash) showSection(hash);
+        });
+
+        // Check on initial page load
+        const initialHash = window.location.hash.slice(1);
+        if (initialHash) {
+            // Wait slightly or call directly since DOM is already loaded at bottom of body
+            showSection(initialHash);
+        } else {
+            showSection('hero');
+        }
 
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.addEventListener('click', () => {
