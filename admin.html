@@ -972,7 +972,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                     card.innerHTML = `
                         <div style="margin-bottom: 0.8rem;">
                             <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Başlık *</label>
-                            <input type="text" id="edit_task_title_${task.id}" value="${task.title.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
+                            <input type="text" id="edit_task_title_${task.id}" value="${task.title.replace(/"/g, '&quot;')}" onkeydown="if(event.key === 'Enter') saveEditTask('${task.id}')" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
                         </div>
                         <div style="margin-bottom: 0.8rem;">
                             <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Açıklama</label>
@@ -981,11 +981,11 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
                             <div>
                                 <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Nick *</label>
-                                <input type="text" id="edit_task_nick_${task.id}" value="${task.nick.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
+                                <input type="text" id="edit_task_nick_${task.id}" value="${task.nick.replace(/"/g, '&quot;')}" onkeydown="if(event.key === 'Enter') saveEditTask('${task.id}')" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
                             </div>
                             <div>
                                 <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Atanan</label>
-                                <input type="text" id="edit_task_assignee_${task.id}" value="${(task.assignee || '').replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
+                                <input type="text" id="edit_task_assignee_${task.id}" value="${(task.assignee || '').replace(/"/g, '&quot;')}" onkeydown="if(event.key === 'Enter') saveEditTask('${task.id}')" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
                             </div>
                             <div>
                                 <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Öncelik</label>
@@ -1084,15 +1084,32 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 return alert('Lütfen Başlık ve Ekleyen Kişi (Nick) alanlarını doldurun.');
             }
 
+            // Optimistic local state update to render updated values immediately
+            if (agendaTasksData && agendaTasksData[id]) {
+                agendaTasksData[id].title = title;
+                agendaTasksData[id].description = desc;
+                agendaTasksData[id].nick = nick;
+                agendaTasksData[id].assignee = assignee;
+                agendaTasksData[id].priority = priority;
+            }
+
+            // Close edit mode immediately (makes buttons disappear instantly)
+            editingTaskId = null;
+            renderAgendaTasks();
+
+            // Update database in background
             db.ref('site_content/agenda_tasks/' + id).update({
                 title: title,
                 description: desc,
                 nick: nick,
                 assignee: assignee,
                 priority: priority
-            }).then(() => {
-                editingTaskId = null;
-            }).catch(err => alert('Güncelleme hatası: ' + err.message));
+            }).catch(err => {
+                alert('Güncelleme hatası: ' + err.message);
+                // Revert edit state on error
+                editingTaskId = id;
+                renderAgendaTasks();
+            });
         }
 
         function updateTaskStatus(id, newStatus) {
