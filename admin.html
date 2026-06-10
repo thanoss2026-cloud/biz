@@ -352,17 +352,11 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         <div id="section-agenda" class="section">
              <div class="card">
                 <h3>Yeni Gündem / Task Ekle</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
                     <div class="form-group">
                         <label>Gündem / Toplantı Başlığı *</label>
                         <input type="text" id="agenda_title" placeholder="Örn: Haftalık Senkronizasyon Toplantısı">
                     </div>
-                    <div class="form-group">
-                        <label>Ekleyen Kişi (Nick) *</label>
-                        <input type="text" id="agenda_nick" placeholder="Örn: orkan">
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
                     <div class="form-group">
                         <label>Öncelik Derecesi</label>
                         <select id="agenda_priority">
@@ -370,6 +364,16 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                             <option value="orta" selected>Orta</option>
                             <option value="yüksek">Yüksek</option>
                         </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Ekleyen Kişi (Nick) *</label>
+                        <input type="text" id="agenda_nick" placeholder="Örn: orkan">
+                    </div>
+                    <div class="form-group">
+                        <label>Atanan Kişi (Nick)</label>
+                        <input type="text" id="agenda_assignee" placeholder="Örn: ahmet (Opsiyonel)">
                     </div>
                     <div class="form-group">
                         <label>Açıklama / Detaylar</label>
@@ -877,11 +881,13 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             if (!db) return alert('Firebase bağlantısı yok.');
             const titleInput = document.getElementById('agenda_title');
             const nickInput = document.getElementById('agenda_nick');
+            const assigneeInput = document.getElementById('agenda_assignee');
             const priorityInput = document.getElementById('agenda_priority');
             const descInput = document.getElementById('agenda_desc');
 
             const title = titleInput.value.trim();
             const nick = nickInput.value.trim();
+            const assignee = assigneeInput.value.trim();
             const priority = priorityInput.value;
             const desc = descInput.value.trim();
 
@@ -892,6 +898,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             const payload = {
                 title: title,
                 nick: nick,
+                assignee: assignee,
                 priority: priority,
                 description: desc,
                 status: 'todo',
@@ -900,6 +907,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
             db.ref('site_content/agenda_tasks').push(payload).then(() => {
                 titleInput.value = '';
+                assigneeInput.value = '';
                 descInput.value = '';
                 // Keep the nickname so they don't have to re-enter it next time
                 alert('Gündem / Task başarıyla eklendi! ✓');
@@ -964,16 +972,20 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                     card.innerHTML = `
                         <div style="margin-bottom: 0.8rem;">
                             <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Başlık *</label>
-                            <input type="text" id="edit_task_title_${task.id}" value="${task.title.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%;">
+                            <input type="text" id="edit_task_title_${task.id}" value="${task.title.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
                         </div>
                         <div style="margin-bottom: 0.8rem;">
                             <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Açıklama</label>
                             <textarea id="edit_task_desc_${task.id}" rows="2" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; resize: vertical; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">${task.description || ''}</textarea>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
                             <div>
                                 <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Nick *</label>
-                                <input type="text" id="edit_task_nick_${task.id}" value="${task.nick.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%;">
+                                <input type="text" id="edit_task_nick_${task.id}" value="${task.nick.replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Atanan</label>
+                                <input type="text" id="edit_task_assignee_${task.id}" value="${(task.assignee || '').replace(/"/g, '&quot;')}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
                             </div>
                             <div>
                                 <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Öncelik</label>
@@ -1020,7 +1032,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                         </div>
                         ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
                         <div class="task-meta">
-                            <span>👤 <span class="task-creator">${task.nick}</span></span>
+                            <span>👤 <span class="task-creator" title="Ekleyen">${task.nick}</span>${task.assignee ? ` ➔ 🎯 <span style="color: var(--primary); font-weight: 600;" title="Atanan">${task.assignee}</span>` : ''}</span>
                             <span class="task-date">${dateStr}</span>
                         </div>
                         <div class="task-actions">
@@ -1065,6 +1077,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             const title = document.getElementById(`edit_task_title_${id}`).value.trim();
             const desc = document.getElementById(`edit_task_desc_${id}`).value.trim();
             const nick = document.getElementById(`edit_task_nick_${id}`).value.trim();
+            const assignee = document.getElementById(`edit_task_assignee_${id}`).value.trim();
             const priority = document.getElementById(`edit_task_priority_${id}`).value;
 
             if (!title || !nick) {
@@ -1075,10 +1088,10 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 title: title,
                 description: desc,
                 nick: nick,
+                assignee: assignee,
                 priority: priority
             }).then(() => {
                 editingTaskId = null;
-                // Firebase .on('value') updates agendaTasksData and calls renderAgendaTasks automatically
             }).catch(err => alert('Güncelleme hatası: ' + err.message));
         }
 
