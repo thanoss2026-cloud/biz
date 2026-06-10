@@ -228,7 +228,7 @@ input:focus, textarea:focus, select:focus {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-top: 1rem;
-    align-items: start;
+    align-items: stretch;
 }
 
 @media (max-width: 900px) {
@@ -277,8 +277,6 @@ input:focus, textarea:focus, select:focus {
     flex-direction: column;
     gap: 0.8rem;
     flex-grow: 1;
-    overflow-y: auto;
-    max-height: 600px;
 }
 
 .task-card {
