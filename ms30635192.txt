@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Domain ownership verification file for Microsoft 365 - place in the website root",
+  "Domain": "bizitworks.com",
+  "Id": "d460a29b-4fee-474d-975e-f5a9e049ce04"
+}
