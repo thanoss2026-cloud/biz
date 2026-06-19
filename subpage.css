@@ -63,18 +63,56 @@
 }
 
 .subpage-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    background: rgba(15, 20, 35, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 210, 255, 0.2);
     padding: 3rem;
-    border-radius: 4px;
+    border-radius: 12px;
     height: 100%;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.subpage-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 12px;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(0,210,255,0.5), rgba(227,6,19,0.5));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.2;
     transition: 0.4s ease;
+    pointer-events: none;
 }
 
 .subpage-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--accent-red);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transform: translateY(-10px) scale(1.02);
+    border-color: transparent;
+    box-shadow: 0 10px 40px rgba(0, 210, 255, 0.15), 0 0 20px rgba(227, 6, 19, 0.1);
+}
+
+.subpage-card:hover::before {
+    opacity: 1;
+}
+
+/* Neon variations for the grid items to match the infographic */
+.services-grid > .subpage-card:nth-child(4n+1)::before {
+    background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+}
+.services-grid > .subpage-card:nth-child(4n+2)::before {
+    background: linear-gradient(135deg, #ff0844, #ffb199);
+}
+.services-grid > .subpage-card:nth-child(4n+3)::before {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+}
+.services-grid > .subpage-card:nth-child(4n+4)::before {
+    background: linear-gradient(135deg, #b06ab3, #4568dc);
 }
 
 .subpage-card .card-icon {
