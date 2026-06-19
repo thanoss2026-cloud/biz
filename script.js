@@ -242,7 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (translations[lang] && translations[lang][key]) {
-                el.innerHTML = translations[lang][key];
+                let content = translations[lang][key];
+                if (typeof content === 'string') {
+                    content = content.replace(/\n/g, '<br>');
+                }
+                el.innerHTML = content;
             }
         });
 
