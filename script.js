@@ -38,6 +38,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- URL Routing Map ---
+    const routeMap = {
+        "anasayfa": { tr: "anasayfa", en: "home" },
+        "home": { tr: "anasayfa", en: "home" },
+        "hizmetler": { tr: "hizmetler", en: "services" },
+        "services": { tr: "hizmetler", en: "services" },
+        "hakkimizda": { tr: "hakkimizda", en: "about-us" },
+        "about-us": { tr: "hakkimizda", en: "about-us" },
+        "iletisim": { tr: "iletisim", en: "contact" },
+        "contact": { tr: "iletisim", en: "contact" },
+        "kullanim-kosullari": { tr: "kullanim-kosullari", en: "terms-of-use" },
+        "terms-of-use": { tr: "kullanim-kosullari", en: "terms-of-use" },
+        "gizlilik-politikasi": { tr: "gizlilik-politikasi", en: "privacy-policy" },
+        "privacy-policy": { tr: "gizlilik-politikasi", en: "privacy-policy" },
+        "kvkk": { tr: "kvkk", en: "gdpr" },
+        "gdpr": { tr: "kvkk", en: "gdpr" }
+    };
+
     // --- Multi-Language Support & Cloud Dynamic Content ---
     const defaultTranslations = {
         tr: {
@@ -315,6 +333,14 @@ document.addEventListener('DOMContentLoaded', () => {
             opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
         });
 
+        // --- Update Navigation Links ---
+        document.querySelectorAll('a').forEach(a => {
+            const href = a.getAttribute('href');
+            if (href && routeMap[href]) {
+                a.setAttribute('href', routeMap[href][lang]);
+            }
+        });
+
         // --- Update Interactive Link Hrefs ---
         const emailLink = document.getElementById('contact-email-link');
         const phoneLink = document.getElementById('contact-phone-link');
@@ -340,6 +366,13 @@ document.addEventListener('DOMContentLoaded', () => {
         opt.addEventListener('click', () => {
             const lang = opt.getAttribute('data-lang');
             setLanguage(lang);
+            
+            let currentPath = window.location.pathname.replace(/^\//, '').replace(/\.html$/, '');
+            if (currentPath === '' || currentPath === 'index') currentPath = 'anasayfa';
+            
+            if (routeMap[currentPath] && routeMap[currentPath][lang] !== currentPath) {
+                window.location.href = '/' + routeMap[currentPath][lang];
+            }
         });
     });
 

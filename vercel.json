@@ -1,9 +1,19 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    {
-      "source": "/anasayfa",
-      "destination": "/"
-    }
+    { "source": "/anasayfa", "destination": "/index.html" },
+    { "source": "/home", "destination": "/index.html" },
+    { "source": "/hizmetler", "destination": "/hizmetler.html" },
+    { "source": "/services", "destination": "/hizmetler.html" },
+    { "source": "/hakkimizda", "destination": "/hakkimizda.html" },
+    { "source": "/about-us", "destination": "/hakkimizda.html" },
+    { "source": "/iletisim", "destination": "/iletisim.html" },
+    { "source": "/contact", "destination": "/iletisim.html" },
+    { "source": "/kullanim-kosullari", "destination": "/kullanim-kosullari.html" },
+    { "source": "/terms-of-use", "destination": "/kullanim-kosullari.html" },
+    { "source": "/gizlilik-politikasi", "destination": "/gizlilik-politikasi.html" },
+    { "source": "/privacy-policy", "destination": "/gizlilik-politikasi.html" },
+    { "source": "/kvkk", "destination": "/kvkk.html" },
+    { "source": "/gdpr", "destination": "/kvkk.html" }
   ]
 }
