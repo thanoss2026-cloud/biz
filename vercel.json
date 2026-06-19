@@ -1,8 +1,8 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/anasayfa", "destination": "/index.html" },
-    { "source": "/home", "destination": "/index.html" },
+    { "source": "/anasayfa", "destination": "/" },
+    { "source": "/home", "destination": "/" },
     { "source": "/hizmetler", "destination": "/hizmetler.html" },
     { "source": "/services", "destination": "/hizmetler.html" },
     { "source": "/hakkimizda", "destination": "/hakkimizda.html" },
