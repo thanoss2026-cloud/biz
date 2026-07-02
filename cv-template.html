@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIZ IT Works - Kurumsal CV Şablonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00d2ff;
+            --secondary-color: #3a7bd5;
+            --accent-red: #e30613; /* BIZ IT Works Kırmızı */
+            --text-main: #333333;
+            --text-light: #666666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: #e5e7eb;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .cv-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--accent-red);
+        }
+
+        /* Header Section */
+        .cv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3rem 4rem;
+            background: #0a0e1b; /* BIZ IT Works Dark */
+            border-bottom: 4px solid var(--accent-red);
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-content h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .header-logo img {
+            height: 60px;
+        }
+
+        /* Main Content */
+        .cv-body {
+            display: grid;
+            grid-template-columns: 1fr 2.5fr;
+        }
+
+        /* Sidebar */
+        .cv-sidebar {
+            background: #161c31; /* BIZ IT Works Dark Theme */
+            color: var(--white);
+            padding: 3rem 2rem;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .contact-info li {
+            list-style: none;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        .contact-info i {
+            color: var(--accent-red);
+            width: 20px;
+            text-align: center;
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skills-list li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        .languages-list {
+            list-style: none;
+        }
+
+        .languages-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        /* Main Content Area */
+        .cv-main {
+            padding: 3rem 4rem;
+        }
+
+        .main-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #111;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--accent-red);
+        }
+
+        .summary-text {
+            color: var(--text-light);
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        /* Experience Item */
+        .experience-item, .education-item {
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .experience-item::before, .education-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-red);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .company-name {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .duration {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            background: var(--bg-light);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .item-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .item-desc ul {
+            margin-top: 0.5rem;
+            padding-left: 1.2rem;
+        }
+
+        .item-desc li {
+            margin-bottom: 0.3rem;
+        }
+
+        /* Print Settings */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .cv-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cv-container">
+        <!-- Header -->
+        <header class="cv-header">
+            <div class="header-content">
+                <h1 id="cv-name">[Adayın Adı Soyadı]</h1>
+                <h2 id="cv-title">[Pozisyon / Ünvan]</h2>
+            </div>
+            <div class="header-logo">
+                <img src="assets/logo.svg" alt="BIZ IT Works" onerror="this.src='https://via.placeholder.com/150x50?text=BIZ+IT+Works'">
+            </div>
+        </header>
+
+        <div class="cv-body">
+            <!-- Sidebar (Dark) -->
+            <aside class="cv-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">İletişim</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> <span id="cv-email">aday@email.com</span></li>
+                        <li><i class="fas fa-phone"></i> <span id="cv-phone">+90 555 123 45 67</span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span id="cv-location">İstanbul, Türkiye</span></li>
+                        <li><i class="fab fa-linkedin"></i> <span id="cv-linkedin">linkedin.com/in/aday</span></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Yetkinlikler</h3>
+                    <ul class="skills-list" id="cv-skills">
+                        <li>Java / Spring Boot</li>
+                        <li>React.js / Next.js</li>
+                        <li>Microservices Architecture</li>
+                        <li>Docker & Kubernetes</li>
+                        <li>PostgreSQL & MongoDB</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Yabancı Dil</h3>
+                    <ul class="languages-list" id="cv-languages">
+                        <li><span>İngilizce</span> <span>İleri (C1)</span></li>
+                        <li><span>Almanca</span> <span>Başlangıç (A2)</span></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="cv-main">
+                <section class="main-section">
+                    <h3 class="section-title"><i class="fas fa-user-circle"></i> Profil Özeti</h3>
+                    <p class="summary-text" id="cv-summary">
+                        [Buraya adayın genel deneyimini, güçlü yönlerini ve projelerdeki rolünü özetleyen kısa bir profesyonel özet yazılacak. BIZ IT Works formatına uygun, net ve teknik odaklı olmalıdır.]
+                    </p>
+                </section>
+
+                <section class="main-section">
+                    <h3 class="section-title"><i class="fas fa-briefcase"></i> İş Deneyimi</h3>
+                    
+                    <div id="cv-experience">
+                        <!-- Deneyim 1 -->
+                        <div class="experience-item">
+                            <div class="item-header">
+                                <div>
+                                    <h4 class="job-title">Senior Software Engineer</h4>
+                                    <div class="company-name">X Teknoloji A.Ş.</div>
+                                </div>
+                                <div class="duration">Oca 2021 - Devam Ediyor</div>
+                            </div>
+                            <div class="item-desc">
+                                <ul>
+                                    <li>Mikroservis mimarisi kullanılarak yüksek trafikli e-ticaret altyapısının geliştirilmesi.</li>
+                                    <li>React ile modern, responsive kullanıcı arayüzlerinin oluşturulması ve performans optimizasyonu.</li>
+                                    <li>CI/CD süreçlerinin yönetimi ve Docker üzerinden deployment işlemleri.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Deneyim 2 -->
+                        <div class="experience-item">
+                            <div class="item-header">
+                                <div>
+                                    <h4 class="job-title">Software Developer</h4>
+                                    <div class="company-name">Y Yazılım Ltd.</div>
+                                </div>
+                                <div class="duration">Haz 2018 - Ara 2020</div>
+                            </div>
+                            <div class="item-desc">
+                                <ul>
+                                    <li>Müşteri sipariş yönetim sisteminin full-stack olarak (Java & Angular) geliştirilmesi.</li>
+                                    <li>Veritabanı optimizasyonu ile sorgu sürelerinin %40 oranında iyileştirilmesi.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="main-section">
+                    <h3 class="section-title"><i class="fas fa-graduation-cap"></i> Eğitim</h3>
+                    
+                    <div id="cv-education">
+                        <div class="education-item">
+                            <div class="item-header">
+                                <div>
+                                    <h4 class="job-title">Bilgisayar Mühendisliği (Lisans)</h4>
+                                    <div class="company-name">Örnek Üniversitesi</div>
+                                </div>
+                                <div class="duration">2014 - 2018</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>
