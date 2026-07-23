@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" fill="none">
-  <rect width="300" height="80" rx="8" fill="#003B5C"/>
-  <text x="150" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">BURGAN</text>
-  <text x="150" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#7FCDEE">BANK</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 100" width="100%" height="100%">
+  <!-- Burgan Bank Logo Symbol (Square with geometric inner shapes) -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="80" height="80" fill="#00355F" rx="4"/>
+    <path d="M 20 20 L 40 20 L 40 40 L 20 40 Z" fill="#00A3E0"/>
+    <path d="M 40 40 L 60 40 L 60 60 L 40 60 Z" fill="#00A3E0"/>
+    <path d="M 40 20 L 60 20 L 40 40 Z" fill="#FFFFFF"/>
+    <path d="M 20 40 L 40 40 L 20 60 Z" fill="#FFFFFF"/>
+  </g>
+  <!-- Burgan Bank Text -->
+  <text x="110" y="52" font-family="'Helvetica Neue', Arial, sans-serif" font-size="34" font-weight="bold" fill="#00355F">BURGAN BANK</text>
+  <text x="110" y="75" font-family="'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="500" fill="#00A3E0" letter-spacing="3">TÜRKIYE</text>
 </svg>

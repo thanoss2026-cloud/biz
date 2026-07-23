@@ -716,15 +716,15 @@ footer {
 }
 
 .reference-item img {
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 50px;
     object-fit: contain;
-    filter: grayscale(100%) opacity(0.7);
+    filter: brightness(0) invert(0.8);
     transition: all 0.3s ease;
 }
 
 .reference-item:hover img {
-    filter: grayscale(0%) opacity(1);
+    filter: brightness(1) invert(0);
 }
 
 .reference-item span {
