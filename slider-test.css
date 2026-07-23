@@ -206,4 +206,7 @@ body {
     .slider-controls {
         display: none;
     }
+    .slide-content {
+        padding: 0 20px;
+    }
 }
