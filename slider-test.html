@@ -34,6 +34,8 @@
         .nav-links a:hover { color: var(--primary-color); }
         .btn-secondary { border-color: #333; color: #333; }
         .btn-secondary:hover { background: #333; color: white; }
+        .reference-item img { filter: none !important; opacity: 0.85; transition: opacity 0.3s ease; }
+        .reference-item:hover img { opacity: 1; }
     </style>
 </head>
 <body>
@@ -256,14 +258,23 @@
             </div>
         </section>
     <section id="references" class="references">
-    <div class="container">
-        <h2 data-i18n="references_title">Web Sitesi Referansları</h2>
-        <ul class="reference-list">
-            <li><a href="https://www.vodafone.com.tr" target="_blank" rel="noopener noreferrer">Vodafone</a></li>
-            <li><a href="https://www.burgan.com.tr" target="_blank" rel="noopener noreferrer">Burgan Bank</a></li>
-        </ul>
-    </div>
-</section>
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 data-i18n="references_title">Referanslarımız</h2>
+                <p data-i18n="references_subtitle">Güvenilir iş ortaklarımızla birlikte büyüyoruz.</p>
+            </div>
+            <div class="references-grid">
+                <a href="https://www.vodafone.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
+                    <img src="assets/vodafone-logo.svg" alt="Vodafone">
+                    <span>Vodafone</span>
+                </a>
+                <a href="https://www.burgan.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
+                    <img src="assets/burgan-bank-logo.svg" alt="Burgan Bank">
+                    <span>Burgan Bank</span>
+                </a>
+            </div>
+        </div>
+    </section>
 </main>
 
     <footer>
