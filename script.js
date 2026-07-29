@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Multi-Language Support & Cloud Dynamic Content ---
     const defaultTranslations = {
         tr: {
-            title: "BIZ IT Works | Profesyonel Yazılım Outsourcing Hizmetleri",
-            meta_description: "BIZ IT Works ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız.",
+            title: "BIZ IT Works | AI Solutions, Digital Transformation, Software Development & IT Outsourcing",
+            meta_description: "BIZ IT Works helps businesses accelerate digital transformation with AI solutions, custom software development, workflow automation, cloud services, cybersecurity, managed IT services and expert outsourcing.",
             meta_keywords: "yazılım outsourcing, yazılım kiralama, web geliştirme, mobil uygulama, yapay zeka, kurumsal yazılım",
             nav_home: "Ana Sayfa",
             nav_services: "Hizmetler",
@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         en: {
             // ENGLISH TRANSLATIONS (Identical structure to TR)
-            title: "BIZ IT Works | Professional Software Outsourcing Services",
-            meta_description: "Accelerate your software processes with BIZ IT Works. We are by your side with our expert outsourcing team in Web, Mobile, and AI solutions.",
+            title: "BIZ IT Works | AI Solutions, Digital Transformation, Software Development & IT Outsourcing",
+            meta_description: "BIZ IT Works helps businesses accelerate digital transformation with AI solutions, custom software development, workflow automation, cloud services, cybersecurity, managed IT services and expert outsourcing.",
             meta_keywords: "software outsourcing, staff augmentation, web development, mobile app, artificial intelligence, enterprise software",
             nav_home: "Home",
             nav_services: "Services",
