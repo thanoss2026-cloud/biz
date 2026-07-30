@@ -157,6 +157,54 @@ header.scrolled .logo img {
     color: var(--primary-color);
 }
 
+/* Dropdown Menu */
+.nav-links li.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    min-width: 280px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    border: 1px solid var(--glass-border);
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.nav-links li.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    display: block;
+    width: 100%;
+}
+
+.dropdown-menu a {
+    padding: 12px 20px;
+    display: block;
+    font-size: 0.85rem;
+    text-transform: none;
+    letter-spacing: normal;
+    color: #333;
+    font-weight: 500;
+}
+
+.dropdown-menu a:hover {
+    background: #f8f9fa;
+    color: var(--accent-red);
+}
+
 /* --- Buttons --- */
 .btn {
     padding: 0.8rem 2rem;

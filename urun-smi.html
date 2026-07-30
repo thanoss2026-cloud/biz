@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">BIZ IT Works | Ürünler (Test)</title>
+    <title data-i18n="title">BIZ IT Works | Social Media Intelligence</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="urunler-test.css">
+    <link rel="stylesheet" href="urun-smi.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -36,9 +36,13 @@
             </a>
             <ul class="nav-links">
                 <li><a href="anasayfa">Ana Sayfa</a></li>
+                <li class="dropdown">
+                    <a href="#">Ürünlerimiz <i class="fas fa-chevron-down" style="font-size: 0.7rem; margin-left: 3px;"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="urun-smi.html">Social Media Intelligence / Sosyal Medya Yönetimi</a></li>
+                    </ul>
+                </li>
                 <li><a href="hizmetler">Hizmetler</a></li>
-                <!-- Test ürünü olduğu için menüde aktif değil -->
-                <!-- <li><a href="urunler-test.html" class="active">Ürünler</a></li> -->
                 <li><a href="hakkimizda">Hakkımızda</a></li>
                 <li><a href="iletisim">İletişim</a></li>
             </ul>
@@ -55,6 +59,14 @@
     <main class="products-test-section">
         <div class="products-container">
             
+            <div class="breadcrumbs" style="display: flex; gap: 0.5rem; color: #8C93B3; font-size: 0.9rem; margin-bottom: 2rem; font-weight: 500;">
+                <a href="anasayfa" style="color: #8C93B3; transition: 0.3s;">Ana Sayfa</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.7rem; align-self: center;"></i>
+                <span style="color: #8C93B3;">Ürünlerimiz</span>
+                <i class="fas fa-chevron-right" style="font-size: 0.7rem; align-self: center;"></i>
+                <span class="current" style="color: #00D2FF;">Social Media Intelligence / Sosyal Medya Yönetimi</span>
+            </div>
+
             <div class="pill-header">SMI-BİZ · DİJİTAL İTİBAR YÖNETİMİ</div>
             
             <h1 class="products-title">Algıyı İzliyor, Yönetiyor, Güçlendiriyoruz</h1>
