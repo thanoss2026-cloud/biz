@@ -3,40 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">BIZ IT Works | Slider Test (Beyaz Arka Plan)</title>
-    <meta name="description" content="BIZ IT Works ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız." data-i18n-content="meta_description">
+    <title data-i18n="title">BIZ IT Works | AI Solutions, Digital Transformation, Software Development & IT Outsourcing</title>
+    <meta name="description" content="BIZ IT Works helps businesses accelerate digital transformation with AI solutions, custom software development, workflow automation, cloud services, cybersecurity, managed IT services and expert outsourcing." data-i18n-content="meta_description">
+    <meta name="keywords" content="yazılım outsourcing, yazılım kiralama, web geliştirme, mobil uygulama, yapay zeka, kurumsal yazılım" data-i18n-content="meta_keywords">
     <link rel="stylesheet" href="style.css">
-    <!-- Slider için eklediğimiz stil dosyası -->
-    <link rel="stylesheet" href="slider-test.css">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Innova tarzı beyaz/aydınlık tema override'ları */
-        :root {
-            --bg-dark: #ffffff;
-            --bg-light: #f8f9fa;
-            --text-main: #222222;
-            --text-dim: #666666;
-            --glass-bg: rgba(0, 0, 0, 0.03);
-            --glass-border: rgba(0, 0, 0, 0.1);
-        }
-        body { background-color: var(--bg-dark); color: var(--text-main); }
-        .service-card { background: var(--bg-light); border: 1px solid var(--glass-border); border-bottom: 4px solid transparent; }
-        .glass-box { background: rgba(255, 255, 255, 0.9); border: 1px solid var(--glass-border); border-left: 5px solid var(--accent-red); color: var(--text-main); }
-        .form-group input, .form-group textarea { background: #ffffff; border: 1px solid #ccc; color: #333; }
-        .form-group input:focus, .form-group textarea:focus { background: #fff; border-color: var(--accent-red); }
-        header.scrolled { background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-        .nav-links a { color: #333; }
-        .nav-links a:hover { color: var(--primary-color); }
-        .btn-secondary { border-color: #333; color: #333; }
-        .btn-secondary:hover { background: #333; color: white; }
-        .reference-item img { filter: none !important; opacity: 0.85; transition: opacity 0.3s ease; }
-        .reference-item:hover img { opacity: 1; }
-    </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PX1EE3M36Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PX1EE3M36Q');
+    </script>
 </head>
 <body>
     <div class="top-bar">
@@ -91,60 +75,19 @@
         </nav>
     </header>
 
-    
-        <!-- YENİ SLIDER BURAYA GELDİ -->
-        <div class="hero-slider" id="heroSlider">
-            <!-- Slide 1 -->
-            <div class="slide active">
-                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');"></div>
-                <div class="slide-content">
-                    <span class="slide-subtitle">Kurumsal Çözümler</span>
-                    <h2 class="slide-title">Outsourcing & Kaynak Yönetimi</h2>
-                    <p class="slide-text">Doğru yeteneklerle projelerinizi hızlandırın. İhtiyacınıza uygun esnek ve ölçeklenebilir BT kaynağı çözümleriyle işinize değer katın.</p>
-                    <a href="#" class="slide-btn">Detaylı Bilgi</a>
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-overlay"></div>
+            <div class="ghost-text" data-i18n="hero_ghost">OUTSOURCING</div>
+            <div class="container hero-content">
+                <h1 class="reveal" data-i18n="hero_title">Geleceğin Teknolojilerini <br><span class="gradient-text">Birlikte İnşa Edelim</span></h1>
+                <p class="reveal" data-i18n="hero_subtitle">Kurumsal ihtiyaçlarınıza özel, ölçeklenebilir ve yüksek performanslı yazılım ekipleriyle işinizi dijital dünyada bir adım öne taşıyın.</p>
+                <div class="hero-btns reveal">
+                    <a href="#services" class="btn btn-primary" data-i18n="btn_view_services">Hizmetlerimizi İnceleyin</a>
+                    <a href="#about" class="btn btn-secondary" data-i18n="btn_know_us">Bizi Tanıyın</a>
                 </div>
             </div>
-
-            <!-- Slide 2 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1920&q=80');"></div>
-                <div class="slide-content">
-                    <span class="slide-subtitle">Geleceğin Teknolojisi</span>
-                    <h2 class="slide-title">Yapay Zeka (AI)</h2>
-                    <p class="slide-text">Verilerinizi akıllı içgörülere dönüştürün. Üretken yapay zeka ve makine öğrenimi ile süreçlerinizi otomatikleştirip verimliliği artırın.</p>
-                    <a href="#" class="slide-btn">Keşfedin</a>
-                </div>
-            </div>
-
-            <!-- Slide 3 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80');"></div>
-                <div class="slide-content">
-                    <span class="slide-subtitle">Kusursuz Deneyim</span>
-                    <h2 class="slide-title">Dijital Deneyim Platformu (DXP)</h2>
-                    <p class="slide-text">Müşterilerinize her temas noktasında kişiselleştirilmiş ve bütünleşik dijital deneyimler sunarak marka sadakatini güçlendirin.</p>
-                    <a href="#" class="slide-btn">İnceleyin</a>
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <div class="slider-controls">
-                <button class="control-btn prev-btn" id="prevBtn" aria-label="Önceki Slayt">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <button class="control-btn next-btn" id="nextBtn" aria-label="Sonraki Slayt">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                </button>
-            </div>
-
-            <!-- Indicators -->
-            <div class="slider-indicators" id="sliderIndicators">
-                <button class="indicator active" data-index="0" aria-label="Slayt 1"></button>
-                <button class="indicator" data-index="1" aria-label="Slayt 2"></button>
-                <button class="indicator" data-index="2" aria-label="Slayt 3"></button>
-            </div>
-        </div>
-        <!-- SLIDER BİTİŞ -->
+        </section>
 
         <section class="stats container">
             <div class="stat-item reveal">
@@ -257,25 +200,26 @@
                 </div>
             </div>
         </section>
-    <section id="references" class="references">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2 data-i18n="references_title">Referanslarımız</h2>
-                <p data-i18n="references_subtitle">Güvenilir iş ortaklarımızla birlikte büyüyoruz.</p>
+
+        <section id="references" class="references">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="references_title">Referanslarımız</h2>
+                    <p data-i18n="references_subtitle">Güvenilir iş ortaklarımızla birlikte büyüyoruz.</p>
+                </div>
+                <div class="references-grid">
+                    <a href="https://www.vodafone.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
+                        <img src="assets/vodafone-logo.svg" alt="Vodafone">
+                        <span>Vodafone</span>
+                    </a>
+                    <a href="https://www.burgan.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
+                        <img src="assets/burgan-bank-logo.svg" alt="Burgan Bank">
+                        <span>Burgan Bank</span>
+                    </a>
+                </div>
             </div>
-            <div class="references-grid">
-                <a href="https://www.vodafone.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
-                    <img src="assets/vodafone-logo.svg" alt="Vodafone">
-                    <span>Vodafone</span>
-                </a>
-                <a href="https://www.burgan.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
-                    <img src="assets/burgan-bank-logo.svg" alt="Burgan Bank">
-                    <span>Burgan Bank</span>
-                </a>
-            </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 
     <footer>
         <div class="container footer-content">
@@ -298,7 +242,5 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
-    <!-- SLIDER SCRIPT -->
-    <script src="slider-test.js"></script>
 </body>
 </html>

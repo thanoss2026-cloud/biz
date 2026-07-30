@@ -1,0 +1,128 @@
+/* Ürünler Test Sayfası Özel Stilleri */
+
+.products-test-section {
+    background-color: #080A1A; /* Koyu lacivert arkaplan */
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    padding: 100px 20px 60px;
+    min-height: 100vh;
+}
+
+.products-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Pill Header */
+.pill-header {
+    display: inline-block;
+    border: 1px solid #1E255E;
+    background-color: rgba(30, 37, 94, 0.3);
+    color: #ffffff;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Titles */
+.products-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+}
+
+.products-desc {
+    font-size: 1.1rem;
+    color: #A0A5C0;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 1000px;
+}
+
+/* Grid Layout */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+/* Cards */
+.product-card {
+    background-color: #0D1128;
+    border: 1px solid #232B59;
+    border-radius: 12px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    border-color: #4353FF;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(67, 83, 255, 0.15);
+}
+
+.product-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.product-card p {
+    font-size: 0.95rem;
+    color: #8C93B3;
+    line-height: 1.6;
+}
+
+/* Bottom Stats Bar */
+.products-stats-bar {
+    background-color: #0D1128;
+    border: 1px solid #232B59;
+    border-radius: 12px;
+    padding: 25px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-item {
+    font-size: 0.95rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+}
+
+.stat-item span {
+    color: #00D2FF;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .products-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    .products-stats-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
