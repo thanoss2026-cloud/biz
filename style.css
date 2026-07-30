@@ -2,15 +2,15 @@
     --primary-color: #00d2ff;
     --secondary-color: #3a7bd5;
     --accent-red: #e30613; /* Kafein Red */
-    --bg-dark: #0a0e1b;
-    --bg-light: #161c31;
-    --text-main: #ffffff;
-    --text-dim: #a0a8c3;
+    --bg-dark: #ffffff;
+    --bg-light: #f8f9fa;
+    --text-main: #222222;
+    --text-dim: #666666;
     --top-bar-bg: #ffffff;
     --top-bar-text: #333;
     --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(0, 0, 0, 0.03);
+    --glass-border: rgba(0, 0, 0, 0.1);
     --container-width: 1200px;
 }
 
@@ -111,10 +111,11 @@ header {
 
 header.scrolled {
     top: 0;
-    background: rgba(10, 14, 27, 0.95);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     padding: 0.8rem 0;
     border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
 nav {
@@ -149,6 +150,7 @@ header.scrolled .logo img {
     text-transform: uppercase;
     font-size: 0.9rem;
     letter-spacing: 1px;
+    color: #333;
 }
 
 .nav-links a:hover {
@@ -180,13 +182,13 @@ header.scrolled .logo img {
 
 .btn-secondary {
     background: transparent;
-    border: 2px solid white;
-    color: white;
+    border: 2px solid #333;
+    color: #333;
 }
 
 .btn-secondary:hover {
-    background: white;
-    color: black;
+    background: #333;
+    color: white;
 }
 
 /* --- Hero Section --- */
@@ -540,10 +542,10 @@ header.scrolled .logo img {
 .form-group textarea {
     width: 100%;
     padding: 1.2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-border);
+    background: #ffffff;
+    border: 1px solid #ccc;
     border-radius: 0;
-    color: white;
+    color: #333;
     font-family: inherit;
     outline: none;
     transition: 0.3s;
@@ -553,7 +555,7 @@ header.scrolled .logo img {
 .form-group input:focus, 
 .form-group textarea:focus {
     border-color: var(--accent-red);
-    background: rgba(255, 255, 255, 0.08);
+    background: #fff;
 }
 
 /* --- Footer --- */
@@ -634,7 +636,7 @@ footer {
         top: 100%;
         left: 0;
         width: 100%;
-        background: rgba(10, 14, 27, 0.98);
+        background: rgba(255, 255, 255, 0.98);
         padding: 2rem;
         gap: 1.5rem;
         border-bottom: 1px solid var(--glass-border);
@@ -719,12 +721,13 @@ footer {
     width: 140px;
     height: 50px;
     object-fit: contain;
-    filter: brightness(0) invert(0.8);
+    filter: none;
+    opacity: 0.85;
     transition: all 0.3s ease;
 }
 
 .reference-item:hover img {
-    filter: brightness(1) invert(0);
+    opacity: 1;
 }
 
 .reference-item span {
