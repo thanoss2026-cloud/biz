@@ -1,4 +1,20 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+        try {
+            const res = await fetch('header.html');
+            const html = await res.text();
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            while(tempDiv.firstChild) {
+                headerPlaceholder.parentNode.insertBefore(tempDiv.firstChild, headerPlaceholder);
+            }
+            headerPlaceholder.remove();
+        } catch(e) {
+            console.error('Error loading header:', e);
+        }
+    }
+
     const header = document.getElementById('header');
     const reveals = document.querySelectorAll('.reveal');
 
