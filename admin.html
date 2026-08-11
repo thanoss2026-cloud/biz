@@ -52,7 +52,6 @@
         <div class="nav-item" data-section="contact"><i class="fas fa-envelope"></i> &nbsp; İletişim</div>
         <div class="nav-item" data-section="welcome"><i class="fas fa-hand-holding-heart"></i> &nbsp; Hoş Geldin Linkleri</div>
         <div class="nav-item" data-section="manager"><i class="fas fa-user-tie"></i> &nbsp; Yönetici Maili</div>
-        <div class="nav-item" data-section="agenda"><i class="fas fa-tasks"></i> &nbsp; Gündem & Tasklar</div>
         <div class="nav-item" data-section="cv"><i class="fas fa-file-invoice"></i> &nbsp; CV Dönüştürücü</div>
     </aside>
 
@@ -360,72 +359,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
         </div>
 
-        <!-- Section: Agenda & Tasks -->
-        <div id="section-agenda" class="section">
-             <div class="card">
-                <h3>Yeni Gündem / Task Ekle</h3>
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
-                    <div class="form-group">
-                        <label>Gündem / Toplantı Başlığı *</label>
-                        <input type="text" id="agenda_title" placeholder="Örn: Haftalık Senkronizasyon Toplantısı">
-                    </div>
-                    <div class="form-group">
-                        <label>Öncelik Derecesi</label>
-                        <select id="agenda_priority">
-                            <option value="düşük">Düşük</option>
-                            <option value="orta" selected>Orta</option>
-                            <option value="yüksek">Yüksek</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 1.5rem; margin-bottom: 1rem;">
-                    <div class="form-group">
-                        <label>Ekleyen Kişi (Nick) *</label>
-                        <input type="text" id="agenda_nick" placeholder="Nickiniz">
-                    </div>
-                    <div class="form-group">
-                        <label>Atanan Kişi (Nick)</label>
-                        <input type="text" id="agenda_assignee" placeholder="Atanan (Opsiyonel)">
-                    </div>
-                    <div class="form-group">
-                        <label>Açıklama / Detaylar</label>
-                        <input type="text" id="agenda_desc" placeholder="Örn: Konuşulacak konu başlıkları ve hedefler">
-                    </div>
-                </div>
-                <button class="btn btn-save" onclick="addAgendaTask()">
-                    <i class="fas fa-plus"></i> Gündem / Task Ekle
-                </button>
-            </div>
 
-            <div class="card" style="max-width: 100%;">
-                <h3>Gündem ve Task Takip Tahtası</h3>
-                <div class="kanban-board">
-                    <div class="kanban-column" id="col-todo">
-                        <div class="kanban-column-header">
-                            <span class="column-title"><i class="fas fa-list-ul" style="color: #cbd5e1;"></i> YAPILACAKLAR</span>
-                            <span class="column-count" id="count-todo">0</span>
-                        </div>
-                        <div class="kanban-column-body" id="tasks-todo"></div>
-                    </div>
-                    <div class="kanban-column" id="col-in-progress">
-                        <div class="kanban-column-header">
-                            <span class="column-title"><i class="fas fa-spinner fa-spin" style="color: var(--primary);"></i> DEVAM EDENLER</span>
-                            <span class="column-count" id="count-in-progress">0</span>
-                        </div>
-                        <div class="kanban-column-body" id="tasks-in-progress"></div>
-                    </div>
-                    <div class="kanban-column" id="col-done">
-                        <div class="kanban-column-header">
-                            <span class="column-title"><i class="fas fa-check-circle" style="color: #22c55e;"></i> TAMAMLANANLAR</span>
-                            <span class="column-count" id="count-done">0</span>
-                        </div>
-                        <div class="kanban-column-body" id="tasks-done"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section: CV Converter -->
         <div id="section-cv" class="section">
             <div class="card">
                 <h3>CV Dönüştürücü (BIZ IT Works Şablonu)</h3>
@@ -565,8 +499,6 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                     // Load Manager Pages
                     loadMgrSettings();
                     loadManagerLinks();
-                    // Load Agenda & Tasks
-                    loadAgendaTasks();
                     // Load Candidates
                     loadCandidates();
                 } else {
@@ -979,47 +911,6 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 alert('Yönetici mail metni kopyalandı! ✓');
             });
         }
-
-        // ═══════════════════════════════════════════
-        // AGENDA & TASKS SECTION
-        // ═══════════════════════════════════════════
-        let agendaTasksData = null;
-        let editingTaskId = null;
-
-        function addAgendaTask() {
-            if (!db) return alert('Firebase bağlantısı yok.');
-            const titleInput = document.getElementById('agenda_title');
-            const nickInput = document.getElementById('agenda_nick');
-            const assigneeInput = document.getElementById('agenda_assignee');
-            const priorityInput = document.getElementById('agenda_priority');
-            const descInput = document.getElementById('agenda_desc');
-
-            const title = titleInput.value.trim();
-            const nick = nickInput.value.trim();
-            const assignee = assigneeInput.value.trim();
-            const priority = priorityInput.value;
-            const desc = descInput.value.trim();
-
-            if (!title || !nick) {
-                return alert('Lütfen Başlık ve Ekleyen Kişi (Nick) alanlarını doldurun.');
-            }
-
-            const payload = {
-                title: title,
-                nick: nick,
-                assignee: assignee,
-                priority: priority,
-                description: desc,
-                status: 'todo',
-                created_at: new Date().toISOString()
-            };
-
-            db.ref('site_content/agenda_tasks').push(payload).then(() => {
-                titleInput.value = '';
-                assigneeInput.value = '';
-                descInput.value = '';
-                // Keep the nickname so they don't have to re-enter it next time
-                alert('Gündem / Task başarıyla eklendi! ✓');
             }).catch(err => alert('Hata: ' + err.message));
         }
 
@@ -1076,164 +967,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 const card = document.createElement('div');
                 card.className = 'task-card';
                 
-                if (editingTaskId === task.id) {
-                    // Inline Edit Mode UI
-                    card.innerHTML = `
-                        <div style="margin-bottom: 0.8rem;">
-                            <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Başlık *</label>
-                            <input type="text" id="edit_task_title_${task.id}" value="${task.title.replace(/"/g, '&quot;')}" onkeydown="if(event.key === 'Enter') saveEditTask('${task.id}')" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
-                        </div>
-                        <div style="margin-bottom: 0.8rem;">
-                            <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Açıklama</label>
-                            <textarea id="edit_task_desc_${task.id}" rows="2" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; resize: vertical; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">${task.description || ''}</textarea>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
-                            <div>
-                                <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Nick *</label>
-                                <input type="text" id="edit_task_nick_${task.id}" value="${task.nick.replace(/"/g, '&quot;')}" onkeydown="if(event.key === 'Enter') saveEditTask('${task.id}')" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
-                            </div>
-                            <div>
-                                <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Atanan</label>
-                                <input type="text" id="edit_task_assignee_${task.id}" value="${(task.assignee || '').replace(/"/g, '&quot;')}" onkeydown="if(event.key === 'Enter') saveEditTask('${task.id}')" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white; outline: none;">
-                            </div>
-                            <div>
-                                <label style="font-size: 0.8rem; margin-bottom: 0.2rem; color: var(--primary);">Öncelik</label>
-                                <select id="edit_task_priority_${task.id}" style="padding: 0.5rem; font-size: 0.85rem; width: 100%; background: #0f172a; color: white; border: 1px solid var(--border); border-radius: 6px;">
-                                    <option value="düşük" ${task.priority === 'düşük' ? 'selected' : ''}>Düşük</option>
-                                    <option value="orta" ${task.priority === 'orta' ? 'selected' : ''}>Orta</option>
-                                    <option value="yüksek" ${task.priority === 'yüksek' ? 'selected' : ''}>Yüksek</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                            <button class="btn-task-action" onclick="cancelEditTask()" style="background: transparent; border-color: rgba(255,255,255,0.2);">İptal</button>
-                            <button class="btn-task-action" onclick="saveEditTask('${task.id}')" style="background: var(--primary); color: black; border-color: var(--primary); font-weight: bold;">Kaydet</button>
-                        </div>
-                    `;
-                } else {
-                    // Regular Card UI
-                    let dateStr = '';
-                    if (task.created_at) {
-                        try {
-                            const date = new Date(task.created_at);
-                            dateStr = date.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' }) + ' ' + date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-                        } catch (e) {
-                            dateStr = '';
-                        }
-                    }
-                    
-                    let moveBtnsHTML = '';
-                    if (status === 'todo') {
-                        moveBtnsHTML = `<button class="btn-task-action" onclick="updateTaskStatus('${task.id}', 'in_progress')" title="Devam Ediyor'a Taşı">Çalışılıyor <i class="fas fa-arrow-right"></i></button>`;
-                    } else if (status === 'in_progress') {
-                        moveBtnsHTML = `
-                            <button class="btn-task-action" onclick="updateTaskStatus('${task.id}', 'todo')" title="Yapılacaklar'a Geri Al"><i class="fas fa-arrow-left"></i> Geri Al</button>
-                            <button class="btn-task-action" onclick="updateTaskStatus('${task.id}', 'done')" title="Tamamla">Tamamla <i class="fas fa-check"></i></button>
-                        `;
-                    } else if (status === 'done') {
-                        moveBtnsHTML = `<button class="btn-task-action" onclick="updateTaskStatus('${task.id}', 'in_progress')" title="Devam Ediyor'a Geri Al"><i class="fas fa-arrow-left"></i> Geri Al</button>`;
-                    }
-                    
-                    card.innerHTML = `
-                        <div class="task-header">
-                            <div class="task-title">${task.title}</div>
-                            <span class="priority-badge priority-${task.priority || 'orta'}">${task.priority || 'orta'}</span>
-                        </div>
-                        ${task.description ? `<div class="task-desc">${task.description}</div>` : ''}
-                        <div class="task-meta">
-                            <span>👤 <span class="task-creator" title="Ekleyen">${task.nick}</span>${task.assignee ? ` ➔ 🎯 <span style="color: var(--primary); font-weight: 600;" title="Atanan">${task.assignee}</span>` : ''}</span>
-                            <span class="task-date">${dateStr}</span>
-                        </div>
-                        <div class="task-actions">
-                            <div class="task-move-btns">
-                                ${moveBtnsHTML}
-                            </div>
-                            <div style="display: flex; gap: 0.3rem;">
-                                <button class="btn-task-action" onclick="startEditTask('${task.id}')" title="Düzenle"><i class="fas fa-edit"></i></button>
-                                <button class="btn-task-action btn-task-delete" onclick="deleteAgendaTask('${task.id}')" title="Sil"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                if (columns[status]) {
-                    columns[status].appendChild(card);
-                }
-            });
-            
-            Object.keys(counts).forEach(status => {
-                const countEl = document.getElementById('count-' + status);
-                if (countEl) countEl.innerText = counts[status];
-                
-                if (counts[status] === 0 && columns[status]) {
-                    columns[status].innerHTML = '<div style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 2rem 0; border: 1px dashed rgba(255,255,255,0.05); border-radius: 6px;">Task yok</div>';
-                }
-            });
-        }
 
-        function startEditTask(id) {
-            editingTaskId = id;
-            renderAgendaTasks();
-        }
-
-        function cancelEditTask() {
-            editingTaskId = null;
-            renderAgendaTasks();
-        }
-
-        function saveEditTask(id) {
-            if (!db) return;
-            const title = document.getElementById(`edit_task_title_${id}`).value.trim();
-            const desc = document.getElementById(`edit_task_desc_${id}`).value.trim();
-            const nick = document.getElementById(`edit_task_nick_${id}`).value.trim();
-            const assignee = document.getElementById(`edit_task_assignee_${id}`).value.trim();
-            const priority = document.getElementById(`edit_task_priority_${id}`).value;
-
-            if (!title || !nick) {
-                return alert('Lütfen Başlık ve Ekleyen Kişi (Nick) alanlarını doldurun.');
-            }
-
-            // Optimistic local state update to render updated values immediately
-            if (agendaTasksData && agendaTasksData[id]) {
-                agendaTasksData[id].title = title;
-                agendaTasksData[id].description = desc;
-                agendaTasksData[id].nick = nick;
-                agendaTasksData[id].assignee = assignee;
-                agendaTasksData[id].priority = priority;
-            }
-
-            // Close edit mode immediately (makes buttons disappear instantly)
-            editingTaskId = null;
-            renderAgendaTasks();
-
-            // Update database in background
-            db.ref('site_content/agenda_tasks/' + id).update({
-                title: title,
-                description: desc,
-                nick: nick,
-                assignee: assignee,
-                priority: priority
-            }).catch(err => {
-                alert('Güncelleme hatası: ' + err.message);
-                // Revert edit state on error
-                editingTaskId = id;
-                renderAgendaTasks();
-            });
-        }
-
-        function updateTaskStatus(id, newStatus) {
-            if (!db) return;
-            db.ref('site_content/agenda_tasks/' + id).update({
-                status: newStatus
-            }).catch(err => alert('Durum güncellenirken hata oluştu: ' + err.message));
-        }
-
-        function deleteAgendaTask(id) {
-            if (confirm('Bu taskı silmek istediğinize emin misiniz?')) {
-                db.ref('site_content/agenda_tasks/' + id).remove()
-                    .catch(err => alert('Silme hatası: ' + err.message));
-            }
-        }
 
     </script>
     
