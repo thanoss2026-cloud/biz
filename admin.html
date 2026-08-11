@@ -53,6 +53,7 @@
         <div class="nav-item" data-section="welcome"><i class="fas fa-hand-holding-heart"></i> &nbsp; Hoş Geldin Linkleri</div>
         <div class="nav-item" data-section="manager"><i class="fas fa-user-tie"></i> &nbsp; Yönetici Maili</div>
         <div class="nav-item" data-section="agenda"><i class="fas fa-tasks"></i> &nbsp; Gündem & Tasklar</div>
+        <div class="nav-item" data-section="cv"><i class="fas fa-file-invoice"></i> &nbsp; CV Dönüştürücü</div>
     </aside>
 
     <main>
@@ -424,8 +425,94 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             </div>
         </div>
 
-    </main>
+        <!-- Section: CV Converter -->
+        <div id="section-cv" class="section">
+            <div class="card">
+                <h3>CV Dönüştürücü (BIZ IT Works Şablonu)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Aşağıdaki alanları doldurarak BIZ IT Works şablonunda bir CV oluşturabilirsiniz. "CV Oluştur" butonuna bastığınızda yeni bir sekmede önizleme açılacaktır. Oradan yazdırıp PDF olarak kaydedebilirsiniz.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Ad Soyad *</label>
+                        <input type="text" id="cv_form_name" placeholder="Örn: FATİH GÖKÇEN">
+                    </div>
+                    <div class="form-group">
+                        <label>Unvan (Birden fazla satır için Enter kullanın) *</label>
+                        <textarea id="cv_form_title" rows="2" placeholder="SENIOR SOFTWARE ENGINEER &\nTECH LEAD"></textarea>
+                    </div>
+                </div>
 
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Lokasyon</label>
+                        <input type="text" id="cv_form_location" placeholder="Eskişehir, Turkey">
+                    </div>
+                    <div class="form-group">
+                        <label>Toplam Deneyim</label>
+                        <input type="text" id="cv_form_exp_years" placeholder="13+ Years">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input type="text" id="cv_form_website" value="www.bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>E-posta</label>
+                        <input type="email" id="cv_form_email" value="info@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="text" id="cv_form_phone" value="+90 216 225 66 51">
+                    </div>
+                    <div class="form-group">
+                        <label>Üst Başlık (Mavi Şerit)</label>
+                        <input type="text" id="cv_form_top_heading" value="BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>EXECUTIVE SUMMARY (Özet)</label>
+                    <textarea id="cv_form_summary" rows="4" placeholder="Kariyer özeti..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Technical Skills (Teknik Yetenekler)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Örn: Kategori: LANGUAGES, Detaylar: Java, Python, SQL</p>
+                <div id="cv_skills_list"></div>
+                <button class="btn btn-save" onclick="addCVSkill()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Kategori Ekle</button>
+            </div>
+
+            <div class="card">
+                <h3>Professional Experience (İş Deneyimleri)</h3>
+                <div id="cv_exp_list"></div>
+                <button class="btn btn-save" onclick="addCVExp()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Deneyim Ekle</button>
+            </div>
+
+            <div class="card">
+                <h3>Education & Certs (Eğitim ve Sertifikalar)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Örn: Derece: B.Sc. Computer Engineering, Kurum: Eskişehir Osmangazi Univ. (2013)</p>
+                <div id="cv_edu_list"></div>
+                <button class="btn btn-save" onclick="addCVEdu()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Eğitim Ekle</button>
+            </div>
+
+            <div class="card">
+                <h3>Languages (Diller)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Örn: Dil: ENGLISH, Seviye: C1 (Advanced)</p>
+                <div id="cv_lang_list"></div>
+                <button class="btn btn-save" onclick="addCVLang()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Dil Ekle</button>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: right;">
+                <button class="btn btn-save" onclick="generateCV()" style="font-size: 1.1rem; padding: 1rem 2rem; background: var(--accent);"><i class="fas fa-print"></i> CV OLUŞTUR VE GÖSTER</button>
+            </div>
+        </div>
+
+    </main>
     <script>
         let db = null;
         let auth = null;
@@ -1137,6 +1224,114 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             }
         }
 
+    </script>
+    
+    <!-- CV Generator Script -->
+    <script>
+        // Data Structures for dynamic lists
+        let cvSkills = [];
+        let cvExp = [];
+        let cvEdu = [];
+        let cvLang = [];
+
+        function renderCVSkills() {
+            const container = document.getElementById('cv_skills_list');
+            container.innerHTML = '';
+            cvSkills.forEach((s, idx) => {
+                container.innerHTML += `
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Kategori (Örn: DATABASES)" value="${s.category}" onchange="cvSkills[${idx}].category = this.value" style="flex: 1;">
+                        <input type="text" placeholder="Detaylar" value="${s.details}" onchange="cvSkills[${idx}].details = this.value" style="flex: 2;">
+                        <button class="btn" style="background: #ef4444;" onclick="cvSkills.splice(${idx}, 1); renderCVSkills()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+        function addCVSkill() { cvSkills.push({category: '', details: ''}); renderCVSkills(); }
+
+        function renderCVEdu() {
+            const container = document.getElementById('cv_edu_list');
+            container.innerHTML = '';
+            cvEdu.forEach((e, idx) => {
+                container.innerHTML += `
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Derece / Sertifika" value="${e.degree}" onchange="cvEdu[${idx}].degree = this.value" style="flex: 1;">
+                        <input type="text" placeholder="Kurum ve Yıl" value="${e.institution}" onchange="cvEdu[${idx}].institution = this.value" style="flex: 1;">
+                        <button class="btn" style="background: #ef4444;" onclick="cvEdu.splice(${idx}, 1); renderCVEdu()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+        function addCVEdu() { cvEdu.push({degree: '', institution: ''}); renderCVEdu(); }
+
+        function renderCVLang() {
+            const container = document.getElementById('cv_lang_list');
+            container.innerHTML = '';
+            cvLang.forEach((l, idx) => {
+                container.innerHTML += `
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Dil" value="${l.language}" onchange="cvLang[${idx}].language = this.value" style="flex: 1;">
+                        <input type="text" placeholder="Seviye" value="${l.level}" onchange="cvLang[${idx}].level = this.value" style="flex: 1;">
+                        <button class="btn" style="background: #ef4444;" onclick="cvLang.splice(${idx}, 1); renderCVLang()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+        function addCVLang() { cvLang.push({language: '', level: ''}); renderCVLang(); }
+
+        function renderCVExp() {
+            const container = document.getElementById('cv_exp_list');
+            container.innerHTML = '';
+            cvExp.forEach((e, idx) => {
+                container.innerHTML += `
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.5rem;">
+                            <input type="text" placeholder="Görev Unvanı (Örn: Tech Lead)" value="${e.jobTitle}" onchange="cvExp[${idx}].jobTitle = this.value">
+                            <input type="text" placeholder="Şirket Adı" value="${e.company}" onchange="cvExp[${idx}].company = this.value">
+                            <input type="text" placeholder="Süre & Tarih (Örn: Feb 2023 - Jun 2026)" value="${e.duration}" onchange="cvExp[${idx}].duration = this.value">
+                            <input type="text" placeholder="Lokasyon (Örn: Berlin, Germany)" value="${e.location}" onchange="cvExp[${idx}].location = this.value">
+                        </div>
+                        <textarea rows="4" placeholder="Deneyim detayları (Her satıra bir madde yazabilirsiniz)" onchange="cvExp[${idx}].description = this.value" style="width: 100%; margin-top: 0.5rem;">${e.description}</textarea>
+                        <div style="text-align: right; margin-top: 0.5rem;">
+                            <button class="btn" style="background: #ef4444; font-size: 0.8rem;" onclick="cvExp.splice(${idx}, 1); renderCVExp()">Kaldır</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        function addCVExp() { cvExp.push({jobTitle: '', company: '', duration: '', location: '', description: ''}); renderCVExp(); }
+
+        function generateCV() {
+            const cvData = {
+                name: document.getElementById('cv_form_name').value.trim(),
+                title: document.getElementById('cv_form_title').value.trim(),
+                location: document.getElementById('cv_form_location').value.trim(),
+                experienceYears: document.getElementById('cv_form_exp_years').value.trim(),
+                website: document.getElementById('cv_form_website').value.trim(),
+                email: document.getElementById('cv_form_email').value.trim(),
+                phone: document.getElementById('cv_form_phone').value.trim(),
+                topHeading: document.getElementById('cv_form_top_heading').value.trim(),
+                summary: document.getElementById('cv_form_summary').value.trim(),
+                skills: cvSkills.filter(s => s.category.trim() !== ''),
+                education: cvEdu.filter(e => e.degree.trim() !== ''),
+                languages: cvLang.filter(l => l.language.trim() !== ''),
+                experience: cvExp.filter(e => e.jobTitle.trim() !== '')
+            };
+
+            if (!cvData.name) {
+                alert("Lütfen en azından ad ve soyad girin.");
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('biz_cv_data', JSON.stringify(cvData));
+
+            // Open template in new tab
+            window.open('cv-template.html', '_blank');
+        }
+
+        // Initialize with one empty experience item just to show
+        addCVExp();
     </script>
 </body>
 </html>

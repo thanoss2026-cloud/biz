@@ -1,227 +1,193 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-    <meta name="google-site-verification" content="NlYL36bfcFoQZQ4E9JEOQpCV4c68N16DzXapModu3nA" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIZ IT Works - Kurumsal CV Şablonu</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>BIZ IT Works - CV Template</title>
+    <!-- Use a modern, clean font similar to the image, like Inter or Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #00d2ff;
-            --secondary-color: #3a7bd5;
-            --accent-red: #e30613; /* BIZ IT Works Kırmızı */
-            --text-main: #333333;
-            --text-light: #666666;
-            --bg-light: #f8f9fa;
-            --white: #ffffff;
-            --border-color: #e0e0e0;
+            --primary-blue: #007bb5; /* Adjust based on image header text */
+            --sidebar-bg: #2b3240; /* Dark blue/gray */
+            --sidebar-text: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: #e5e7eb;
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 2rem;
-        }
-
-        .cv-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--white);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--accent-red);
-        }
-
-        /* Header Section */
-        .cv-header {
+            background-color: #f1f5f9; /* Light gray for web viewing */
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 3rem 4rem;
-            background: #0a0e1b; /* BIZ IT Works Dark */
-            border-bottom: 4px solid var(--accent-red);
+            justify-content: center;
+            padding: 20px;
         }
 
-        .header-content h1 {
-            font-size: 2.5rem;
-            color: var(--white);
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
+        .cv-page {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            background: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        .cv-top-header {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 14pt;
             letter-spacing: 1px;
+            border-bottom: 2px solid white; /* Just to separate if needed */
         }
 
-        .header-content h2 {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        .header-logo img {
-            height: 60px;
-        }
-
-        /* Main Content */
-        .cv-body {
+        /* Main Grid */
+        .cv-grid {
             display: grid;
-            grid-template-columns: 1fr 2.5fr;
+            grid-template-columns: 240px 1fr;
+            flex-grow: 1;
         }
 
         /* Sidebar */
         .cv-sidebar {
-            background: #161c31; /* BIZ IT Works Dark Theme */
-            color: var(--white);
-            padding: 3rem 2rem;
+            background-color: var(--sidebar-bg);
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .candidate-name {
+            text-align: center;
+            font-size: 16pt;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .candidate-title {
+            text-align: center;
+            color: #38bdf8; /* Light blue accent */
+            font-size: 10pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            line-height: 1.4;
         }
 
         .sidebar-section {
-            margin-bottom: 2.5rem;
+            margin-bottom: 25px;
         }
 
-        .sidebar-title {
-            font-size: 1.1rem;
+        .sidebar-heading {
+            font-size: 11pt;
+            font-weight: 700;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 0.5rem;
+            letter-spacing: 0.5px;
         }
 
-        .contact-info li {
-            list-style: none;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            color: #d1d5db;
+        .sidebar-item {
+            margin-bottom: 12px;
+            font-size: 9.5pt;
+            line-height: 1.4;
         }
 
-        .contact-info i {
-            color: var(--accent-red);
-            width: 20px;
+        .sidebar-item-title {
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            font-size: 9pt;
+        }
+
+        .sidebar-item-desc {
+            color: var(--sidebar-text);
+        }
+
+        .sidebar-footer {
+            margin-top: 40px;
             text-align: center;
+            font-size: 9pt;
+            color: var(--sidebar-text);
+            line-height: 1.8;
         }
 
-        .skills-list {
-            list-style: none;
-        }
-
-        .skills-list li {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #d1d5db;
-        }
-
-        .languages-list {
-            list-style: none;
-        }
-
-        .languages-list li {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #d1d5db;
-        }
-
-        /* Main Content Area */
+        /* Main Content */
         .cv-main {
-            padding: 3rem 4rem;
+            padding: 30px 35px;
+            background: white;
         }
 
         .main-section {
-            margin-bottom: 3rem;
+            margin-bottom: 35px;
         }
 
-        .section-title {
-            font-size: 1.4rem;
-            color: #111;
+        .main-heading {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
-            color: var(--accent-red);
+            letter-spacing: 0.5px;
         }
 
         .summary-text {
+            font-size: 10pt;
+            line-height: 1.6;
             color: var(--text-light);
-            font-size: 1rem;
             text-align: justify;
         }
 
-        /* Experience Item */
-        .experience-item, .education-item {
-            margin-bottom: 2rem;
-            position: relative;
-            padding-left: 1.5rem;
-            border-left: 2px solid var(--border-color);
+        .experience-item {
+            margin-bottom: 25px;
         }
 
-        .experience-item::before, .education-item::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 6px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent-red);
-        }
-
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 0.5rem;
+        .job-header {
+            margin-bottom: 5px;
         }
 
         .job-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #111;
+            font-size: 12pt;
+            font-weight: 700;
+            color: var(--text-dark);
         }
 
         .company-name {
-            font-size: 1rem;
-            color: var(--secondary-color);
-            font-weight: 500;
+            font-size: 12pt;
+            font-weight: 700;
+            color: var(--primary-blue);
         }
 
-        .duration {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            background: var(--bg-light);
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
+        .job-meta {
+            font-size: 9.5pt;
+            color: #94a3b8;
+            font-style: italic;
+            margin-bottom: 10px;
         }
 
-        .item-desc {
-            color: var(--text-light);
-            font-size: 0.95rem;
+        .job-desc {
+            font-size: 10pt;
+            line-height: 1.6;
+            color: var(--text-dark);
         }
 
-        .item-desc ul {
-            margin-top: 0.5rem;
-            padding-left: 1.2rem;
+        .job-desc ul {
+            padding-left: 20px;
         }
 
-        .item-desc li {
-            margin-bottom: 0.3rem;
+        .job-desc li {
+            margin-bottom: 4px;
         }
 
         /* Print Settings */
@@ -229,131 +195,199 @@
             body {
                 background: none;
                 padding: 0;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                display: block;
             }
-            .cv-container {
+            .cv-page {
                 box-shadow: none;
-                max-width: 100%;
+                width: 100%;
+                /* min-height will rely on content, but typically fits page */
+            }
+            /* Force background colors to print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            @page {
+                size: A4;
+                margin: 0;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="cv-container">
-        <!-- Header -->
-        <header class="cv-header">
-            <div class="header-content">
-                <h1 id="cv-name">[Adayın Adı Soyadı]</h1>
-                <h2 id="cv-title">[Pozisyon / Ünvan]</h2>
-            </div>
-            <div class="header-logo">
-                <img src="assets/logo.png" alt="BIZ IT Works" onerror="this.src='https://via.placeholder.com/150x50?text=BIZ+IT+Works'">
-            </div>
-        </header>
+    <div class="cv-page">
+        <!-- Top Header -->
+        <div class="cv-top-header" id="cv-top-heading">
+            BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS
+        </div>
 
-        <div class="cv-body">
-            <!-- Sidebar (Dark) -->
+        <div class="cv-grid">
+            <!-- Left Sidebar -->
             <aside class="cv-sidebar">
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">İletişim</h3>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i> <span id="cv-email">aday@email.com</span></li>
-                        <li><i class="fas fa-phone"></i> <span id="cv-phone">+90 555 123 45 67</span></li>
-                        <li><i class="fas fa-map-marker-alt"></i> <span id="cv-location">İstanbul, Türkiye</span></li>
-                        <li><i class="fab fa-linkedin"></i> <span id="cv-linkedin">linkedin.com/in/aday</span></li>
-                    </ul>
-                </div>
+                <div class="candidate-name" id="cv-name">JOHN DOE</div>
+                <div class="candidate-title" id="cv-title">SENIOR SOFTWARE ENGINEER &<br>TECH LEAD</div>
 
                 <div class="sidebar-section">
-                    <h3 class="sidebar-title">Yetkinlikler</h3>
-                    <ul class="skills-list" id="cv-skills">
-                        <li>Java / Spring Boot</li>
-                        <li>React.js / Next.js</li>
-                        <li>Microservices Architecture</li>
-                        <li>Docker & Kubernetes</li>
-                        <li>PostgreSQL & MongoDB</li>
-                    </ul>
+                    <div class="sidebar-heading">CONTACT & INFO</div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">LOCATION</div>
+                        <div class="sidebar-item-desc" id="cv-location">City, Country</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">TOTAL EXPERIENCE</div>
+                        <div class="sidebar-item-desc" id="cv-experience-years">X+ Years</div>
+                    </div>
                 </div>
 
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">Yabancı Dil</h3>
-                    <ul class="languages-list" id="cv-languages">
-                        <li><span>İngilizce</span> <span>İleri (C1)</span></li>
-                        <li><span>Almanca</span> <span>Başlangıç (A2)</span></li>
-                    </ul>
+                <div class="sidebar-section" id="cv-skills-container">
+                    <div class="sidebar-heading">TECHNICAL SKILLS</div>
+                    <!-- Technical skills injected here -->
+                </div>
+
+                <div class="sidebar-section" id="cv-education-container">
+                    <div class="sidebar-heading">EDUCATION & CERTS</div>
+                    <!-- Education injected here -->
+                </div>
+
+                <div class="sidebar-section" id="cv-languages-container">
+                    <div class="sidebar-heading">LANGUAGES</div>
+                    <!-- Languages injected here -->
+                </div>
+
+                <div class="sidebar-footer">
+                    <div id="cv-website">www.bizitworks.com</div>
+                    <div id="cv-email">info@bizitworks.com</div>
+                    <div id="cv-phone">+90 000 000 00 00</div>
                 </div>
             </aside>
 
             <!-- Main Content -->
             <main class="cv-main">
-                <section class="main-section">
-                    <h3 class="section-title"><i class="fas fa-user-circle"></i> Profil Özeti</h3>
-                    <p class="summary-text" id="cv-summary">
-                        [Buraya adayın genel deneyimini, güçlü yönlerini ve projelerdeki rolünü özetleyen kısa bir profesyonel özet yazılacak. BIZ IT Works formatına uygun, net ve teknik odaklı olmalıdır.]
-                    </p>
-                </section>
-
-                <section class="main-section">
-                    <h3 class="section-title"><i class="fas fa-briefcase"></i> İş Deneyimi</h3>
-                    
-                    <div id="cv-experience">
-                        <!-- Deneyim 1 -->
-                        <div class="experience-item">
-                            <div class="item-header">
-                                <div>
-                                    <h4 class="job-title">Senior Software Engineer</h4>
-                                    <div class="company-name">X Teknoloji A.Ş.</div>
-                                </div>
-                                <div class="duration">Oca 2021 - Devam Ediyor</div>
-                            </div>
-                            <div class="item-desc">
-                                <ul>
-                                    <li>Mikroservis mimarisi kullanılarak yüksek trafikli e-ticaret altyapısının geliştirilmesi.</li>
-                                    <li>React ile modern, responsive kullanıcı arayüzlerinin oluşturulması ve performans optimizasyonu.</li>
-                                    <li>CI/CD süreçlerinin yönetimi ve Docker üzerinden deployment işlemleri.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Deneyim 2 -->
-                        <div class="experience-item">
-                            <div class="item-header">
-                                <div>
-                                    <h4 class="job-title">Software Developer</h4>
-                                    <div class="company-name">Y Yazılım Ltd.</div>
-                                </div>
-                                <div class="duration">Haz 2018 - Ara 2020</div>
-                            </div>
-                            <div class="item-desc">
-                                <ul>
-                                    <li>Müşteri sipariş yönetim sisteminin full-stack olarak (Java & Angular) geliştirilmesi.</li>
-                                    <li>Veritabanı optimizasyonu ile sorgu sürelerinin %40 oranında iyileştirilmesi.</li>
-                                </ul>
-                            </div>
-                        </div>
+                <div class="main-section">
+                    <div class="main-heading">EXECUTIVE SUMMARY</div>
+                    <div class="summary-text" id="cv-summary">
+                        Summary goes here.
                     </div>
-                </section>
+                </div>
 
-                <section class="main-section">
-                    <h3 class="section-title"><i class="fas fa-graduation-cap"></i> Eğitim</h3>
-                    
-                    <div id="cv-education">
-                        <div class="education-item">
-                            <div class="item-header">
-                                <div>
-                                    <h4 class="job-title">Bilgisayar Mühendisliği (Lisans)</h4>
-                                    <div class="company-name">Örnek Üniversitesi</div>
-                                </div>
-                                <div class="duration">2014 - 2018</div>
-                            </div>
-                        </div>
+                <div class="main-section">
+                    <div class="main-heading">PROFESSIONAL EXPERIENCE</div>
+                    <div id="cv-experience-list">
+                        <!-- Experience items injected here -->
                     </div>
-                </section>
+                </div>
             </main>
         </div>
     </div>
 
+    <script>
+        // Load data from localStorage
+        window.onload = function() {
+            const cvDataStr = localStorage.getItem('biz_cv_data');
+            if (cvDataStr) {
+                try {
+                    const data = JSON.parse(cvDataStr);
+                    
+                    // Basic fields
+                    if(data.name) document.getElementById('cv-name').innerText = data.name.toUpperCase();
+                    if(data.title) document.getElementById('cv-title').innerHTML = data.title.toUpperCase().replace(/\n/g, '<br>');
+                    if(data.location) document.getElementById('cv-location').innerText = data.location;
+                    if(data.experienceYears) document.getElementById('cv-experience-years').innerText = data.experienceYears;
+                    if(data.summary) document.getElementById('cv-summary').innerText = data.summary;
+                    
+                    // Footer
+                    if(data.website) document.getElementById('cv-website').innerText = data.website;
+                    if(data.email) document.getElementById('cv-email').innerText = data.email;
+                    if(data.phone) document.getElementById('cv-phone').innerText = data.phone;
+                    if(data.topHeading) document.getElementById('cv-top-heading').innerText = data.topHeading.toUpperCase();
+
+                    // Skills
+                    const skillsContainer = document.getElementById('cv-skills-container');
+                    if (data.skills && data.skills.length > 0) {
+                        let skillsHTML = '<div class="sidebar-heading">TECHNICAL SKILLS</div>';
+                        data.skills.forEach(skill => {
+                            skillsHTML += `
+                                <div class="sidebar-item">
+                                    <div class="sidebar-item-title">${skill.category.toUpperCase()}</div>
+                                    <div class="sidebar-item-desc">${skill.details}</div>
+                                </div>
+                            `;
+                        });
+                        skillsContainer.innerHTML = skillsHTML;
+                    } else {
+                        skillsContainer.style.display = 'none';
+                    }
+
+                    // Education & Certs
+                    const eduContainer = document.getElementById('cv-education-container');
+                    if (data.education && data.education.length > 0) {
+                        let eduHTML = '<div class="sidebar-heading">EDUCATION & CERTS</div>';
+                        data.education.forEach(edu => {
+                            eduHTML += `
+                                <div class="sidebar-item">
+                                    <div class="sidebar-item-title">${edu.degree}</div>
+                                    <div class="sidebar-item-desc">${edu.institution}</div>
+                                </div>
+                            `;
+                        });
+                        eduContainer.innerHTML = eduHTML;
+                    } else {
+                        eduContainer.style.display = 'none';
+                    }
+
+                    // Languages
+                    const langContainer = document.getElementById('cv-languages-container');
+                    if (data.languages && data.languages.length > 0) {
+                        let langHTML = '<div class="sidebar-heading">LANGUAGES</div>';
+                        data.languages.forEach(lang => {
+                            langHTML += `
+                                <div class="sidebar-item">
+                                    <div class="sidebar-item-title">${lang.language.toUpperCase()}</div>
+                                    <div class="sidebar-item-desc">${lang.level}</div>
+                                </div>
+                            `;
+                        });
+                        langContainer.innerHTML = langHTML;
+                    } else {
+                        langContainer.style.display = 'none';
+                    }
+
+                    // Experience
+                    const expContainer = document.getElementById('cv-experience-list');
+                    if (data.experience && data.experience.length > 0) {
+                        let expHTML = '';
+                        data.experience.forEach(exp => {
+                            // format description points if they are plain text with newlines
+                            let descHTML = exp.description;
+                            if (descHTML && !descHTML.includes('<ul')) {
+                                const points = descHTML.split('\n').filter(p => p.trim() !== '');
+                                descHTML = '<ul>' + points.map(p => `<li>${p.replace(/^- /, '')}</li>`).join('') + '</ul>';
+                            }
+
+                            expHTML += `
+                                <div class="experience-item">
+                                    <div class="job-header">
+                                        <span class="job-title">${exp.jobTitle}</span> 
+                                        ${exp.company ? `<span class="company-name">${exp.company}</span>` : ''}
+                                    </div>
+                                    <div class="job-meta">
+                                        ${exp.duration} ${exp.location ? `— ${exp.location}` : ''}
+                                    </div>
+                                    <div class="job-desc">
+                                        ${descHTML}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        expContainer.innerHTML = expHTML;
+                    }
+
+                } catch(e) {
+                    console.error("Error parsing CV data", e);
+                }
+            }
+        };
+    </script>
 </body>
 </html>
