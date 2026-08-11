@@ -510,6 +510,14 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             <div style="margin-top: 2rem; text-align: right;">
                 <button class="btn btn-save" onclick="generateCV()" style="font-size: 1.1rem; padding: 1rem 2rem; background: var(--accent);"><i class="fas fa-print"></i> CV OLUŞTUR VE GÖSTER</button>
             </div>
+            <div class="card">
+                <h3>Kayıtlı Adaylar (Aday Havuzu)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Burada kaydettiğiniz CV'leri görebilir ve yöneticilerden geri bildirim almak için değerlendirme linkini kopyalayabilirsiniz.</p>
+                <div id="cv_candidates_list">
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Yükleniyor...</p>
+                </div>
+            </div>
+
         </div>
 
     </main>
@@ -558,6 +566,8 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                     loadManagerLinks();
                     // Load Agenda & Tasks
                     loadAgendaTasks();
+                    // Load Candidates
+                    loadCandidates();
                 } else {
                     document.getElementById('login-overlay').style.display = 'flex';
                     document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #ef4444"></i> CLOUD DISCONNECTED';
@@ -1301,6 +1311,75 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         }
         function addCVExp() { cvExp.push({jobTitle: '', company: '', duration: '', location: '', description: ''}); renderCVExp(); }
 
+        function loadCandidates() {
+            if (!db) return;
+            const container = document.getElementById('cv_candidates_list');
+            
+            db.ref('candidates').on('value', (snapshot) => {
+                const data = snapshot.val();
+                container.innerHTML = '';
+                
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.9rem;">Henüz kayıtlı bir aday yok.</p>';
+                    return;
+                }
+                
+                const ids = Object.keys(data).reverse(); // Newest first
+                
+                ids.forEach(id => {
+                    const c = data[id];
+                    const cvUrl = window.location.origin + '/cv-template.html?id=' + id;
+                    const feedbackUrl = window.location.origin + '/feedback.html?id=' + id;
+                    
+                    let feedbackHTML = '';
+                    if (c.feedback) {
+                        const feedbacks = Object.values(c.feedback);
+                        feedbackHTML = `<div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--primary); font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">GELEN DEĞERLENDİRMELER (${feedbacks.length})</strong>`;
+                        
+                        feedbacks.forEach(f => {
+                            feedbackHTML += `
+                                <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 4px; margin-bottom: 0.5rem; font-size: 0.85rem;">
+                                    <div><strong>Yönetici:</strong> ${f.manager_name}</div>
+                                    <div style="display: flex; gap: 1rem; margin: 0.25rem 0;">
+                                        <span><strong>Teknik:</strong> ${f.technical_score}/5</span>
+                                        <span><strong>Uyum:</strong> ${f.culture_score}/5</span>
+                                        <span><strong>Karar:</strong> <span style="color: ${f.verdict.includes('Olumlu') ? '#22c55e' : (f.verdict.includes('Olumsuz') ? '#ef4444' : '#eab308')}">${f.verdict}</span></span>
+                                    </div>
+                                    ${f.comments ? `<div style="color: var(--text-dim); font-style: italic;">"${f.comments}"</div>` : ''}
+                                </div>
+                            `;
+                        });
+                        feedbackHTML += `</div>`;
+                    }
+
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <strong style="display: block; font-size: 1.1rem; margin-bottom: 0.2rem;">${c.name}</strong>
+                                <span style="color: var(--text-dim); font-size: 0.85rem;">${c.title}</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <a href="${cvUrl}" target="_blank" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #22c55e; color: white; text-decoration: none;" title="CV'yi Görüntüle"><i class="fas fa-file-invoice"></i> CV'ye Git</a>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #0ea5e9; color: white;" onclick="copyToClipboard('${feedbackUrl}')" title="Değerlendirme Formu Linkini Kopyala"><i class="fas fa-link"></i> Linki Kopyala</button>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;" onclick="deleteCandidate('${id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        ${feedbackHTML}
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function deleteCandidate(id) {
+            if(confirm("Bu adayı ve tüm değerlendirmelerini silmek istediğinize emin misiniz?")) {
+                db.ref('candidates/' + id).remove();
+            }
+        }
+
         function generateCV() {
             const cvData = {
                 name: document.getElementById('cv_form_name').value.trim(),
@@ -1315,7 +1394,8 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 skills: cvSkills.filter(s => s.category.trim() !== ''),
                 education: cvEdu.filter(e => e.degree.trim() !== ''),
                 languages: cvLang.filter(l => l.language.trim() !== ''),
-                experience: cvExp.filter(e => e.jobTitle.trim() !== '')
+                experience: cvExp.filter(e => e.jobTitle.trim() !== ''),
+                created_at: new Date().toISOString()
             };
 
             if (!cvData.name) {
@@ -1323,11 +1403,29 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 return;
             }
 
-            // Save to localStorage
-            localStorage.setItem('biz_cv_data', JSON.stringify(cvData));
+            if (!db) {
+                alert("Firebase bağlantısı kurulamadı. CV buluta kaydedilemiyor.");
+                return;
+            }
 
-            // Open template in new tab
-            window.open('cv-template.html', '_blank');
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KAYDEDİLİYOR...';
+            btn.disabled = true;
+
+            const newRef = db.ref('candidates').push();
+            newRef.set(cvData).then(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert(cvData.name + " başarıyla kaydedildi! Aday havuzundan CV'ye gidebilir veya yöneticiye değerlendirme linki gönderebilirsiniz.");
+                // Optionally clear form
+                document.getElementById('cv_form_name').value = '';
+                document.getElementById('cv_form_title').value = '';
+            }).catch(err => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert("Kayıt sırasında hata oluştu: " + err.message);
+            });
         }
 
         // Initialize with one empty experience item just to show

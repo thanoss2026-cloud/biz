@@ -8,6 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
     <style>
         :root {
             --primary-blue: #007bb5; /* Adjust based on image header text */
@@ -297,112 +303,139 @@
     </div>
 
     <script>
-        // Load data from localStorage
+        let db = null;
+        if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
+            const _app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
+
         window.onload = function() {
-            const cvDataStr = localStorage.getItem('biz_cv_data');
-            if (cvDataStr) {
-                try {
-                    const data = JSON.parse(cvDataStr);
-                    
-                    // Basic fields
-                    if(data.name) document.getElementById('cv-name').innerText = data.name.toUpperCase();
-                    if(data.title) document.getElementById('cv-title').innerHTML = data.title.toUpperCase().replace(/\n/g, '<br>');
-                    if(data.location) document.getElementById('cv-location').innerText = data.location;
-                    if(data.experienceYears) document.getElementById('cv-experience-years').innerText = data.experienceYears;
-                    if(data.summary) document.getElementById('cv-summary').innerText = data.summary;
-                    
-                    // Footer
-                    if(data.website) document.getElementById('cv-website').innerText = data.website;
-                    if(data.email) document.getElementById('cv-email').innerText = data.email;
-                    if(data.phone) document.getElementById('cv-phone').innerText = data.phone;
-                    if(data.topHeading) document.getElementById('cv-top-text').innerText = data.topHeading.toUpperCase();
+            const urlParams = new URLSearchParams(window.location.search);
+            const candidateId = urlParams.get('id');
 
-                    // Skills
-                    const skillsContainer = document.getElementById('cv-skills-container');
-                    if (data.skills && data.skills.length > 0) {
-                        let skillsHTML = '<div class="sidebar-heading">TECHNICAL SKILLS</div>';
-                        data.skills.forEach(skill => {
-                            skillsHTML += `
-                                <div class="sidebar-item">
-                                    <div class="sidebar-item-title">${skill.category.toUpperCase()}</div>
-                                    <div class="sidebar-item-desc">${skill.details}</div>
-                                </div>
-                            `;
-                        });
-                        skillsContainer.innerHTML = skillsHTML;
+            if (candidateId && db) {
+                // Read from Firebase
+                db.ref('candidates/' + candidateId).once('value').then(snap => {
+                    const data = snap.val();
+                    if (data) {
+                        renderCV(data);
                     } else {
-                        skillsContainer.style.display = 'none';
+                        alert("CV bulunamadı.");
                     }
-
-                    // Education & Certs
-                    const eduContainer = document.getElementById('cv-education-container');
-                    if (data.education && data.education.length > 0) {
-                        let eduHTML = '<div class="sidebar-heading">EDUCATION & CERTS</div>';
-                        data.education.forEach(edu => {
-                            eduHTML += `
-                                <div class="sidebar-item">
-                                    <div class="sidebar-item-title">${edu.degree}</div>
-                                    <div class="sidebar-item-desc">${edu.institution}</div>
-                                </div>
-                            `;
-                        });
-                        eduContainer.innerHTML = eduHTML;
-                    } else {
-                        eduContainer.style.display = 'none';
+                }).catch(err => console.error(err));
+            } else {
+                // Fallback to localStorage (for old previews)
+                const cvDataStr = localStorage.getItem('biz_cv_data');
+                if (cvDataStr) {
+                    try {
+                        renderCV(JSON.parse(cvDataStr));
+                    } catch(e) {
+                        console.error(e);
                     }
-
-                    // Languages
-                    const langContainer = document.getElementById('cv-languages-container');
-                    if (data.languages && data.languages.length > 0) {
-                        let langHTML = '<div class="sidebar-heading">LANGUAGES</div>';
-                        data.languages.forEach(lang => {
-                            langHTML += `
-                                <div class="sidebar-item">
-                                    <div class="sidebar-item-title">${lang.language.toUpperCase()}</div>
-                                    <div class="sidebar-item-desc">${lang.level}</div>
-                                </div>
-                            `;
-                        });
-                        langContainer.innerHTML = langHTML;
-                    } else {
-                        langContainer.style.display = 'none';
-                    }
-
-                    // Experience
-                    const expContainer = document.getElementById('cv-experience-list');
-                    if (data.experience && data.experience.length > 0) {
-                        let expHTML = '';
-                        data.experience.forEach(exp => {
-                            // format description points if they are plain text with newlines
-                            let descHTML = exp.description;
-                            if (descHTML && !descHTML.includes('<ul')) {
-                                const points = descHTML.split('\n').filter(p => p.trim() !== '');
-                                descHTML = '<ul>' + points.map(p => `<li>${p.replace(/^- /, '')}</li>`).join('') + '</ul>';
-                            }
-
-                            expHTML += `
-                                <div class="experience-item">
-                                    <div class="job-header">
-                                        <span class="job-title">${exp.jobTitle}</span> 
-                                        ${exp.company ? `<span class="company-name">${exp.company}</span>` : ''}
-                                    </div>
-                                    <div class="job-meta">
-                                        ${exp.duration} ${exp.location ? `— ${exp.location}` : ''}
-                                    </div>
-                                    <div class="job-desc">
-                                        ${descHTML}
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        expContainer.innerHTML = expHTML;
-                    }
-
-                } catch(e) {
-                    console.error("Error parsing CV data", e);
                 }
             }
         };
+
+        function renderCV(data) {
+            try {
+                // Basic fields
+                if(data.name) document.getElementById('cv-name').innerText = data.name.toUpperCase();
+                if(data.title) document.getElementById('cv-title').innerHTML = data.title.toUpperCase().replace(/\n/g, '<br>');
+                if(data.location) document.getElementById('cv-location').innerText = data.location;
+                if(data.experienceYears) document.getElementById('cv-experience-years').innerText = data.experienceYears;
+                if(data.summary) document.getElementById('cv-summary').innerText = data.summary;
+                
+                // Footer
+                if(data.website) document.getElementById('cv-website').innerText = data.website;
+                if(data.email) document.getElementById('cv-email').innerText = data.email;
+                if(data.phone) document.getElementById('cv-phone').innerText = data.phone;
+                if(data.topHeading) document.getElementById('cv-top-text').innerText = data.topHeading.toUpperCase();
+
+                // Skills
+                const skillsContainer = document.getElementById('cv-skills-container');
+                if (data.skills && data.skills.length > 0) {
+                    let skillsHTML = '<div class="sidebar-heading">TECHNICAL SKILLS</div>';
+                    data.skills.forEach(skill => {
+                        skillsHTML += `
+                            <div class="sidebar-item">
+                                <div class="sidebar-item-title">${skill.category.toUpperCase()}</div>
+                                <div class="sidebar-item-desc">${skill.details}</div>
+                            </div>
+                        `;
+                    });
+                    skillsContainer.innerHTML = skillsHTML;
+                } else {
+                    skillsContainer.style.display = 'none';
+                }
+
+                // Education & Certs
+                const eduContainer = document.getElementById('cv-education-container');
+                if (data.education && data.education.length > 0) {
+                    let eduHTML = '<div class="sidebar-heading">EDUCATION & CERTS</div>';
+                    data.education.forEach(edu => {
+                        eduHTML += `
+                            <div class="sidebar-item">
+                                <div class="sidebar-item-title">${edu.degree}</div>
+                                <div class="sidebar-item-desc">${edu.institution}</div>
+                            </div>
+                        `;
+                    });
+                    eduContainer.innerHTML = eduHTML;
+                } else {
+                    eduContainer.style.display = 'none';
+                }
+
+                // Languages
+                const langContainer = document.getElementById('cv-languages-container');
+                if (data.languages && data.languages.length > 0) {
+                    let langHTML = '<div class="sidebar-heading">LANGUAGES</div>';
+                    data.languages.forEach(lang => {
+                        langHTML += `
+                            <div class="sidebar-item">
+                                <div class="sidebar-item-title">${lang.language.toUpperCase()}</div>
+                                <div class="sidebar-item-desc">${lang.level}</div>
+                            </div>
+                        `;
+                    });
+                    langContainer.innerHTML = langHTML;
+                } else {
+                    langContainer.style.display = 'none';
+                }
+
+                // Experience
+                const expContainer = document.getElementById('cv-experience-list');
+                if (data.experience && data.experience.length > 0) {
+                    let expHTML = '';
+                    data.experience.forEach(exp => {
+                        // format description points if they are plain text with newlines
+                        let descHTML = exp.description;
+                        if (descHTML && !descHTML.includes('<ul')) {
+                            const points = descHTML.split('\n').filter(p => p.trim() !== '');
+                            descHTML = '<ul>' + points.map(p => `<li>${p.replace(/^- /, '')}</li>`).join('') + '</ul>';
+                        }
+
+                        expHTML += `
+                            <div class="experience-item">
+                                <div class="job-header">
+                                    <span class="job-title">${exp.jobTitle}</span> 
+                                    ${exp.company ? `<span class="company-name">${exp.company}</span>` : ''}
+                                </div>
+                                <div class="job-meta">
+                                    ${exp.duration} ${exp.location ? `— ${exp.location}` : ''}
+                                </div>
+                                <div class="job-desc">
+                                    ${descHTML}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    expContainer.innerHTML = expHTML;
+                }
+
+            } catch(e) {
+                console.error("Error parsing CV data", e);
+            }
+        }
     </script>
 </body>
 </html>

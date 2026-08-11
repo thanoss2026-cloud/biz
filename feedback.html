@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIZ IT Works - Aday Değerlendirme Formu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #e30613;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--surface);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 600px;
+            width: 100%;
+            border-top: 4px solid var(--primary);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header img {
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-name {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #cbd5e1;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        select:focus, textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .rating-group label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #334155;
+            cursor: pointer;
+            margin: 0;
+            transition: 0.2s;
+        }
+
+        .rating-group input {
+            display: none;
+        }
+
+        .rating-group input:checked + label {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        #success-msg {
+            display: none;
+            text-align: center;
+            color: #22c55e;
+            font-size: 1.2rem;
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="form-container">
+        <div class="header">
+            <img src="assets/logo.png" alt="BIZ Logo" onerror="this.style.display='none'">
+            <h2>Aday Değerlendirme Formu</h2>
+            <div id="loading" style="color: var(--text-dim);">Aday bilgileri yükleniyor...</div>
+            <div class="candidate-name" id="c-name" style="display: none;"></div>
+            <div style="color: var(--text-dim); font-size: 0.9rem; display: none;" id="c-title"></div>
+        </div>
+
+        <div id="survey-content" style="display: none;">
+            <div class="form-group">
+                <label>Görüşmeyi Yapan Yönetici</label>
+                <input type="text" id="manager_name" placeholder="Adınız Soyadınız">
+            </div>
+
+            <div class="form-group">
+                <label>Teknik Yeterlilik (1 Düşük, 5 Yüksek)</label>
+                <div class="rating-group" id="rg-technical">
+                    <input type="radio" name="technical" id="t1" value="1"><label for="t1">1</label>
+                    <input type="radio" name="technical" id="t2" value="2"><label for="t2">2</label>
+                    <input type="radio" name="technical" id="t3" value="3"><label for="t3">3</label>
+                    <input type="radio" name="technical" id="t4" value="4"><label for="t4">4</label>
+                    <input type="radio" name="technical" id="t5" value="5"><label for="t5">5</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>İletişim ve Kültürel Uyum (1 Düşük, 5 Yüksek)</label>
+                <div class="rating-group" id="rg-culture">
+                    <input type="radio" name="culture" id="c1" value="1"><label for="c1">1</label>
+                    <input type="radio" name="culture" id="c2" value="2"><label for="c2">2</label>
+                    <input type="radio" name="culture" id="c3" value="3"><label for="c3">3</label>
+                    <input type="radio" name="culture" id="c4" value="4"><label for="c4">4</label>
+                    <input type="radio" name="culture" id="c5" value="5"><label for="c5">5</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nihai Karar</label>
+                <select id="final_verdict">
+                    <option value="">Seçiniz...</option>
+                    <option value="Olumlu (İşe Alalım)">Olumlu (İşe Alalım)</option>
+                    <option value="Kararsız (Alternatiflere Bakalım)">Kararsız (Alternatiflere Bakalım)</option>
+                    <option value="Olumsuz (Elendi)">Olumsuz (Elendi)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Genel Değerlendirme Notları</label>
+                <textarea id="comments" rows="4" placeholder="Aday hakkındaki genel düşünceleriniz, güçlü ve zayıf yönleri..."></textarea>
+            </div>
+
+            <button class="btn" onclick="submitFeedback()">Değerlendirmeyi Gönder</button>
+        </div>
+    </div>
+
+    <div class="container" id="success-container" style="display: none; text-align: center;">
+        <i class="fas fa-check-circle" style="font-size: 4rem; color: #22c55e; margin-bottom: 1rem;"></i>
+        <h2>Teşekkürler!</h2>
+        <p style="color: var(--text-dim);">Değerlendirmeniz başarıyla kaydedildi ve İK profiline eklendi.</p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const candidateId = urlParams.get('id');
+
+        let db = null;
+
+        if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
+            const _app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
+
+        window.onload = () => {
+            if (!candidateId || !db) {
+                document.getElementById('loading').innerText = "Hata: Geçersiz aday bağlantısı veya veritabanı hatası.";
+                return;
+            }
+
+            db.ref('candidates/' + candidateId).once('value').then(snap => {
+                const data = snap.val();
+                if (data) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('c-name').style.display = 'block';
+                    document.getElementById('c-title').style.display = 'block';
+                    document.getElementById('survey-content').style.display = 'block';
+
+                    document.getElementById('c-name').innerText = data.name;
+                    document.getElementById('c-title').innerText = data.title;
+                } else {
+                    document.getElementById('loading').innerText = "Aday bulunamadı.";
+                }
+            }).catch(err => {
+                document.getElementById('loading').innerText = "Veri çekilirken hata oluştu: " + err.message;
+            });
+        };
+
+        function submitFeedback() {
+            const manager = document.getElementById('manager_name').value.trim();
+            const technical = document.querySelector('input[name="technical"]:checked')?.value;
+            const culture = document.querySelector('input[name="culture"]:checked')?.value;
+            const verdict = document.getElementById('final_verdict').value;
+            const comments = document.getElementById('comments').value.trim();
+
+            if (!manager || !technical || !culture || !verdict) {
+                alert("Lütfen yönetici adı, puanlamalar ve nihai karar alanlarını eksiksiz doldurun.");
+                return;
+            }
+
+            const feedbackData = {
+                manager_name: manager,
+                technical_score: parseInt(technical),
+                culture_score: parseInt(culture),
+                verdict: verdict,
+                comments: comments,
+                submitted_at: new Date().toISOString()
+            };
+
+            // Save to candidate's feedback node
+            db.ref('candidates/' + candidateId + '/feedback').push(feedbackData)
+                .then(() => {
+                    document.getElementById('form-container').style.display = 'none';
+                    document.getElementById('success-container').style.display = 'block';
+                })
+                .catch(err => alert("Hata oluştu: " + err.message));
+        }
+    </script>
+</body>
+</html>
