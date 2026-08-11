@@ -221,13 +221,13 @@
 
     <div class="cv-page">
         <!-- Action Buttons (Hidden in print) -->
-        <div class="no-print" style="position: absolute; top: -50px; right: 0;">
-            <button onclick="window.print()" style="background: #e30613; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                <svg style="width:16px; height:16px; vertical-align:middle; margin-right:5px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+        <div class="no-print" style="position: fixed; top: 20px; right: 20px; z-index: 1000; text-align: right;">
+            <button onclick="window.print()" style="background: #e30613; color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <svg style="width:18px; height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                 PDF OLARAK KAYDET
             </button>
-            <div style="font-size: 11px; color: #64748b; margin-top: 5px; text-align: right;">
-                * Yazdırma ayarlarında "Arka plan grafiklerini (Background graphics)"<br>aktif etmeyi unutmayın.
+            <div style="font-size: 12px; color: #475569; margin-top: 8px; background: rgba(255,255,255,0.9); padding: 5px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                * Yazdırma ayarlarında "Arka plan grafikleri"<br>seçeneğini aktif etmeyi unutmayın.
             </div>
         </div>
 
