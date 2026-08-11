@@ -507,7 +507,8 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                 <button class="btn btn-save" onclick="addCVLang()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Dil Ekle</button>
             </div>
 
-            <div style="margin-top: 2rem; text-align: right;">
+            <div style="margin-top: 2rem; text-align: right; display: flex; justify-content: flex-end; gap: 1rem;">
+                <button class="btn" onclick="fillFatihData()" style="font-size: 1.1rem; padding: 1rem 2rem; background: #64748b;"><i class="fas fa-magic"></i> Fatih Gökçen Verilerini Doldur</button>
                 <button class="btn btn-save" onclick="generateCV()" style="font-size: 1.1rem; padding: 1rem 2rem; background: var(--accent);"><i class="fas fa-print"></i> CV OLUŞTUR VE GÖSTER</button>
             </div>
             <div class="card">
@@ -1429,7 +1430,87 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
         }
 
         // Initialize with one empty experience item just to show
-        addCVExp();
+        renderCVLang();
+        renderCVSkills();
+        renderCVEdu();
+        renderCVExp();
+
+        function fillFatihData() {
+            document.getElementById('cv_form_name').value = "Fatih Gökçen";
+            document.getElementById('cv_form_title').value = "SENIOR SOFTWARE ENGINEER & TECH LEAD";
+            document.getElementById('cv_form_location').value = "Eskişehir, Turkey";
+            document.getElementById('cv_form_exp_years').value = "13+ Years";
+            document.getElementById('cv_form_website').value = "www.bizitworks.com";
+            document.getElementById('cv_form_email').value = "info@bizitworks.com";
+            document.getElementById('cv_form_phone').value = "+90 216 225 66 51";
+            document.getElementById('cv_form_top_heading').value = "BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS";
+            document.getElementById('cv_form_summary').value = "Senior Software Engineer / Tech Lead with over 13 years of experience in the Java ecosystem, High-Performance Payment Systems, and Spec-Driven Development (SDD). Expert in Payment Gateway Integrations & Checkout Architecture, with strong leadership in building scalable cloud-native architectures and mentoring engineering teams.";
+
+            cvSkills = [
+                { category: "LANGUAGES", details: "Java (8, 11, 17), Python, SQL, TypeScript, HTML/CSS" },
+                { category: "FINTECH & PAYMENTS", details: "PayPal, Computop, Afterpay BNPL, iDEAL, iyzico, PayTR, PCI-DSS, 3DS2, Tokenization" },
+                { category: "ARCHITECTURE & BACKEND", details: "Spring Boot, Microservices, Event-Driven, State Machine, SDD" },
+                { category: "CLOUD & MESSAGING", details: "AWS (SQS, API Gateway, S3, Timestream, Lambda), Kafka" },
+                { category: "DEVOPS & CI/CD", details: "Terraform, Helm, GitHub Actions, Jenkins, Docker, Kubernetes, Maven" },
+                { category: "DATABASES", details: "AWS Timestream, PostgreSQL, Oracle 11g, MS SQL, Redis" },
+                { category: "AI & INNOVATION", details: "LLM Fine-tuning, RAG Architectures, AI-Assisted Dev, STT/TTS (Whisper/Piper)" }
+            ];
+            renderCVSkills();
+
+            cvEdu = [
+                { degree: "B.Sc. Computer Engineering", institution: "Eskişehir Osmangazi Univ. (2013)" },
+                { degree: "Professional Scrum Master I", institution: "Scrum.org (2020)" },
+                { degree: "Oracle Certified Associate", institution: "Java SE 8 Programmer (2019)" }
+            ];
+            renderCVEdu();
+
+            cvLang = [
+                { language: "ENGLISH", level: "C1 (Advanced)" },
+                { language: "GERMAN", level: "A1 (Learning)" }
+            ];
+            renderCVLang();
+
+            cvExp = [
+                {
+                    jobTitle: "Tech Lead",
+                    company: "kfzteile24.de",
+                    duration: "Feb 2023 - Jun 2026",
+                    location: "Berlin, Germany",
+                    description: "Redesigned and scaled Cart & Checkout subsystems, eliminating client-side manipulation risks.\nIntegrated global PSPs (PayPal, Computop, Afterpay, iDEAL).\nHands-on backend (Java 17, Spring Boot) and frontend (React, Vue) contributions.\nImplemented Agentic Engineering & Spec-Driven Development workflows.\nDesigned high-performance messaging with AWS Timestream, Kafka, SQS.\nMentored teams on security, idempotency, and clean code practices."
+                },
+                {
+                    jobTitle: "Senior Java Developer (Backend)",
+                    company: "kfzteile24.de",
+                    duration: "2021 - 2023",
+                    location: "Berlin, Germany",
+                    description: "Developed resilient backend services with Java / Spring Boot.\nRefactored legacy payment workflows into scalable microservices.\nDesigned secure APIs with AWS API Gateway.\nCollaborated with frontend teams across Angular and React platforms."
+                },
+                {
+                    jobTitle: "Senior Software Developer / Architect",
+                    company: "LOGO Business Solutions",
+                    duration: "Apr 2020 - 2021",
+                    location: "Ankara, Turkey",
+                    description: "Resolved complex infrastructure bottlenecks in enterprise ERP systems.\nManaged CI/CD pipelines for large multi-module applications.\nPromoted reusable enterprise components to standardize software engineering."
+                },
+                {
+                    jobTitle: "Software Developer",
+                    company: "Bilge Adam Technologies",
+                    duration: "Jul 2019 - Apr 2020",
+                    location: "Ankara, Turkey",
+                    description: "Designed secure backend microservices for critical e-government projects.\nConfigured automated testing & deployment pipelines to improve delivery speed."
+                },
+                {
+                    jobTitle: "Software Developer / Security Coordinator",
+                    company: "Mergen Software",
+                    duration: "Sep 2013 - Jul 2019",
+                    location: "Eskişehir, Turkey",
+                    description: "Engineered Turkey's first web-based Hemapheresis Module.\nCoordinated developer workflows for Common Criteria (EAL2) certification.\nDesigned hospital ERP systems built on highly secure architectures."
+                }
+            ];
+            renderCVExp();
+
+            alert("Fatih Gökçen'e ait veriler forma dolduruldu. Şimdi 'CV OLUŞTUR VE GÖSTER' butonuna basarak kaydedebilirsiniz.");
+        }
     </script>
 </body>
 </html>
