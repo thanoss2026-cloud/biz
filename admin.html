@@ -1315,7 +1315,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             if (!db) return;
             const container = document.getElementById('cv_candidates_list');
             
-            db.ref('candidates').on('value', (snapshot) => {
+            db.ref('site_content/candidates').on('value', (snapshot) => {
                 const data = snapshot.val();
                 container.innerHTML = '';
                 
@@ -1376,7 +1376,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
 
         function deleteCandidate(id) {
             if(confirm("Bu adayı ve tüm değerlendirmelerini silmek istediğinize emin misiniz?")) {
-                db.ref('candidates/' + id).remove();
+                db.ref('site_content/candidates/' + id).remove();
             }
         }
 
@@ -1413,7 +1413,7 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KAYDEDİLİYOR...';
             btn.disabled = true;
 
-            const newRef = db.ref('candidates').push();
+            const newRef = db.ref('site_content/candidates').push();
             newRef.set(cvData).then(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;

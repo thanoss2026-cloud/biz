@@ -315,7 +315,7 @@
 
             if (candidateId && db) {
                 // Read from Firebase
-                db.ref('candidates/' + candidateId).once('value').then(snap => {
+                db.ref('site_content/candidates/' + candidateId).once('value').then(snap => {
                     const data = snap.val();
                     if (data) {
                         renderCV(data);

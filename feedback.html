@@ -221,7 +221,7 @@
                 return;
             }
 
-            db.ref('candidates/' + candidateId).once('value').then(snap => {
+            db.ref('site_content/candidates/' + candidateId).once('value').then(snap => {
                 const data = snap.val();
                 if (data) {
                     document.getElementById('loading').style.display = 'none';
@@ -261,7 +261,7 @@
             };
 
             // Save to candidate's feedback node
-            db.ref('candidates/' + candidateId + '/feedback').push(feedbackData)
+            db.ref('site_content/candidates/' + candidateId + '/feedback').push(feedbackData)
                 .then(() => {
                     document.getElementById('form-container').style.display = 'none';
                     document.getElementById('success-container').style.display = 'block';
