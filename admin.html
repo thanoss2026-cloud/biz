@@ -1076,9 +1076,10 @@ Biz Teknoloji Çözümleri Ailesi</textarea>
                             feedbackHTML += `
                                 <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 4px; margin-bottom: 0.5rem; font-size: 0.85rem;">
                                     <div><strong>Yönetici:</strong> ${f.manager_name}</div>
-                                    <div style="display: flex; gap: 1rem; margin: 0.25rem 0;">
+                                    <div style="display: flex; gap: 1rem; margin: 0.25rem 0; flex-wrap: wrap;">
                                         <span><strong>Teknik:</strong> ${f.technical_score}/5</span>
                                         <span><strong>Uyum:</strong> ${f.culture_score}/5</span>
+                                        <span><strong>Rol:</strong> ${f.role_score ? f.role_score : '-'}/5</span>
                                         <span><strong>Karar:</strong> <span style="color: ${f.verdict.includes('Olumlu') ? '#22c55e' : (f.verdict.includes('Olumsuz') ? '#ef4444' : '#eab308')}">${f.verdict}</span></span>
                                     </div>
                                     ${f.comments ? `<div style="color: var(--text-dim); font-style: italic;">"${f.comments}"</div>` : ''}

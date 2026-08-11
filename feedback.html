@@ -180,6 +180,17 @@
             </div>
 
             <div class="form-group">
+                <label>Rol Tanımına Uygunluk (1 Düşük, 5 Yüksek)</label>
+                <div class="rating-group" id="rg-role">
+                    <input type="radio" name="role" id="r1" value="1"><label for="r1">1</label>
+                    <input type="radio" name="role" id="r2" value="2"><label for="r2">2</label>
+                    <input type="radio" name="role" id="r3" value="3"><label for="r3">3</label>
+                    <input type="radio" name="role" id="r4" value="4"><label for="r4">4</label>
+                    <input type="radio" name="role" id="r5" value="5"><label for="r5">5</label>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label>Nihai Karar</label>
                 <select id="final_verdict">
                     <option value="">Seçiniz...</option>
@@ -243,10 +254,11 @@
             const manager = document.getElementById('manager_name').value.trim();
             const technical = document.querySelector('input[name="technical"]:checked')?.value;
             const culture = document.querySelector('input[name="culture"]:checked')?.value;
+            const role = document.querySelector('input[name="role"]:checked')?.value;
             const verdict = document.getElementById('final_verdict').value;
             const comments = document.getElementById('comments').value.trim();
 
-            if (!manager || !technical || !culture || !verdict) {
+            if (!manager || !technical || !culture || !role || !verdict) {
                 alert("Lütfen yönetici adı, puanlamalar ve nihai karar alanlarını eksiksiz doldurun.");
                 return;
             }
@@ -255,6 +267,7 @@
                 manager_name: manager,
                 technical_score: parseInt(technical),
                 culture_score: parseInt(culture),
+                role_score: parseInt(role),
                 verdict: verdict,
                 comments: comments,
                 submitted_at: new Date().toISOString()
