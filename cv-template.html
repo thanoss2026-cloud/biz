@@ -220,7 +220,7 @@
         <!-- Top Header -->
         <div class="cv-top-header" id="cv-top-heading">
             <img src="assets/logo.png" alt="BIZ Logo" style="height: 40px; margin-right: 15px; vertical-align: middle;">
-            <span style="vertical-align: middle;">BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS</span>
+            <span id="cv-top-text" style="vertical-align: middle;">BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS</span>
         </div>
 
         <div class="cv-grid">
@@ -301,7 +301,7 @@
                     if(data.website) document.getElementById('cv-website').innerText = data.website;
                     if(data.email) document.getElementById('cv-email').innerText = data.email;
                     if(data.phone) document.getElementById('cv-phone').innerText = data.phone;
-                    if(data.topHeading) document.getElementById('cv-top-heading').innerText = data.topHeading.toUpperCase();
+                    if(data.topHeading) document.getElementById('cv-top-text').innerText = data.topHeading.toUpperCase();
 
                     // Skills
                     const skillsContainer = document.getElementById('cv-skills-container');
