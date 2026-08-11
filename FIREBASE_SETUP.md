@@ -25,7 +25,16 @@ Veritabanınızın çalınmasını veya başkaları tarafından değiştirilmesi
   "rules": {
     "site_content": {
       ".read": true,
-      ".write": "auth != null"
+      ".write": "auth != null",
+      "candidates": {
+        ".read": true,
+        ".write": "auth != null",
+        "$candidateId": {
+          "feedback": {
+            ".write": true
+          }
+        }
+      }
     }
   }
 }
