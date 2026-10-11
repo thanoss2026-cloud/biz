@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta name="google-site-verification" content="NlYL36bfcFoQZQ4E9JEOQpCV4c68N16DzXapModu3nA" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="title">BIZ IT Works | Slider Test (Beyaz Arka Plan)</title>
+    <meta name="description" content="BIZ IT Works ile yazılım süreçlerinizi hızlandırın. Web, Mobil ve Yapay Zeka çözümlerinde uzman outsourcing ekibimizle yanınızdayız." data-i18n-content="meta_description">
+    <link rel="stylesheet" href="style.css">
+    <!-- Slider için eklediğimiz stil dosyası -->
+    <link rel="stylesheet" href="slider-test.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    
+        <!-- YENİ SLIDER BURAYA GELDİ -->
+        <div class="hero-slider" id="heroSlider">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="slide-content">
+                    <span class="slide-subtitle">Kurumsal Çözümler</span>
+                    <h2 class="slide-title">Outsourcing & Kaynak Yönetimi</h2>
+                    <p class="slide-text">Doğru yeteneklerle projelerinizi hızlandırın. İhtiyacınıza uygun esnek ve ölçeklenebilir BT kaynağı çözümleriyle işinize değer katın.</p>
+                    <a href="#" class="slide-btn">Detaylı Bilgi</a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="slide-content">
+                    <span class="slide-subtitle">Geleceğin Teknolojisi</span>
+                    <h2 class="slide-title">Yapay Zeka (AI)</h2>
+                    <p class="slide-text">Verilerinizi akıllı içgörülere dönüştürün. Üretken yapay zeka ve makine öğrenimi ile süreçlerinizi otomatikleştirip verimliliği artırın.</p>
+                    <a href="#" class="slide-btn">Keşfedin</a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="slide-content">
+                    <span class="slide-subtitle">Kusursuz Deneyim</span>
+                    <h2 class="slide-title">Dijital Deneyim Platformu (DXP)</h2>
+                    <p class="slide-text">Müşterilerinize her temas noktasında kişiselleştirilmiş ve bütünleşik dijital deneyimler sunarak marka sadakatini güçlendirin.</p>
+                    <a href="#" class="slide-btn">İnceleyin</a>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="slider-controls">
+                <button class="control-btn prev-btn" id="prevBtn" aria-label="Önceki Slayt">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="control-btn next-btn" id="nextBtn" aria-label="Sonraki Slayt">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
+
+            <!-- Indicators -->
+            <div class="slider-indicators" id="sliderIndicators">
+                <button class="indicator active" data-index="0" aria-label="Slayt 1"></button>
+                <button class="indicator" data-index="1" aria-label="Slayt 2"></button>
+                <button class="indicator" data-index="2" aria-label="Slayt 3"></button>
+            </div>
+        </div>
+        <!-- SLIDER BİTİŞ -->
+
+        <section class="stats container">
+            <div class="stat-item reveal">
+                <h3>50+</h3>
+                <p data-i18n="stat_experts">Uzman Geliştirici</p>
+            </div>
+            <div class="stat-item reveal">
+                <h3>100+</h3>
+                <p data-i18n="stat_projects">Tamamlanan Proje</p>
+            </div>
+            <div class="stat-item reveal">
+                <h3>10+</h3>
+                <p data-i18n="stat_experience">Yıllık Tecrübe</p>
+            </div>
+            <div class="stat-item reveal">
+                <h3>%98</h3>
+                <p data-i18n="stat_satisfaction">Müşteri Memnuniyeti</p>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2 data-i18n="services_title">Uzmanlık Alanlarımız</h2>
+                    <p data-i18n="services_subtitle">En son teknolojileri kullanarak iş süreçlerinizi optimize eden çözümler sunuyoruz.</p>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card reveal">
+                        <div class="service-img">
+                            <img src="assets/web_mobile.png" alt="Web ve Mobil Geliştirme">
+                        </div>
+                        <div class="service-info">
+                            <h3 data-i18n="service_1_title">Web & Mobil Geliştirme</h3>
+                            <p data-i18n="service_1_desc">Modern, responsive ve kullanıcı odaklı web ve mobil uygulamalar geliştiriyoruz.</p>
+                        </div>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-img">
+                            <img src="assets/ai_automation.png" alt="Yapay Zeka ve Otomasyon">
+                        </div>
+                        <div class="service-info">
+                            <h3 data-i18n="service_2_title">Yapay Zeka & AI</h3>
+                            <p data-i18n="service_2_desc">Veri analitiği ve yapay zeka çözümleri ile iş kararlarınızı veriye dayalı hale getirin.</p>
+                        </div>
+                    </div>
+                    <div class="service-card reveal">
+                        <div class="service-img">
+                            <img src="assets/hero.png" alt="Bulut Çözümleri">
+                        </div>
+                        <div class="service-info">
+                            <h3 data-i18n="service_3_title">Bulut & DevOps</h3>
+                            <p data-i18n="service_3_desc">Güvenli, ölçeklenebilir bulut altyapıları ve sürekli entegrasyon süreçleri kuruyoruz.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container about-wrapper">
+                <div class="about-content reveal">
+                    <h2 data-i18n="about_title">Neden <span class="gradient-text">BIZ IT Works</span>?</h2>
+                    <p data-i18n="about_desc">Yazılım outsourcing sadece kod yazmak değildir; doğru iş ortağını bulmaktır. BIZ IT Works olarak, projelerinize sadece iş gücü değil, vizyon ve teknik derinlik katıyoruz.</p>
+                    <ul class="features-list">
+                        <li data-i18n="feature_1"><i class="fas fa-check-circle"></i> Çevik (Agile) Metodoloji</li>
+                        <li data-i18n="feature_2"><i class="fas fa-check-circle"></i> Küresel Kalite Standartları</li>
+                        <li data-i18n="feature_3"><i class="fas fa-check-circle"></i> Şeffaf İletişim & Süreç Takibi</li>
+                        <li data-i18n="feature_4"><i class="fas fa-check-circle"></i> Esnek Ekip Yapılandırması</li>
+                    </ul>
+                </div>
+                <div class="about-visual reveal">
+                    <div class="glass-box">
+                        <p data-i18n="about_quote">"Teknoloji ile iş dünyasını birleştiriyoruz."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="contact-box reveal">
+                    <div class="contact-info">
+                        <h2 data-i18n="contact_title">Hemen Başlayalım</h2>
+                        <p data-i18n="contact_subtitle">Projenizi anlatın, size en uygun ekibi ve stratejiyi birlikte belirleyelim.</p>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p><strong data-i18n="label_contact_email">E-posta:</strong> <a id="contact-email-link" href="javascript:void(0)"><span data-i18n="contact_email_val">hello@bizitworks.com</span></a></p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <p><strong data-i18n="label_contact_phone">Telefon:</strong> <a id="contact-phone-link" href="javascript:void(0)"><span data-i18n="contact_phone_val">+90 212 000 00 00</span></a></p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p><strong data-i18n="label_contact_address">Adres:</strong> <a id="contact-address-link" href="javascript:void(0)" target="_blank"><span data-i18n="contact_address_val">Levent Plaza, No: 42, Kat: 8, Beşiktaş, İstanbul</span></a></p>
+                        </div>
+                    </div>
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Adınız Soyadınız" required data-i18n-placeholder="form_name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="E-posta Adresiniz" required data-i18n-placeholder="form_email">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="4" placeholder="Mesajınız" required data-i18n-placeholder="form_message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-i18n="btn_send">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    <section id="references" class="references">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 data-i18n="references_title">Referanslarımız</h2>
+                <p data-i18n="references_subtitle">Güvenilir iş ortaklarımızla birlikte büyüyoruz.</p>
+            </div>
+            <div class="references-grid">
+                <a href="https://www.vodafone.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
+                    <img src="assets/vodafone-logo.svg" alt="Vodafone">
+                    <span>Vodafone</span>
+                </a>
+                <a href="https://www.burgan.com.tr" target="_blank" rel="noopener noreferrer" class="reference-item reveal">
+                    <img src="assets/burgan-bank-logo.svg" alt="Burgan Bank">
+                    <span>Burgan Bank</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#home" class="logo">
+                    <img src="assets/logo.png" alt="BIZ IT Works">
+                </a>
+                <p data-i18n="footer_copy">© 2026 BIZ IT Works. Tüm hakları saklıdır.</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="kullanim-kosullari" data-i18n="footer_terms">Kullanım Koşulları</a></li>
+                <li><a href="gizlilik-politikasi" data-i18n="footer_privacy">Gizlilik Politikası</a></li>
+                <li><a href="kvkk" data-i18n="footer_kvkk">KVKK Aydınlatma Metni</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <!-- SLIDER SCRIPT -->
+    <script src="slider-test.js"></script>
+</body>
+</html>

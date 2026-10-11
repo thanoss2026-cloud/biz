@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta name="google-site-verification" content="NlYL36bfcFoQZQ4E9JEOQpCV4c68N16DzXapModu3nA" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIZ IT Works | Yönetim Paneli (Cloud)</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PX1EE3M36Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PX1EE3M36Q');
+    </script>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <i class="fas fa-lock" style="font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem;"></i>
+            <h2>Bulut Yönetim Girişi</h2>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <input type="email" id="admin-email" placeholder="Email Adresiniz" autofocus>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <input type="password" id="admin-pass" placeholder="Şifrenizi Girin">
+            </div>
+            <button class="btn btn-save" onclick="handleLogin()" id="login-btn">Giriş Yap</button>
+            <p id="login-error" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; display: none;">Hatalı email veya şifre.</p>
+        </div>
+    </div>
+
+    <aside>
+        <div class="logo">
+            <img src="assets/logo.png" alt="BIZ IT Works" style="height: 40px;">
+            <div id="sync-status" style="font-size: 0.7rem; color: #ef4444; margin-top: 0.5rem;"><i class="fas fa-circle"></i> CLOUD DISCONNECTED</div>
+        </div>
+        <div class="nav-item active" data-section="hero"><i class="fas fa-rocket"></i> &nbsp; Hero Bölümü</div>
+        <div class="nav-item" data-section="services"><i class="fas fa-concierge-bell"></i> &nbsp; Hizmetler</div>
+        <div class="nav-item" data-section="about"><i class="fas fa-info-circle"></i> &nbsp; Hakkımızda</div>
+        <div class="nav-item" data-section="contact"><i class="fas fa-envelope"></i> &nbsp; İletişim</div>
+        <div class="nav-item" data-section="welcome"><i class="fas fa-hand-holding-heart"></i> &nbsp; Hoş Geldin Linkleri</div>
+        <div class="nav-item" data-section="manager"><i class="fas fa-user-tie"></i> &nbsp; Yönetici Maili</div>
+        <div class="nav-item" data-section="cv"><i class="fas fa-file-invoice"></i> &nbsp; Aday Havuzu ve CV Dönüştürücü</div>
+    </aside>
+
+    <main>
+        <header>
+            <h2>Bulut İçerik Yönetimi</h2>
+            <div class="actions">
+                <button class="btn btn-reset" onclick="resetDefaults()" style="background: transparent; border: 1px solid rgba(255,255,255,0.1);">Sıfırla</button>
+                <button class="btn btn-save" onclick="saveChanges()">Buluta Kaydet</button>
+                <button class="btn btn-reset" onclick="handleLogout()" style="margin-left: 10px; background: #334155;"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </header>
+
+        <div id="config-alert" style="background: rgba(227, 6, 19, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: none;">
+            <p style="color: white; font-size: 0.9rem;"><i class="fas fa-exclamation-triangle" style="color: var(--accent);"></i> <strong>Dikkat:</strong> Firebase yapılandırması eksik. Lütfen <code>firebase-config.js</code> dosyasını güncelleyin.</p>
+        </div>
+
+        <div class="lang-toggle">
+            <button class="lang-btn active" data-lang="tr">TÜRKÇE (TR)</button>
+            <button class="lang-btn" data-lang="en">ENGLISH (EN)</button>
+        </div>
+
+        <!-- Section: Hero -->
+        <div id="section-hero" class="section active">
+            <div class="card">
+                <h3>Hero Bölümü Ayarları</h3>
+                <div class="form-group">
+                    <label>Arka Plan Hayalet Metin (Ghost Text)</label>
+                    <input type="text" id="hero_ghost">
+                </div>
+                <div class="form-group">
+                    <label>Ana Başlık (HTML Kullanılabilir)</label>
+                    <textarea id="hero_title" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Alt Slogan</label>
+                    <textarea id="hero_subtitle" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sections: Services, About, Contact (Keeping the IDs consistent) -->
+        <div id="section-services" class="section">
+             <div class="card">
+                <h3>Üst Başlıklar</h3>
+                <div class="form-group">
+                    <label>Bölüm Başlığı</label>
+                    <input type="text" id="services_title">
+                </div>
+                <div class="form-group">
+                    <label>Bölüm Alt Başlığı</label>
+                    <input type="text" id="services_subtitle">
+                </div>
+            </div>
+            <div class="card">
+                <h3>Hizmet 1: Web & Mobil</h3>
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="service_1_title">
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea id="service_1_desc" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Hizmet 2: AI</h3>
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="service_2_title">
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea id="service_2_desc" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-about" class="section">
+             <div class="card">
+                <h3>Hakkımızda Metinleri</h3>
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="about_title">
+                </div>
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea id="about_desc" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Alıntı (Quote)</label>
+                    <input type="text" id="about_quote">
+                </div>
+            </div>
+        </div>
+
+        <div id="section-contact" class="section">
+             <div class="card">
+                <h3>İletişim Formu ve Bilgileri</h3>
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="contact_title">
+                </div>
+                <div class="form-group">
+                    <label>Adres</label>
+                    <textarea id="contact_address_val" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>E-posta</label>
+                    <input type="email" id="contact_email_val">
+                </div>
+                <div class="form-group">
+                    <label>Telefon</label>
+                    <input type="text" id="contact_phone_val">
+                </div>
+            </div>
+        </div>
+
+        <div id="section-welcome" class="section">
+             <div class="card">
+                <h3>Genel Sayfa Metinleri</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">Hoş Geldin sayfasındaki sabit metinleri buradan değiştirebilirsiniz.</p>
+                <div class="form-group">
+                    <label>Paragraf 1</label>
+                    <textarea id="welcome_msg_1" rows="3">Biz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Aramıza hoş geldin! Yeni yolculuğunda başarılar diler, birlikte nice güzel işlere imza atacağımıza inanıyoruz.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Paragraf 2</label>
+                    <textarea id="welcome_msg_2" rows="2">Sana destek olmak ve uyum sürecini kolaylaştırmak için her zaman yanındayız.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>İmza</label>
+                    <textarea id="welcome_signature" rows="2">Tekrar hoş geldin!
+Biz Teknoloji Çözümleri Ailesi</textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Alt Kartlar (Bilgi Kutuları)</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4>Kart 1</h4>
+                        <input type="text" id="welcome_card1_title" value="Ekibinle Tanış" class="form-group" style="width: 100%; margin-bottom: 0.5rem;">
+                        <textarea id="welcome_card1_desc" rows="2" style="width: 100%;">Ekip arkadaşlarınla tanışmak için ilk fırsatta bir araya gelmeni heyecanla bekliyoruz.</textarea>
+                    </div>
+                    <div>
+                        <h4>Kart 2</h4>
+                        <input type="text" id="welcome_card2_title" value="Süreçlere Göz At" class="form-group" style="width: 100%; margin-bottom: 0.5rem;">
+                        <textarea id="welcome_card2_desc" rows="2" style="width: 100%;">İş süreçlerimiz ve kurum içi kaynaklara göz atarak ilk adımlarını kolaylaştırabilirsin.</textarea>
+                    </div>
+                    <div>
+                        <h4>Kart 3</h4>
+                        <input type="text" id="welcome_card3_title" value="Destek İçin Yanındayız" class="form-group" style="width: 100%; margin-bottom: 0.5rem;">
+                        <textarea id="welcome_card3_desc" rows="2" style="width: 100%;">Uyum sürecin boyunca aklına takılan her konuda bize ulaşabilirsin.</textarea>
+                    </div>
+                    <div>
+                        <h4>Kart 4</h4>
+                        <input type="text" id="welcome_card4_title" value="Birlikte Başaracağız" class="form-group" style="width: 100%; margin-bottom: 0.5rem;">
+                        <textarea id="welcome_card4_desc" rows="2" style="width: 100%;">Fikirlerin, enerjin ve katkılarınla ekibimize değer katacağına inanıyoruz.</textarea>
+                    </div>
+                </div>
+            </div>
+
+             <div class="card">
+                <h3>Yeni Hoş Geldin Linki Oluştur</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">İşe yeni başlayan bir kişi için isim girerek ona özel bir karşılama sayfası linki üretebilirsiniz.</p>
+                <div class="form-group">
+                    <label>Kişinin Adı ve Soyadı</label>
+                    <input type="text" id="new_employee_name" placeholder="Örn: Ahmet Yılmaz">
+                </div>
+                <button class="btn btn-save" onclick="generateWelcomeLink()">Link Üret ve Kaydet</button>
+            </div>
+            
+            <div class="card">
+                <h3>Oluşturulan Linkler</h3>
+                <div id="welcome-links-container">
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: Manager Notification Links -->
+        <div id="section-manager" class="section">
+
+            <div class="card">
+                <h3>Yönetici Bildirim Sayfası — Genel Metinler</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Yöneticiye gönderilecek sayfadaki sabit metinleri buradan düzenleyebilirsiniz.
+                </p>
+                <div class="form-group">
+                    <label>Sayfa Başlığı (Hero)</label>
+                    <input type="text" id="mgr_hero_title" placeholder="Sayın [Yönetici Adı],">
+                </div>
+                <div class="form-group">
+                    <label>Hero Alt Metin</label>
+                    <textarea id="mgr_hero_subtitle" rows="2" placeholder="Ekibinize yeni bir çalışan katılıyor..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Yapılacaklar Listesi (her satır bir madde)</label>
+                    <textarea id="mgr_checklist" rows="6" placeholder="Ekipmanların hazır olduğundan emin olun&#10;Kurumsal e-posta erişimlerini ayarlayın&#10;Ekip tanışma toplantısını planlayın"></textarea>
+                </div>
+                <button class="btn btn-save" style="margin-top: 1rem;" onclick="saveMgrContacts()">
+                    <i class="fas fa-save"></i> Genel Metinleri Kaydet
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>Şirket İletişim Bilgileri</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Yönetici sayfasındaki iletişim kartlarını buradan güncelleyin.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label>📧 Genel E-posta</label>
+                        <input type="email" id="mgr_contact_email" placeholder="info@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>💬 WhatsApp Numarası</label>
+                        <input type="text" id="mgr_contact_whatsapp" placeholder="+90 5XX XXX XX XX">
+                    </div>
+                    <div class="form-group">
+                        <label>👥 İK E-posta</label>
+                        <input type="email" id="mgr_contact_hr" placeholder="ik@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>💰 Finans E-posta</label>
+                        <input type="email" id="mgr_contact_finance" placeholder="finans@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>📞 Genel Telefon</label>
+                        <input type="text" id="mgr_contact_phone" placeholder="+90 212 123 45 67">
+                    </div>
+                    <div class="form-group">
+                        <label>🌐 Web Sitesi</label>
+                        <input type="text" id="mgr_contact_web" placeholder="www.bizitworks.com">
+                    </div>
+                </div>
+                <button class="btn btn-save" style="margin-top: 1rem;" onclick="saveMgrContacts()">
+                    <i class="fas fa-save"></i> İletişim Bilgilerini Kaydet
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>Yeni Yönetici Bildirimi Oluştur</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Yöneticiye gönderilecek, çalışana özel bilgi sayfası linki üretin.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Çalışanın Adı Soyadı *</label>
+                        <input type="text" id="mgr_emp_name" placeholder="Örn: Ayşe Yılmaz">
+                    </div>
+                    <div class="form-group">
+                        <label>Yöneticinin Adı</label>
+                        <input type="text" id="mgr_mgr_name" placeholder="Örn: Yönetici Adı Soyadı">
+                    </div>
+                    <div class="form-group">
+                        <label>Pozisyon / Unvan</label>
+                        <input type="text" id="mgr_position" placeholder="Örn: Frontend Developer">
+                    </div>
+                    <div class="form-group">
+                        <label>Departman</label>
+                        <input type="text" id="mgr_department" placeholder="Örn: Yazılım Geliştirme">
+                    </div>
+                    <div class="form-group">
+                        <label>Kurumsal E-posta</label>
+                        <input type="email" id="mgr_emp_email" placeholder="ayse@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="text" id="mgr_emp_phone" placeholder="+90 532 000 00 00">
+                    </div>
+                    <div class="form-group">
+                        <label>İşe Başlama Tarihi</label>
+                        <input type="text" id="mgr_startdate" placeholder="02 Haziran 2026">
+                    </div>
+                    <div class="form-group">
+                        <label>Lokasyon / Ofis</label>
+                        <input type="text" id="mgr_location" placeholder="İstanbul — Levent Ofis">
+                    </div>
+                    <div class="form-group">
+                        <label>Sözleşme Türü</label>
+                        <input type="text" id="mgr_contract" placeholder="Tam Zamanlı / Yarı Zamanlı">
+                    </div>
+                    <div class="form-group">
+                        <label>Çalışma Şekli</label>
+                        <input type="text" id="mgr_worktype" placeholder="Hibrit / Uzak / Ofis">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Yönetici Notu (opsiyonel)</label>
+                    <textarea id="mgr_note" rows="3" placeholder="Çalışana özel önemli notlar..."></textarea>
+                </div>
+                <button class="btn btn-save" onclick="generateManagerLink()">
+                    <i class="fas fa-link"></i> Yönetici Linki Üret ve Kaydet
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>Oluşturulan Yönetici Linkleri</h3>
+                <div id="manager-links-container">
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Yükleniyor...</p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="section-cv" class="section">
+            <div class="card">
+                <h3>Aday Havuzu ve CV Dönüştürücü (BIZ IT Works Şablonu)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Aşağıdaki alanları doldurarak BIZ IT Works şablonunda bir CV oluşturabilirsiniz. "CV Oluştur" butonuna bastığınızda yeni bir sekmede önizleme açılacaktır. Oradan yazdırıp PDF olarak kaydedebilirsiniz.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Ad Soyad *</label>
+                        <input type="text" id="cv_form_name" placeholder="Örn: FATİH GÖKÇEN">
+                    </div>
+                    <div class="form-group">
+                        <label>Unvan (Birden fazla satır için Enter kullanın) *</label>
+                        <textarea id="cv_form_title" rows="2" placeholder="SENIOR SOFTWARE ENGINEER &\nTECH LEAD"></textarea>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Lokasyon</label>
+                        <input type="text" id="cv_form_location" placeholder="Eskişehir, Turkey">
+                    </div>
+                    <div class="form-group">
+                        <label>Toplam Deneyim</label>
+                        <input type="text" id="cv_form_exp_years" placeholder="13+ Years">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label>Website</label>
+                        <input type="text" id="cv_form_website" value="www.bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>E-posta</label>
+                        <input type="email" id="cv_form_email" value="info@bizitworks.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefon</label>
+                        <input type="text" id="cv_form_phone" value="+90 216 225 66 51">
+                    </div>
+                    <div class="form-group">
+                        <label>Üst Başlık (Mavi Şerit)</label>
+                        <input type="text" id="cv_form_top_heading" value="BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>EXECUTIVE SUMMARY (Özet)</label>
+                    <textarea id="cv_form_summary" rows="4" placeholder="Kariyer özeti..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Technical Skills (Teknik Yetenekler)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Örn: Kategori: LANGUAGES, Detaylar: Java, Python, SQL</p>
+                <div id="cv_skills_list"></div>
+                <button class="btn btn-save" onclick="addCVSkill()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Kategori Ekle</button>
+            </div>
+
+            <div class="card">
+                <h3>Professional Experience (İş Deneyimleri)</h3>
+                <div id="cv_exp_list"></div>
+                <button class="btn btn-save" onclick="addCVExp()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Deneyim Ekle</button>
+            </div>
+
+            <div class="card">
+                <h3>Education & Certs (Eğitim ve Sertifikalar)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Örn: Derece: B.Sc. Computer Engineering, Kurum: Eskişehir Osmangazi Univ. (2013)</p>
+                <div id="cv_edu_list"></div>
+                <button class="btn btn-save" onclick="addCVEdu()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Eğitim Ekle</button>
+            </div>
+
+            <div class="card">
+                <h3>Languages (Diller)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Örn: Dil: ENGLISH, Seviye: C1 (Advanced)</p>
+                <div id="cv_lang_list"></div>
+                <button class="btn btn-save" onclick="addCVLang()" style="background: #3b82f6; margin-top: 10px;"><i class="fas fa-plus"></i> Dil Ekle</button>
+            </div>
+
+            <div style="margin-top: 2rem; text-align: right; display: flex; justify-content: flex-end; gap: 1rem;">
+                <button class="btn" onclick="fillFatihData()" style="font-size: 1.1rem; padding: 1rem 2rem; background: #64748b;"><i class="fas fa-magic"></i> Fatih Gökçen Verilerini Doldur</button>
+                <button class="btn btn-save" onclick="generateCV()" style="font-size: 1.1rem; padding: 1rem 2rem; background: var(--accent);"><i class="fas fa-print"></i> CV OLUŞTUR VE GÖSTER</button>
+            </div>
+            <div class="card">
+                <h3>Kayıtlı Adaylar (Aday Havuzu)</h3>
+                <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Burada kaydettiğiniz CV'leri görebilir ve yöneticilerden geri bildirim almak için değerlendirme linkini kopyalayabilirsiniz.</p>
+                <div id="cv_candidates_list">
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Yükleniyor...</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+    <script>
+        let db = null;
+        let auth = null;
+        let currentLang = 'tr';
+        let content = { tr: {}, en: {} };
+
+        // --- Firebase Init ---
+        if (typeof firebase !== 'undefined' && typeof isFirebaseConfigured === 'function' && isFirebaseConfigured()) {
+            // Güvenli başlatma
+            const _app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            auth = firebase.auth();
+
+            // Monitor Auth State
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    document.getElementById('login-overlay').style.display = 'none';
+                    document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #22c55e"></i> CLOUD CONNECTED';
+                    document.getElementById('sync-status').style.color = '#22c55e';
+                    
+                    // Initial data pull
+                    db.ref('site_content').once('value').then((snapshot) => {
+                        const cloudData = snapshot.val();
+                        if (cloudData) {
+                            // Migration: Old IDs to New IDs
+                            ['tr', 'en'].forEach(l => {
+                                if (cloudData[l]) {
+                                    if (cloudData[l].contact_address && !cloudData[l].contact_address_val) cloudData[l].contact_address_val = cloudData[l].contact_address;
+                                    if (cloudData[l].contact_phone && !cloudData[l].contact_phone_val) cloudData[l].contact_phone_val = cloudData[l].contact_phone;
+                                }
+                            });
+                            
+                            content.tr = { ...content.tr, ...cloudData.tr };
+                            content.en = { ...content.en, ...cloudData.en };
+                            updateForm();
+                        }
+                    });
+                    
+                    // Load Welcome Pages
+                    loadWelcomeLinks();
+                    // Load Manager Pages
+                    loadMgrSettings();
+                    loadManagerLinks();
+                    // Load Candidates
+                    loadCandidates();
+                } else {
+                    document.getElementById('login-overlay').style.display = 'flex';
+                    document.getElementById('sync-status').innerHTML = '<i class="fas fa-circle" style="color: #ef4444"></i> CLOUD DISCONNECTED';
+                    document.getElementById('sync-status').style.color = '#ef4444';
+                }
+            });
+        } else {
+            document.getElementById('config-alert').style.display = 'block';
+        }
+
+        function debugLog(msg) {
+            let d = document.getElementById('debug-log');
+            if (!d) {
+                d = document.createElement('div');
+                d.id = 'debug-log';
+                d.style.cssText = 'position:fixed; top:0; left:0; width:100%; max-height:200px; overflow-y:auto; background:#facc15; color:#000; z-index:999999; padding:10px; font-family:monospace; font-size:12px; border-bottom:3px solid red;';
+                document.body.appendChild(d);
+            }
+            d.innerHTML += new Date().toLocaleTimeString() + ': ' + msg + '<br>';
+            console.log('DEBUG:', msg);
+        }
+
+        async function handleLogin() {
+            debugLog('handleLogin tetiklendi.');
+            const errorEl = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+
+            try {
+                if (typeof firebase === 'undefined' || !auth) {
+                    debugLog('HATA: Firebase veya auth tanımlı değil.');
+                    throw new Error('Firebase bağlantısı kurulamadı. Lütfen reklam engelleyiciyi kapatın veya sayfayı yenileyin.');
+                }
+                debugLog('Firebase auth objesi mevcut.');
+
+                const email = document.getElementById('admin-email').value;
+                const pass = document.getElementById('admin-pass').value;
+
+                if (!email || !pass) {
+                    debugLog('HATA: Email veya şifre boş.');
+                    throw new Error('Lütfen email ve şifre girin.');
+                }
+
+                btn.innerText = 'Giriş Yapılıyor...';
+                btn.disabled = true;
+                errorEl.style.display = 'none';
+                
+                debugLog('Firebase auth.signInWithEmailAndPassword çağrılıyor...');
+                // 10 saniyelik zaman aşımı (timeout) ekliyoruz
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => {
+                        debugLog('ZAMAN AŞIMI: 10 saniye doldu!');
+                        reject(new Error('Bağlantı zaman aşımına uğradı. İnternetinizi veya reklam engelleyicinizi kontrol edin.'));
+                    }, 10000)
+                );
+                
+                await Promise.race([
+                    auth.signInWithEmailAndPassword(email, pass).then(res => {
+                        debugLog('Giriş başarılı! ' + res.user.email);
+                        return res;
+                    }),
+                    timeoutPromise
+                ]);
+            } catch (error) {
+                debugLog('HATA YAKALANDI: ' + error.message + ' (KOD: ' + error.code + ')');
+                console.error(error);
+                errorEl.style.display = 'block';
+                
+                // User-friendly error messages
+                let message = error.message || 'Hatalı email veya şifre.';
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    message = 'E-posta adresi veya şifre hatalı.';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Geçersiz bir e-posta adresi girdiniz.';
+                } else if (error.code === 'auth/user-disabled') {
+                    message = 'Bu kullanıcı hesabı askıya alınmış.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = 'Çok fazla hatalı giriş denemesi. Lütfen daha sonra tekrar deneyin.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    message = 'İnternet bağlantısı kurulamadı.';
+                } else if (error.message && error.message.includes('identity_toolkit')) {
+                    message = 'Firebase Auth ayarlarınız henüz aktif değil. Lütfen Firebase Console\'dan Email/Password özelliğini açın.';
+                }
+                
+                errorEl.innerText = 'Hata: ' + message;
+            } finally {
+                btn.innerText = 'Giriş Yap';
+                btn.disabled = false;
+            }
+        }
+
+        // Handle Enter key for login
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && document.getElementById('login-overlay').style.display !== 'none') {
+                handleLogin();
+            }
+        });
+
+        function handleLogout() {
+            if (confirm('Oturumu kapatmak istediğinize emin misiniz?')) {
+                auth.signOut();
+            }
+        }
+
+        function updateForm() {
+            const langData = content[currentLang];
+            CONTENT_FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && langData && langData[id] !== undefined) el.value = langData[id];
+            });
+        }
+
+        // Kaydedilecek içerik alanlarının beyaz listesi
+        const CONTENT_FIELD_IDS = [
+            'hero_ghost','hero_title','hero_subtitle',
+            'services_title','services_subtitle',
+            'service_1_title','service_1_desc',
+            'service_2_title','service_2_desc',
+            'about_title','about_desc','about_quote',
+            'contact_title','contact_address_val','contact_email_val','contact_phone_val',
+            'welcome_msg_1','welcome_msg_2','welcome_signature',
+            'welcome_card1_title','welcome_card1_desc',
+            'welcome_card2_title','welcome_card2_desc',
+            'welcome_card3_title','welcome_card3_desc',
+            'welcome_card4_title','welcome_card4_desc'
+        ];
+
+        function saveChanges() {
+            if (!db) return alert('Hata: Firebase bağlantısı kurulamadı. Lütfen yapılandırmayı kontrol edin.');
+
+            // Sadece içerik alanlarını oku (login, link üretme vs. dahil etme)
+            const langData = content[currentLang];
+            CONTENT_FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) langData[id] = el.value;
+            });
+
+            Promise.all([
+                db.ref('site_content/tr').set(content.tr),
+                db.ref('site_content/en').set(content.en)
+            ]).then(() => {
+                alert('Tüm veriler saniyeler içinde buluta gönderildi ve tüm ziyaretçiler için güncellendi!');
+            }).catch(err => {
+                alert('Bulut kayıt hatası: ' + err.message);
+            });
+        }
+
+        function resetDefaults() {
+            if (confirm('Buluttaki tüm verileri temizlemek istediğinize emin misiniz?')) {
+                db.ref('site_content').remove().then(() => location.reload());
+            }
+        }
+
+        // --- Welcome Links Logic ---
+        function loadWelcomeLinks() {
+            if (!db) return;
+            const container = document.getElementById('welcome-links-container');
+            
+            db.ref('site_content/welcome_pages').on('value', (snapshot) => {
+                const data = snapshot.val();
+                container.innerHTML = '';
+                
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.9rem;">Henüz bir link oluşturulmamış.</p>';
+                    return;
+                }
+                
+                // Reverse iterate to show newest first
+                const ids = Object.keys(data).reverse();
+                
+                ids.forEach(id => {
+                    const person = data[id];
+                    const url = window.location.origin + '/hosgeldin.html?id=' + id;
+                    // If running locally, you might want a relative path or handle file:// differently. 
+                    // But typically this panel is on a domain.
+                    const displayUrl = url.replace(window.location.origin, '');
+                    
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;';
+                    div.innerHTML = `
+                        <div>
+                            <strong style="display: block; margin-bottom: 0.3rem;">${person.name}</strong>
+                            <a href="${url}" target="_blank" style="color: var(--primary); font-size: 0.85rem; text-decoration: underline;">${displayUrl}</a>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="mailto:?subject=Aram%C4%B1za%20Ho%C5%9F%20Geldin!&body=Merhaba%20${encodeURIComponent(person.name)},%0D%0A%0D%0ABiz%20Teknoloji%20%C3%87%C3%B6z%C3%BCmleri%20ailesine%20kat%C4%B1ld%C4%B1%C4%9F%C4%B1n%20i%C3%A7in%20%C3%A7ok%20mutluyuz.%20Sana%20%C3%B6zel%20haz%C4%B1rlad%C4%B1%C4%9F%C4%B1m%C4%B1z%20kar%C5%9F%C4%B1lama%20sayfas%C4%B1na%20a%C5%9Fa%C4%9F%C4%B1daki%20linkten%20ula%C5%9Fabilirsin%3A%0D%0A${encodeURIComponent(url)}%0D%0A%0D%0ATekrar%20ho%C5%9F%20geldin!%0D%0ABiz%20Teknoloji%20%C3%87%C3%B6z%C3%BCmleri%20Ailesi" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #2563eb; color: white; text-decoration: none;" title="Mail İstemcisinde Aç (Taslak)"><i class="fas fa-envelope"></i></a>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #0ea5e9; color: white;" onclick="copyMailText('${person.name.replace(/'/g, "\\'")}', '${url}')" title="Sadece Metni Kopyala (Natro Webmail için)"><i class="fas fa-file-alt"></i></button>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #334155; color: white;" onclick="copyToClipboard('${url}')" title="Sadece Linki Kopyala"><i class="fas fa-link"></i></button>
+                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;" onclick="deleteWelcomeLink('${id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function generateWelcomeLink() {
+            if (!db) return alert('Firebase bağlantısı yok.');
+            const nameInput = document.getElementById('new_employee_name');
+            const name = nameInput.value.trim();
+            if (!name) return alert('Lütfen bir isim girin.');
+            
+            const newRef = db.ref('site_content/welcome_pages').push();
+            newRef.set({
+                name: name,
+                created_at: new Date().toISOString()
+            }).then(() => {
+                nameInput.value = '';
+                alert(name + ' için link başarıyla oluşturuldu!');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function deleteWelcomeLink(id) {
+            if (confirm('Bu linki silmek istediğinize emin misiniz? Sayfaya girenler artık isimsiz genel sayfayı görür.')) {
+                db.ref('site_content/welcome_pages/' + id).remove();
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link kopyalandı!');
+            });
+        }
+
+        function copyMailText(name, url) {
+            const text = `Merhaba ${name},\n\nBiz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Sana özel hazırladığımız karşılama sayfasına aşağıdaki linkten ulaşabilirsin:\n${url}\n\nTekrar hoş geldin!\nBiz Teknoloji Çözümleri Ailesi`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Mail metni kopyalandı! Artık webmail'e yapıştırabilirsiniz.");
+            });
+        }
+
+
+        // Navigation (Sidebar & Lang)
+        function showSection(sectionId) {
+            const targetSection = document.getElementById('section-' + sectionId);
+            const targetNav = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+            
+            if (targetSection && targetNav) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                targetNav.classList.add('active');
+                
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                targetSection.classList.add('active');
+            }
+        }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                window.location.hash = item.dataset.section;
+            });
+        });
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1);
+            if (hash) showSection(hash);
+        });
+
+        // Check on initial page load
+        const initialHash = window.location.hash.slice(1);
+        if (initialHash) {
+            // Wait slightly or call directly since DOM is already loaded at bottom of body
+            showSection(initialHash);
+        } else {
+            showSection('hero');
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const langData = content[currentLang];
+                CONTENT_FIELD_IDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) langData[id] = el.value;
+                });
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLang = btn.dataset.lang;
+                updateForm();
+            });
+        });
+
+        // ═══════════════════════════════════════════
+        // MANAGER NOTIFICATION SECTION
+        // ═══════════════════════════════════════════
+
+        const MGR_FIELD_IDS = [
+            'mgr_hero_title', 'mgr_hero_subtitle', 'mgr_checklist',
+            'mgr_contact_email', 'mgr_contact_whatsapp', 'mgr_contact_hr',
+            'mgr_contact_finance', 'mgr_contact_phone', 'mgr_contact_web'
+        ];
+
+        function loadMgrSettings() {
+            if (!db) return;
+            db.ref('site_content/manager_settings').once('value').then(snap => {
+                const data = snap.val();
+                if (!data) return;
+                MGR_FIELD_IDS.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && data[id] !== undefined) el.value = data[id];
+                });
+            });
+        }
+
+        function saveMgrContacts() {
+            if (!db) return alert('Firebase bağlantısı yok.');
+            const data = {};
+            MGR_FIELD_IDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) data[id] = el.value;
+            });
+            db.ref('site_content/manager_settings').set(data).then(() => {
+                alert('Yönetici sayfası ayarları kaydedildi! ✓');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function generateManagerLink() {
+            if (!db) return alert('Firebase bağlantısı yok.');
+            const name = document.getElementById('mgr_emp_name').value.trim();
+            if (!name) return alert('Lütfen çalışanın adını girin.');
+
+            const payload = {
+                name:         name,
+                managerName:  document.getElementById('mgr_mgr_name').value.trim(),
+                position:     document.getElementById('mgr_position').value.trim(),
+                department:   document.getElementById('mgr_department').value.trim(),
+                email:        document.getElementById('mgr_emp_email').value.trim(),
+                phone:        document.getElementById('mgr_emp_phone').value.trim(),
+                startDate:    document.getElementById('mgr_startdate').value.trim(),
+                location:     document.getElementById('mgr_location').value.trim(),
+                contractType: document.getElementById('mgr_contract').value.trim(),
+                workType:     document.getElementById('mgr_worktype').value.trim(),
+                managerNote:  document.getElementById('mgr_note').value.trim(),
+                status:       'Aktif',
+                created_at:   new Date().toISOString()
+            };
+
+            const newRef = db.ref('site_content/manager_pages').push();
+            newRef.set(payload).then(() => {
+                // Clear form fields
+                ['mgr_emp_name','mgr_mgr_name','mgr_position','mgr_department',
+                 'mgr_emp_email','mgr_emp_phone','mgr_startdate','mgr_location',
+                 'mgr_contract','mgr_worktype','mgr_note'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                alert(name + ' için yönetici linki başarıyla oluşturuldu! ✓');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function loadManagerLinks() {
+            if (!db) return;
+            const container = document.getElementById('manager-links-container');
+
+            db.ref('site_content/manager_pages').on('value', (snapshot) => {
+                const data = snapshot.val();
+                container.innerHTML = '';
+
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.9rem;">Henüz bir link oluşturulmamış.</p>';
+                    return;
+                }
+
+                const ids = Object.keys(data).reverse();
+
+                ids.forEach(id => {
+                    const person = data[id];
+                    const url = window.location.origin + '/yonetici-bilgi.html?id=' + id;
+                    const displayUrl = url.replace(window.location.origin, '');
+
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem;">
+                            <div>
+                                <strong style="display: block; margin-bottom: 0.2rem;">${person.name}</strong>
+                                <span style="font-size: 0.8rem; color: #94a3b8;">${person.position || ''} ${person.department ? '— ' + person.department : ''}</span><br>
+                                <a href="${url}" target="_blank" style="color: var(--primary); font-size: 0.82rem; text-decoration: underline;">${displayUrl}</a>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #2563eb; color: white;"
+                                    onclick="copyMgrMailText('${person.name.replace(/'/g, "\'")}', '${person.managerName ? person.managerName.replace(/'/g, "\'") : 'Yönetici'}', '${url}')"
+                                    title="Mail Metnini Kopyala"><i class="fas fa-file-alt"></i></button>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #334155; color: white;"
+                                    onclick="copyToClipboard('${url}')" title="Linki Kopyala"><i class="fas fa-link"></i></button>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;"
+                                    onclick="deleteManagerLink('${id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function deleteManagerLink(id) {
+            if (confirm('Bu yönetici linkini silmek istediğinize emin misiniz?')) {
+                db.ref('site_content/manager_pages/' + id).remove();
+            }
+        }
+
+        function copyMgrMailText(empName, mgrName, url) {
+            const checklistVal = document.getElementById('mgr_checklist') ? document.getElementById('mgr_checklist').value.trim() : '';
+            let checklistText = '';
+            if (checklistVal) {
+                checklistText = '\n\nYapılacaklar Listesi:\n' + checklistVal.split('\n').filter(l => l.trim()).map(item => `• ${item.trim()}`).join('\n');
+            }
+            const text = `Sayın ${mgrName},\n\n${empName} adlı çalışanımızın bilgilerini ve BIZ IT Works iletişim kanallarını içeren sayfaya aşağıdaki linkten ulaşabilirsiniz:\n\n${url}${checklistText}\n\nSaygılarımızla,\nBIZ IT Works İnsan Kaynakları`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Yönetici mail metni kopyalandı! ✓');
+            }).catch(err => alert('Hata: ' + err.message));
+        }
+
+        function loadAgendaTasks() {
+            if (!db) return;
+            db.ref('site_content/agenda_tasks').on('value', (snapshot) => {
+                agendaTasksData = snapshot.val();
+                renderAgendaTasks();
+            });
+        }
+
+        function renderAgendaTasks() {
+            const data = agendaTasksData;
+            const columns = {
+                todo: document.getElementById('tasks-todo'),
+                in_progress: document.getElementById('tasks-in-progress'),
+                done: document.getElementById('tasks-done')
+            };
+            
+            const counts = {
+                todo: 0,
+                in_progress: 0,
+                done: 0
+            };
+            
+            Object.keys(columns).forEach(status => {
+                if (columns[status]) columns[status].innerHTML = '';
+            });
+            
+            if (!data) {
+                Object.keys(columns).forEach(status => {
+                    if (columns[status]) {
+                        columns[status].innerHTML = '<div style="color: var(--text-dim); font-size: 0.85rem; text-align: center; padding: 2rem 0;">Henüz task yok</div>';
+                    }
+                });
+                document.getElementById('count-todo').innerText = '0';
+                document.getElementById('count-in-progress').innerText = '0';
+                document.getElementById('count-done').innerText = '0';
+                return;
+            }
+            
+            const tasks = [];
+            Object.keys(data).forEach(id => {
+                tasks.push({ id, ...data[id] });
+            });
+            
+            // Sort tasks by created_at ascending
+            tasks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            
+            tasks.forEach(task => {
+                const status = task.status || 'todo';
+                counts[status]++;
+                
+                const card = document.createElement('div');
+                card.className = 'task-card';
+                
+            });
+        }
+    </script>
+    
+    <!-- CV Generator Script -->
+    <script>
+        // Data Structures for dynamic lists
+        let cvSkills = [];
+        let cvExp = [];
+        let cvEdu = [];
+        let cvLang = [];
+
+        function renderCVSkills() {
+            const container = document.getElementById('cv_skills_list');
+            container.innerHTML = '';
+            cvSkills.forEach((s, idx) => {
+                container.innerHTML += `
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Kategori (Örn: DATABASES)" value="${s.category}" onchange="cvSkills[${idx}].category = this.value" style="flex: 1;">
+                        <input type="text" placeholder="Detaylar" value="${s.details}" onchange="cvSkills[${idx}].details = this.value" style="flex: 2;">
+                        <button class="btn" style="background: #ef4444;" onclick="cvSkills.splice(${idx}, 1); renderCVSkills()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+        function addCVSkill() { cvSkills.push({category: '', details: ''}); renderCVSkills(); }
+
+        function renderCVEdu() {
+            const container = document.getElementById('cv_edu_list');
+            container.innerHTML = '';
+            cvEdu.forEach((e, idx) => {
+                container.innerHTML += `
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Derece / Sertifika" value="${e.degree}" onchange="cvEdu[${idx}].degree = this.value" style="flex: 1;">
+                        <input type="text" placeholder="Kurum ve Yıl" value="${e.institution}" onchange="cvEdu[${idx}].institution = this.value" style="flex: 1;">
+                        <button class="btn" style="background: #ef4444;" onclick="cvEdu.splice(${idx}, 1); renderCVEdu()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+        function addCVEdu() { cvEdu.push({degree: '', institution: ''}); renderCVEdu(); }
+
+        function renderCVLang() {
+            const container = document.getElementById('cv_lang_list');
+            container.innerHTML = '';
+            cvLang.forEach((l, idx) => {
+                container.innerHTML += `
+                    <div style="display: flex; gap: 1rem; margin-bottom: 0.5rem;">
+                        <input type="text" placeholder="Dil" value="${l.language}" onchange="cvLang[${idx}].language = this.value" style="flex: 1;">
+                        <input type="text" placeholder="Seviye" value="${l.level}" onchange="cvLang[${idx}].level = this.value" style="flex: 1;">
+                        <button class="btn" style="background: #ef4444;" onclick="cvLang.splice(${idx}, 1); renderCVLang()"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+            });
+        }
+        function addCVLang() { cvLang.push({language: '', level: ''}); renderCVLang(); }
+
+        function renderCVExp() {
+            const container = document.getElementById('cv_exp_list');
+            container.innerHTML = '';
+            cvExp.forEach((e, idx) => {
+                container.innerHTML += `
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 0.5rem;">
+                            <input type="text" placeholder="Görev Unvanı (Örn: Tech Lead)" value="${e.jobTitle}" onchange="cvExp[${idx}].jobTitle = this.value">
+                            <input type="text" placeholder="Şirket Adı" value="${e.company}" onchange="cvExp[${idx}].company = this.value">
+                            <input type="text" placeholder="Süre & Tarih (Örn: Feb 2023 - Jun 2026)" value="${e.duration}" onchange="cvExp[${idx}].duration = this.value">
+                            <input type="text" placeholder="Lokasyon (Örn: Berlin, Germany)" value="${e.location}" onchange="cvExp[${idx}].location = this.value">
+                        </div>
+                        <textarea rows="4" placeholder="Deneyim detayları (Her satıra bir madde yazabilirsiniz)" onchange="cvExp[${idx}].description = this.value" style="width: 100%; margin-top: 0.5rem;">${e.description}</textarea>
+                        <div style="text-align: right; margin-top: 0.5rem;">
+                            <button class="btn" style="background: #ef4444; font-size: 0.8rem;" onclick="cvExp.splice(${idx}, 1); renderCVExp()">Kaldır</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        function addCVExp() { cvExp.push({jobTitle: '', company: '', duration: '', location: '', description: ''}); renderCVExp(); }
+
+        function loadCandidates() {
+            if (!db) return;
+            const container = document.getElementById('cv_candidates_list');
+            
+            db.ref('site_content/candidates').on('value', (snapshot) => {
+                const data = snapshot.val();
+                container.innerHTML = '';
+                
+                if (!data) {
+                    container.innerHTML = '<p style="color: var(--text-dim); font-size: 0.9rem;">Henüz kayıtlı bir aday yok.</p>';
+                    return;
+                }
+                
+                const ids = Object.keys(data).reverse(); // Newest first
+                
+                ids.forEach(id => {
+                    const c = data[id];
+                    const cvUrl = window.location.origin + '/cv-template.html?id=' + id;
+                    const feedbackUrl = window.location.origin + '/feedback.html?id=' + id;
+                    
+                    let feedbackHTML = '';
+                    if (c.feedback) {
+                        const feedbacks = Object.values(c.feedback);
+                        feedbackHTML = `<div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <strong style="color: var(--primary); font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">GELEN DEĞERLENDİRMELER (${feedbacks.length})</strong>`;
+                        
+                        feedbacks.forEach(f => {
+                            feedbackHTML += `
+                                <div style="background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 4px; margin-bottom: 0.5rem; font-size: 0.85rem;">
+                                    <div><strong>Yönetici:</strong> ${f.manager_name}</div>
+                                    <div style="display: flex; gap: 1rem; margin: 0.25rem 0; flex-wrap: wrap;">
+                                        <span><strong>Teknik:</strong> ${f.technical_score}/5</span>
+                                        <span><strong>Uyum:</strong> ${f.culture_score}/5</span>
+                                        <span><strong>Rol:</strong> ${f.role_score ? f.role_score : '-'}/5</span>
+                                        <span><strong>Karar:</strong> <span style="color: ${f.verdict.includes('Olumlu') ? '#22c55e' : (f.verdict.includes('Olumsuz') ? '#ef4444' : '#eab308')}">${f.verdict}</span></span>
+                                    </div>
+                                    ${f.comments ? `<div style="color: var(--text-dim); font-style: italic;">"${f.comments}"</div>` : ''}
+                                </div>
+                            `;
+                        });
+                        feedbackHTML += `</div>`;
+                    }
+
+                    const div = document.createElement('div');
+                    div.style.cssText = 'background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <strong style="display: block; font-size: 1.1rem; margin-bottom: 0.2rem;">${c.name}</strong>
+                                <span style="color: var(--text-dim); font-size: 0.85rem;">${c.title}</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <a href="${cvUrl}" target="_blank" class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #22c55e; color: white; text-decoration: none;" title="CV'yi Görüntüle"><i class="fas fa-file-invoice"></i> CV'ye Git</a>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #0ea5e9; color: white;" onclick="copyToClipboard('${feedbackUrl}')" title="Değerlendirme Formu Linkini Kopyala"><i class="fas fa-link"></i> Anket Linkini Kopyala</button>
+                                <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #ef4444; color: white;" onclick="deleteCandidate('${id}')" title="Sil"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        ${feedbackHTML}
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function deleteCandidate(id) {
+            if(confirm("Bu adayı ve tüm değerlendirmelerini silmek istediğinize emin misiniz?")) {
+                db.ref('site_content/candidates/' + id).remove();
+            }
+        }
+
+        function generateCV() {
+            const cvData = {
+                name: document.getElementById('cv_form_name').value.trim(),
+                title: document.getElementById('cv_form_title').value.trim(),
+                location: document.getElementById('cv_form_location').value.trim(),
+                experienceYears: document.getElementById('cv_form_exp_years').value.trim(),
+                website: document.getElementById('cv_form_website').value.trim(),
+                email: document.getElementById('cv_form_email').value.trim(),
+                phone: document.getElementById('cv_form_phone').value.trim(),
+                topHeading: document.getElementById('cv_form_top_heading').value.trim(),
+                summary: document.getElementById('cv_form_summary').value.trim(),
+                skills: cvSkills.filter(s => s.category.trim() !== ''),
+                education: cvEdu.filter(e => e.degree.trim() !== ''),
+                languages: cvLang.filter(l => l.language.trim() !== ''),
+                experience: cvExp.filter(e => e.jobTitle.trim() !== ''),
+                created_at: new Date().toISOString()
+            };
+
+            if (!cvData.name) {
+                alert("Lütfen en azından ad ve soyad girin.");
+                return;
+            }
+
+            if (!db) {
+                alert("Firebase bağlantısı kurulamadı. CV buluta kaydedilemiyor.");
+                return;
+            }
+
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> KAYDEDİLİYOR...';
+            btn.disabled = true;
+
+            const newRef = db.ref('site_content/candidates').push();
+            newRef.set(cvData).then(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert(cvData.name + " başarıyla kaydedildi! Aday havuzundan CV'ye gidebilir veya yöneticiye değerlendirme linki gönderebilirsiniz.");
+                // Optionally clear form
+                document.getElementById('cv_form_name').value = '';
+                document.getElementById('cv_form_title').value = '';
+            }).catch(err => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                alert("Kayıt sırasında hata oluştu: " + err.message);
+            });
+        }
+
+        // Initialize with one empty experience item just to show
+        renderCVLang();
+        renderCVSkills();
+        renderCVEdu();
+        renderCVExp();
+
+        function fillFatihData() {
+            document.getElementById('cv_form_name').value = "Fatih Gökçen";
+            document.getElementById('cv_form_title').value = "SENIOR SOFTWARE ENGINEER & TECH LEAD";
+            document.getElementById('cv_form_location').value = "Eskişehir, Turkey";
+            document.getElementById('cv_form_exp_years').value = "13+ Years";
+            document.getElementById('cv_form_website').value = "www.bizitworks.com";
+            document.getElementById('cv_form_email').value = "info@bizitworks.com";
+            document.getElementById('cv_form_phone').value = "+90 216 225 66 51";
+            document.getElementById('cv_form_top_heading').value = "BIZ TEKNOLOJI | ENTERPRISE SOFTWARE SOLUTIONS";
+            document.getElementById('cv_form_summary').value = "Senior Software Engineer / Tech Lead with over 13 years of experience in the Java ecosystem, High-Performance Payment Systems, and Spec-Driven Development (SDD). Expert in Payment Gateway Integrations & Checkout Architecture, with strong leadership in building scalable cloud-native architectures and mentoring engineering teams.";
+
+            cvSkills = [
+                { category: "LANGUAGES", details: "Java (8, 11, 17), Python, SQL, TypeScript, HTML/CSS" },
+                { category: "FINTECH & PAYMENTS", details: "PayPal, Computop, Afterpay BNPL, iDEAL, iyzico, PayTR, PCI-DSS, 3DS2, Tokenization" },
+                { category: "ARCHITECTURE & BACKEND", details: "Spring Boot, Microservices, Event-Driven, State Machine, SDD" },
+                { category: "CLOUD & MESSAGING", details: "AWS (SQS, API Gateway, S3, Timestream, Lambda), Kafka" },
+                { category: "DEVOPS & CI/CD", details: "Terraform, Helm, GitHub Actions, Jenkins, Docker, Kubernetes, Maven" },
+                { category: "DATABASES", details: "AWS Timestream, PostgreSQL, Oracle 11g, MS SQL, Redis" },
+                { category: "AI & INNOVATION", details: "LLM Fine-tuning, RAG Architectures, AI-Assisted Dev, STT/TTS (Whisper/Piper)" }
+            ];
+            renderCVSkills();
+
+            cvEdu = [
+                { degree: "B.Sc. Computer Engineering", institution: "Eskişehir Osmangazi Univ. (2013)" },
+                { degree: "Professional Scrum Master I", institution: "Scrum.org (2020)" },
+                { degree: "Oracle Certified Associate", institution: "Java SE 8 Programmer (2019)" }
+            ];
+            renderCVEdu();
+
+            cvLang = [
+                { language: "ENGLISH", level: "C1 (Advanced)" },
+                { language: "GERMAN", level: "A1 (Learning)" }
+            ];
+            renderCVLang();
+
+            cvExp = [
+                {
+                    jobTitle: "Tech Lead",
+                    company: "kfzteile24.de",
+                    duration: "Feb 2023 - Jun 2026",
+                    location: "Berlin, Germany",
+                    description: "Redesigned and scaled Cart & Checkout subsystems, eliminating client-side manipulation risks.\nIntegrated global PSPs (PayPal, Computop, Afterpay, iDEAL).\nHands-on backend (Java 17, Spring Boot) and frontend (React, Vue) contributions.\nImplemented Agentic Engineering & Spec-Driven Development workflows.\nDesigned high-performance messaging with AWS Timestream, Kafka, SQS.\nMentored teams on security, idempotency, and clean code practices."
+                },
+                {
+                    jobTitle: "Senior Java Developer (Backend)",
+                    company: "kfzteile24.de",
+                    duration: "2021 - 2023",
+                    location: "Berlin, Germany",
+                    description: "Developed resilient backend services with Java / Spring Boot.\nRefactored legacy payment workflows into scalable microservices.\nDesigned secure APIs with AWS API Gateway.\nCollaborated with frontend teams across Angular and React platforms."
+                },
+                {
+                    jobTitle: "Senior Software Developer / Architect",
+                    company: "LOGO Business Solutions",
+                    duration: "Apr 2020 - 2021",
+                    location: "Ankara, Turkey",
+                    description: "Resolved complex infrastructure bottlenecks in enterprise ERP systems.\nManaged CI/CD pipelines for large multi-module applications.\nPromoted reusable enterprise components to standardize software engineering."
+                },
+                {
+                    jobTitle: "Software Developer",
+                    company: "Bilge Adam Technologies",
+                    duration: "Jul 2019 - Apr 2020",
+                    location: "Ankara, Turkey",
+                    description: "Designed secure backend microservices for critical e-government projects.\nConfigured automated testing & deployment pipelines to improve delivery speed."
+                },
+                {
+                    jobTitle: "Software Developer / Security Coordinator",
+                    company: "Mergen Software",
+                    duration: "Sep 2013 - Jul 2019",
+                    location: "Eskişehir, Turkey",
+                    description: "Engineered Turkey's first web-based Hemapheresis Module.\nCoordinated developer workflows for Common Criteria (EAL2) certification.\nDesigned hospital ERP systems built on highly secure architectures."
+                }
+            ];
+            renderCVExp();
+
+            alert("Fatih Gökçen'e ait veriler forma dolduruldu. Şimdi 'CV OLUŞTUR VE GÖSTER' butonuna basarak kaydedebilirsiniz.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta name="google-site-verification" content="NlYL36bfcFoQZQ4E9JEOQpCV4c68N16DzXapModu3nA" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aramıza Hoş Geldin! | BIZ IT Works</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="hosgeldin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PX1EE3M36Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PX1EE3M36Q');
+    </script>
+</head>
+<body class="welcome-page">
+
+    <!-- Header -->
+    <header class="welcome-header">
+        <div class="container">
+            <div class="logo">
+                <img src="assets/logo.png" alt="BIZ IT Works">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="welcome-main">
+        <div class="container welcome-grid">
+            <div class="welcome-text">
+                <h1>Hoş Geldin!</h1>
+                <h2 id="welcome-name">Merhaba <span id="employee-name">...</span>,</h2>
+                
+                <p id="welcome-msg-1">Biz Teknoloji Çözümleri ailesine katıldığın için çok mutluyuz. Aramıza hoş geldin! Yeni yolculuğunda başarılar diler, birlikte nice güzel işlere imza atacağımıza inanıyoruz.</p>
+                
+                <p id="welcome-msg-2">Sana destek olmak ve uyum sürecini kolaylaştırmak için her zaman yanındayız.</p>
+                
+                <p class="signature" id="welcome-signature">Tekrar hoş geldin!<br>Biz Teknoloji Çözümleri Ailesi</p>
+            </div>
+            <div class="welcome-graphic">
+                <div class="handwriting">Aramıza Hoş Geldin!</div>
+                <img src="assets/team_welcome.png" alt="Ekip İllüstrasyonu" class="graphic-img">
+            </div>
+        </div>
+    </main>
+
+    <!-- Cards Section -->
+    <section class="welcome-cards-section">
+        <div class="container cards-grid">
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-content">
+                    <h3 id="welcome-card1-title">Ekibinle Tanış</h3>
+                    <p id="welcome-card1-desc">Ekip arkadaşlarınla tanışmak için ilk fırsatta bir araya gelmeni heyecanla bekliyoruz.</p>
+                </div>
+            </div>
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="card-content">
+                    <h3 id="welcome-card2-title">Süreçlere Göz At</h3>
+                    <p id="welcome-card2-desc">İş süreçlerimiz ve kurum içi kaynaklara göz atarak ilk adımlarını kolaylaştırabilirsin.</p>
+                </div>
+            </div>
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="card-content">
+                    <h3 id="welcome-card3-title">Destek İçin Yanındayız</h3>
+                    <p id="welcome-card3-desc">Uyum sürecin boyunca aklına takılan her konuda bize ulaşabilirsin.</p>
+                </div>
+            </div>
+            <div class="welcome-card">
+                <div class="card-icon">
+                    <i class="far fa-star"></i>
+                </div>
+                <div class="card-content">
+                    <h3 id="welcome-card4-title">Birlikte Başaracağız</h3>
+                    <p id="welcome-card4-desc">Fikirlerin, enerjin ve katkılarınla ekibimize değer katacağına inanıyoruz.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="welcome-footer">
+        <div class="container">
+            <div class="footer-item">
+                <div class="footer-icon">
+                    <i class="far fa-envelope"></i>
+                </div>
+                <div class="footer-text">
+                    <p>Herhangi bir sorunda bize ulaşabilirsin:</p>
+                    <strong><a href="mailto:ik@bizitworks.com" style="color: white; text-decoration: none;">ik@bizitworks.com</a></strong>
+                </div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-icon heart">
+                    <i class="far fa-heart"></i>
+                </div>
+                <div class="footer-text">
+                    <p>İyi ki aramıza katıldın!</p>
+                    <strong>Birlikte daha güçlüyüz.</strong>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const employeeId = urlParams.get('id');
+            const nameParam = urlParams.get('isim') || urlParams.get('name');
+            const nameSpan = document.getElementById('employee-name');
+
+            if (typeof isFirebaseConfigured !== 'undefined' && isFirebaseConfigured()) {
+                // Güvenli başlatma: app zaten başlatılmışsa yeniden kullan
+                const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+                const db = firebase.database();
+                
+                // Fetch dynamic text content from admin panel
+                db.ref('site_content/tr').once('value').then((snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        if (data.welcome_msg_1) document.getElementById('welcome-msg-1').innerHTML = data.welcome_msg_1.replace(/\n/g, '<br>');
+                        if (data.welcome_msg_2) document.getElementById('welcome-msg-2').innerHTML = data.welcome_msg_2.replace(/\n/g, '<br>');
+                        if (data.welcome_signature) document.getElementById('welcome-signature').innerHTML = data.welcome_signature.replace(/\n/g, '<br>');
+                        
+                        if (data.welcome_card1_title) document.getElementById('welcome-card1-title').textContent = data.welcome_card1_title;
+                        if (data.welcome_card1_desc) document.getElementById('welcome-card1-desc').textContent = data.welcome_card1_desc;
+                        
+                        if (data.welcome_card2_title) document.getElementById('welcome-card2-title').textContent = data.welcome_card2_title;
+                        if (data.welcome_card2_desc) document.getElementById('welcome-card2-desc').textContent = data.welcome_card2_desc;
+                        
+                        if (data.welcome_card3_title) document.getElementById('welcome-card3-title').textContent = data.welcome_card3_title;
+                        if (data.welcome_card3_desc) document.getElementById('welcome-card3-desc').textContent = data.welcome_card3_desc;
+                        
+                        if (data.welcome_card4_title) document.getElementById('welcome-card4-title').textContent = data.welcome_card4_title;
+                        if (data.welcome_card4_desc) document.getElementById('welcome-card4-desc').textContent = data.welcome_card4_desc;
+                    }
+                });
+
+                // Fetch employee name
+                if (employeeId) {
+                    db.ref('site_content/welcome_pages/' + employeeId).once('value').then((snapshot) => {
+                        const data = snapshot.val();
+                        if (data && data.name) {
+                            nameSpan.textContent = data.name;
+                        } else {
+                            nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                        }
+                    }).catch(err => {
+                        console.error("Firebase error:", err);
+                        nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                    });
+                } else if (nameParam) {
+                    nameSpan.textContent = nameParam;
+                } else {
+                    nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                }
+            } else {
+                if (nameParam) {
+                    nameSpan.textContent = nameParam;
+                } else {
+                    nameSpan.textContent = "Yeni Çalışma Arkadaşımız";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
