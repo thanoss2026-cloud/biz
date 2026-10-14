@@ -112,11 +112,10 @@ header {
 
 header.scrolled {
     top: 0;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(10, 14, 27, 0.95);
     backdrop-filter: blur(10px);
     padding: 0.8rem 0;
     border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
 nav {
@@ -132,15 +131,12 @@ nav {
 }
 
 .logo img {
-    width: 160px;
     height: 50px;
+    width: auto;
     display: block;
-    object-fit: cover;
-    object-position: center;
 }
 
 header.scrolled .logo img {
-    width: 128px;
     height: 40px;
 }
 
@@ -159,8 +155,8 @@ header.scrolled .logo img {
 }
 
 header.scrolled .nav-links a {
-    color: #111111;
-    text-shadow: none;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
 .nav-links a:hover {
