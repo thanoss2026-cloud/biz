@@ -18,8 +18,7 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
     let reqUrl = req.url.split('?')[0];
-    if (reqUrl === '/' || reqUrl === '') reqUrl = '/biz-portal.html';
-    if (reqUrl === '/portal') reqUrl = '/biz-portal.html';
+    if (reqUrl === '/' || reqUrl === '') reqUrl = '/index.html';
     
     let filePath = path.join(__dirname, reqUrl);
     
